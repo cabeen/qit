@@ -1,13 +1,15 @@
+![alt-text](https://github.com/cabeen/qit/blob/main/splash.jpg?raw=true)
+
 # The Quantitative Imaging Toolkit
 
-The main development repository for the Quantitative Imaging Toolkit (QIT), QIT
-is a software package for visualization, exploration, and analysis of
-neuroimaging datasets. QIT supports a variety of magnetic resonance imaging
-(MRI) with advanced capabilities for mapping brain microstructure and
-connectivity using diffusion MRI, and it also has an expanding base of
-microscopy tools.   You can learn more at the [QIT
-website](http://cabeen.io/qitwiki).  Presently, QIT is only available as 
-compiled binaries, which you can download through github releases.
+The repository for the Quantitative Imaging Toolkit (QIT). QIT is a software 
+package for visualization, exploration, and analysis of neuroimaging datasets. 
+QIT supports a variety of magnetic resonance imaging (MRI) with advanced 
+capabilities for mapping brain microstructure and connectivity using diffusion 
+MRI, and it also has an expanding base of microscopy tools.   You can learn 
+more at the [QIT website](http://cabeen.io/qitwiki).  Presently, QIT is only 
+available as compiled binaries, which you can download through
+[github releases](https://github.com/cabeen/qit/releases).
 
 ## What is QIT?
 
