@@ -2,7 +2,7 @@
 
 # The Quantitative Imaging Toolkit
 
-Welsome to the repository for the Quantitative Imaging Toolkit (QIT). QIT is 
+Welcome to the repository for the Quantitative Imaging Toolkit (QIT). QIT is 
 a software  package for visualization, exploration, and analysis of neuroimaging 
 datasets.  QIT supports a variety of magnetic resonance imaging (MRI) with advanced 
 capabilities for mapping brain microstructure and connectivity using diffusion 
