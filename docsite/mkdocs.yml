@@ -1,0 +1,36 @@
+site_name: Quantitative Imaging Toolkit
+repo_url: https://github.com/cabeen/qit/
+edit_uri: null
+google_analytics: ['UA-58725032-1', 'qit-docs']
+markdown_extensions:
+  - smarty
+  - attr_list 
+theme:
+  name: readthedocs
+  highlightjs: true
+  shortcuts:
+      help: 191    # ?
+      next: 78     # n
+      previous: 80 # p
+      search: 83   # s
+nav:
+  - Home: index.md
+  - Usage: 
+    - Installation: install.md
+    - Citation: citation.md
+    - License: license.md
+    - Support: support.md
+    - Quickstart: quickstart.md
+  - Concepts:
+    - Gallery: gallery.md
+    - Interaction: interaction.md
+    - Colormaps: colormaps.md
+    - Datasets: datasets.md
+    - Modules: modules.md
+    - Models: models.md
+  - Tutorials:
+    - Workflow Tutoral: workflow.md
+    - Masters Workshop: masters-workshop.md
+    - Diffusion MRI Tutorial: dmri-tutorial.md
+    - Tractography Tutorial: tractography.md
+    - Freesurfer Tutorial: freesurfer.md
