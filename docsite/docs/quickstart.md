@@ -3,7 +3,7 @@
 This page provides some tips for getting quickly up to speed with using QIT on
 the command line and the viewer. 
 
-## Quickstart for QIT on the Command Line
+## Starting the Command Line
 
 This section will help you get started with the toolkit's command line interface.  This can help you script various parts of your data analysis when you have a complex workflow, or you want to make your process reproducible.
 
@@ -65,7 +65,7 @@ One benefit of the toolkit is that it handles many file formats automatically.  
 
 You can use your favorite programs to write scripts using `qit`, but there is also a convenient Python scripting interface that is built-in.  This uses a Java implementation of Python called [http://www.jython.org Jython] to directly connect your script with the data objects available in the toolkit.  This is a advanced topic that will be described in later pages, but you can see and example script at `lib/modules/qit/VolumeBrainExtract.py`.
 
-## Quickstart for the Interactive Viewer
+## Starting the Viewer
 
 This section will help you get started with the toolkit's viewer, and with any luck, you'll be able to explore and visualize your data in no time!
 
