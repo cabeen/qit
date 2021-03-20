@@ -302,9 +302,12 @@ analysis, enabling the quantitative characterization of both whole bundles and
 subdivisions along their length.  These can be run using the following
 `qitdiff` targets:
 
-- **diff.tract/bundles.map**:  whole bundle parameters, such as volume, length, etc.
-- **diff.tract/bundles.dti.map**:  whole bundle DTI parameters, such as FA, MD, etc.
-- **diff.tract/bundles.along.dti.map**: along-bundle DTI parameters, e.g. FA measured at each of a sequence of bundle subdivisions
+- **diff.tract/bundles.map**:
+    - whole bundle parameters, such as volume, length, etc.
+- **diff.tract/bundles.dti.map**:  
+    - whole bundle DTI parameters, such as FA, MD, etc.
+- **diff.tract/bundles.along.dti.map**: 
+    - along-bundle DTI parameters, e.g. FA measured at each of a sequence of bundle subdivisions
 
 Similar to ROI analysis, you can also extract multi-shell diffusion MRI
 parameters using any of the model identifiers from the previous section.  For a

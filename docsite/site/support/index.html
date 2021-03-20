@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Support - Quantitative Imaging Toolkit</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Support";
+    var mkdocs_page_input_path = "support.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-58725032-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Quantitative Imaging Toolkit</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Usage</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../install/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../citation/">Citation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Support</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#direct-support">Direct Support</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#frequently-asked-questions">Frequently Asked Questions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#why-does-qitview-close-immediately-after-opening-it">Why does qitview close immediately after opening it?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-did-i-get-an-error-out-of-memory-error-java-heap-space">Why did I get an error "Out of Memory Error (Java heap space)"?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-did-i-get-an-error-about-exceeding-the-heap-size">Why did I get an error about exceeding the heap size?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-do-i-get-an-error-about-a-missing-main-class">Why do I get an error about a missing main class?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-did-my-program-print-error-null">Why did my program print "error: null"?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-do-i-file-a-bug-report">How do I file a bug report?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-is-my-data-only-showing-up-in-the-bottom-left-portion-of-the-viewer">Why is my data only showing up in the bottom left portion of the viewer?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#why-doesnt-x11-forwarding-work">Why doesn't X11 forwarding work?</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Concepts</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../gallery/">Gallery</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interaction/">Interaction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../colormaps/">Colormaps</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../datasets/">Datasets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../modules/">Modules</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../models/">Models</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorials</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../workflow/">Workflow Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../masters-workshop/">Masters Workshop</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dmri-tutorial/">Diffusion MRI Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../tractography/">Tractography Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../freesurfer/">Freesurfer Tutorial</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Quantitative Imaging Toolkit</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Usage &raquo;</li>
+        
+      
+    
+    <li>Support</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/cabeen/qit/edit/master/docs/support.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="how-to-get-help-using-qit">How to get help using QIT</h1>
+<h2 id="direct-support">Direct Support</h2>
+<p>I&rsquo;m always happy to help answer questions about QIT, so please feel free reach
+out via email to <a href="mailto:cabeen@gmail.com">cabeen@gmail.com</a>.  Otherwise, there are some frequently asked questions listed below that might help.</p>
+<h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
+<h3 id="why-does-qitview-close-immediately-after-opening-it">Why does <code>qitview</code> close immediately after opening it?</h3>
+<p>This is most likely because you have a 32-bit version of Java installed.  Imaging datasets can easily exceed the maximum memory allowed by a 32-bit address space, so you should try installing a 64-bit version of Java Note: on the Java download page, 64-bit is usually named x64, and 32-bit is usually named x86.</p>
+<h3 id="why-did-i-get-an-error-out-of-memory-error-java-heap-space">Why did I get an error &ldquo;Out of Memory Error (Java heap space)&rdquo;?</h3>
+<p>This happens when you process a dataset that is larger than the available memory.  Each time <code>qit</code> and <code>qitview</code> is executed, a Java virtual machine is created with a given amount of available heap space for storing data.  The default amount is kept smallish at 2 gigabytes to avoid bogging down the system; however, you sometimes have to start it with more.  Here&rsquo;s an example command using 8 gigabytes instead:</p>
+<p><code>qit -Xmx8G VolumeCopy --input input.nii.gz --output output.nii.gz</code></p>
+<p><code>8G</code> can be replaced with whatever other amount you like.  You can also specify other <code>-X</code> style flags supported by your system&rsquo;s Java virtual machine.</p>
+<p>If that doesn&rsquo;t help, then you may have a huge dataset.  In that case, you can also switch the data precision.  By default the tools use double for all storage and processing, but you can change that to float instead:</p>
+<p><code>qit -Xmx8G --dtype float VolumeCopy --input input.nii.gz --output output.nii.gz</code></p>
+<p>This will cut the memory usage roughly in half, at the cost of some precision.  Mathematical operations will still be performed using double precision, but when things are saved back to volume, they will be in float.</p>
+<h3 id="why-did-i-get-an-error-about-exceeding-the-heap-size">Why did I get an error about exceeding the heap size?</h3>
+<p>Some systems have a Java installation that limits the amount of memory available, particularly when a 32-bit version is installed.  qitview uses a heap of 4 gigabytes by default, which can often exceed that.  You can reduce the heap size, e.g. by adding &ldquo;-Xmx1G&rdquo; to the command; however, this may be too little to load your data.  The better option is to upgrade your Java installation to a newer 64-bit version.</p>
+<h3 id="why-do-i-get-an-error-about-a-missing-main-class">Why do I get an error about a missing main class?</h3>
+<p>You may have gotten one of the following errors:</p>
+<pre><code>Error: Could not find or load main class qitview.QitViewMain
+Error: Could not find or load main class qit.main.QitMain
+</code></pre>
+<p>This is usually because you are executing the tools from the source directory instead of the installation directory.  You should check your paths to make sure the binary directory is <code>yourpath/qit-install/bin</code> and not <code>yourpath/qit-main/bin</code>.</p>
+<h3 id="why-did-my-program-print-error-null">Why did my program print &ldquo;error: null&rdquo;?</h3>
+<p>This means the program had an error that was not well-documented.  This could be a bug or it could mean the input was incorrect.  It can be helpful to run the program with the verbose and debug flags, for example:</p>
+<p><code>qit --verbose --debug VolumeCopy --input input.nii.gz --output output.nii.gz</code></p>
+<p>This will give you very detailed information about the problem.  If you are still stumped or the output seems arcane, please ask around or forward it along as a bug report.</p>
+<h3 id="how-do-i-file-a-bug-report">How do I file a bug report?</h3>
+<p>Bug reports can improve the quality of the toolkit for everyone, so please don&rsquo;t hesitate to send them along.  At the moment, the best way is to just email me (Ryan).  If the error is on the command line, please include the stack trace of the error by running it with the verbose and debug flags, e.g.</p>
+<p><code>qit --verbose --debug VolumeCopy --input input.nii.gz --output output.nii.gz</code></p>
+<p>If it is a bug is the viewer, a screen capture can be helpful.  It is also useful to have a copy of the associated data and command to reproduce the problem, if they can be shared.</p>
+<h3 id="why-is-my-data-only-showing-up-in-the-bottom-left-portion-of-the-viewer">Why is my data only showing up in the bottom left portion of the viewer?</h3>
+<p><img alt="" src="../images/Clipped.png" /></p>
+<p>This happens when you you use Java 9 on a HiDPI display on Windows (not sure about GNU/Linux).  This is a bug in either the JVM or JOGL, so we have to work around it.  One solution is to downgrade to Java 8; however, if you have a 4k display, the text will be very small, since Java 8 does not support interface scaling on Windows.  Alternatively, you can manually specify your display scaling factor by opening &lsquo;&rsquo;&lsquo;Advanced Settings&rsquo;&lsquo;&rsquo; menu item, expanding the &lsquo;&rsquo;&lsquo;Rendering&rsquo;&lsquo;&rsquo; panel, and entering your scaling factor.  You look up your scaling factor by searching for &ldquo;Display&rdquo; in the Windows search bar and then finding the setting listed under &ldquo;Change the size of text, apps, and other items&rdquo;.</p>
+<h3 id="why-doesnt-x11-forwarding-work">Why doesn&rsquo;t X11 forwarding work?</h3>
+<p>If you are trying to use X11 forwarding on a Mac, you may have encountered the something like the following error:</p>
+<pre><code>libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+Caught handled GLException: X11GLXDrawableFactory - Could not initialize shared resources for X11GraphicsDevice[type .x11, connection localhost:12.0, unitID 0, handle 0x0, owner false, ResourceToolkitLock[obj 0xb5f603a, isOwner false, &lt;664d7475, 61e286b2&gt;[count 0, qsz 0, owner &lt;NULL&gt;]]] on thread AWT-EventQueue-0-SharedResourceRunner
+    [0]: jogamp.opengl.x11.glx.X11GLXDrawableFactory$SharedResourceImplementation.createSharedResource(X11GLXDrawableFactory.java:306)
+    [1]: jogamp.opengl.SharedResourceRunner.run(SharedResourceRunner.java:353)
+    [2]: java.lang.Thread.run(Thread.java:745)
+Caused[0] by GLException: AWT-EventQueue-0-SharedResourceRunner: Error making temp context(1) current: display 0x7ff92c00b120, context 0x7ff92c03efa0, drawable X11OnscreenGLXDrawable[Realized true,
+    Factory   jogamp.opengl.x11.glx.X11GLXDrawableFactory@23aa3d6e,
+    Handle    0xc00002,
+    Surface   WrappedSurface[ displayHandle 0x7ff92c00b120
+, surfaceHandle 0xc00002
+, size 64x64
+, UOB[ OWNS_SURFACE | WINDOW_INVISIBLE ]
+, X11GLXGraphicsConfiguration[X11GraphicsScreen[X11GraphicsDevice[type .x11, connection localhost:12.0, unitID 0, handle 0x7ff92c00b120, owner true, ResourceToolkitLock[obj 0x7a54e00c, isOwner true, &lt;48ad288f, 5ad1a4e&gt;[count 2, qsz 0, owner &lt;AWT-EventQueue-0-SharedResourceRunner&gt;]]], idx 0], visualID 0xf1, fbConfigID 0x83,
+    requested GLCaps[rgba 8/8/8/0, opaque, accum-rgba 0/0/0/0, dp/st/ms 16/0/0, dbl, mono  , hw, GLProfile[GL2/GL2.sw], on-scr[.]],
+    chosen    GLCaps[glx vid 0xf1, fbc 0x83: rgba 8/8/8/8, opaque, accum-rgba 0/0/0/0, dp/st/ms 24/0/0, dbl, mono  , hw, GLProfile[GL2/GL2.sw], on-scr[.]]]
+, surfaceLock &lt;779e16d8, 2a17cca7&gt;[count 1, qsz 0, owner &lt;AWT-EventQueue-0-SharedResourceRunner&gt;]
+, X11DummyUpstreamSurfaceHook[pixel 64x64]
+, upstreamSurface false ]] on thread AWT-EventQueue-0-SharedResourceRunner
+    [0]: jogamp.opengl.x11.glx.X11GLXContext.createImpl(X11GLXContext.java:393)
+    [1]: jogamp.opengl.GLContextImpl.makeCurrentWithinLock(GLContextImpl.java:765)
+    [2]: jogamp.opengl.GLContextImpl.makeCurrent(GLContextImpl.java:648)
+    [3]: jogamp.opengl.GLContextImpl.makeCurrent(GLContextImpl.java:586)
+    [4]: jogamp.opengl.x11.glx.X11GLXDrawableFactory$SharedResourceImplementation.createSharedResource(X11GLXDrawableFactory.java:277)
+    [5]: jogamp.opengl.SharedResourceRunner.run(SharedResourceRunner.java:353)
+    [6]: java.lang.Thread.run(Thread.java:745)
+ 1667 [qit] Profile GL2 is not available on null, but: []
+</code></pre>
+<p>This occurs when using a newish version of XQuartz.  For some (unknown) reason, versions 2.7.9 and greater do not play well with OpenGL.  You can resolve this issue by the following steps:</p>
+<ul>
+<li>
+<p>Close XQuartz</p>
+</li>
+<li>
+<p>Open Terminal.app (inside Applications -&gt; Utilities)</p>
+</li>
+<li>
+<p>Copy/paste the following commands into Terminal, and enter password where applicable.</p>
+</li>
+<li>
+<p>Run the following in the terminal:</p>
+</li>
+</ul>
+<pre><code>launchctl unload /Library/LaunchAgents/org.macosforge.xquartz.startx.plist &amp;&amp; \
+sudo launchctl unload /Library/LaunchDaemons/org.macosforge.xquartz.privileged_startx.plist &amp;&amp; \
+sudo rm -rf /opt/X11* /Library/Launch*/org.macosforge.xquartz.* /Applications/Utilities/XQuartz.app /etc/*paths.d/*XQuartz &amp;&amp; \
+sudo pkgutil --forget org.macosforge.xquartz.pkg &amp;&amp; \
+rm -rf ~/.serverauth* &amp;&amp; rm -rf ~/.Xauthorit* &amp;&amp; rm -rf ~/.cache &amp;&amp; rm -rf ~/.rnd &amp;&amp; \
+rm -rf ~/Library/Caches/org.macosforge.xquartz.X11 &amp;&amp; rm -rf ~/Library/Logs/X11
+</code></pre>
+<ul>
+<li>
+<p>Download XQuartz 2.7.8 from <a href="https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.8.dmg">https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.8.dmg</a> and install the package.</p>
+</li>
+<li>
+<p>Log out, and log back in.</p>
+</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../quickstart/" class="btn btn-neutral float-right" title="Quickstart">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../license/" class="btn btn-neutral" title="License"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/cabeen/qit/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../license/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../quickstart/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

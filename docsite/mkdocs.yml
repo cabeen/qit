@@ -31,7 +31,7 @@ nav:
     - Modules: modules.md
     - Models: models.md
   - Tutorials:
-    - Workflow Tutoral: workflow.md
+    - Workflow Tutorial: workflow.md
     - Masters Workshop: masters-workshop.md
     - Diffusion MRI Tutorial: dmri-tutorial.md
     - Tractography Tutorial: tractography.md

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Datasets - Quantitative Imaging Toolkit</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Datasets";
+    var mkdocs_page_input_path = "datasets.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-58725032-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Quantitative Imaging Toolkit</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Usage</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../install/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../citation/">Citation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../support/">Support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Concepts</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../gallery/">Gallery</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interaction/">Interaction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../colormaps/">Colormaps</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Datasets</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#volume">Volume</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mask">Mask</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#mesh">Mesh</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#curves">Curves</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#solids">Solids</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vects">Vects</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#table">Table</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#matrix">Matrix</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#affine">Affine</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#deformation">Deformation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dataset">Dataset</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../modules/">Modules</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../models/">Models</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorials</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../workflow/">Workflow Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../masters-workshop/">Masters Workshop</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dmri-tutorial/">Diffusion MRI Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../tractography/">Tractography Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../freesurfer/">Freesurfer Tutorial</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Quantitative Imaging Toolkit</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Concepts &raquo;</li>
+        
+      
+    
+    <li>Datasets</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/cabeen/qit/edit/master/docs/datasets.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="what-types-of-datasets-work-with-qit">What types of datasets work with QIT</h1>
+<p>QIT is primarily designed to work with imaging data, but it also supports a variety of other datatypes that are useful in analyzing imaging data, such surfaces, curves, vectors, spatial transformations, etc. This page describes these various datatypes, how they&rsquo;re used, and what file formats are supported.</p>
+<h2 id="volume">Volume</h2>
+<p><img alt="" src="../images/Volume.png" /></p>
+<p><code>Volume</code> is a dataset representing imaging data, whether that data is planar (2D) or volumetric (3D).  If you have worked with images before, this will be familiar; however, there are several important differences.  Most images encountered day-to-day are essentially a grid of pixels that each have a color, typically encoded by red, green, and blue intensities.  By contrast, a <code>Volume</code> represents a 3D dimensional grid of voxels (volume elements) that each have an associated <code>Vect</code>.  Sometimes this type of vector-valued volume is called a 4D image, where the fourth dimension identifies an entry of the vector at each voxel.  Another way that a <code>Volume</code> is different from a typical image is that it has a spatial coordinate system.  Most images have no need to store a pixel&rsquo;s size or the position of an image in space, but these can be important in scientific imaging.  Therefore, we include a coordinate system that to describe the spatial layout of the 3D grid represented by each <code>Volume</code>, which includes:</p>
+<ul>
+<li>a vector indicating the position in space for the first voxel</li>
+<li>a quaternion indicating the rotation of the grid</li>
+<li>a vector indicating the size of the voxel</li>
+</ul>
+<p>These provide a connection between voxels on the 3D grid and their positions in 3D space (world coordinates).  This is crucially important when analyzing volumetric data in conjunction with geometric objects and other volumes, which may have a different underlying 3D grid.  Because the coordinate system includes a rotation, it can be quite confusing to discuss voxels and their world coordinates.  To help clarify this, we have adopted the naming conventions for voxels and their positions.  Each voxel is identified by a <code>Sample</code> object that stores three indices <code>(i,j,k)</code> that correspond to a location on the 3D grid.  The position of each voxel is represented by a <code>Vect</code> that stores <code>(x,y,z)</code> in world coordinates.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>Input: <a href="http://nifti.nimh.nih.gov/">NIfTI</a>, <a href="http://www.vtk.org/VTK/img/file-formats.pdf">VTK</a>, <a href="http://mindprod.com/jgloss/imageio.html">ImageIO</a>, Text, <a href="https://wiki.cse.ucdavis.edu/keckcaves/imagestacks">UC Davis Stack</a></li>
+<li>Output: <a href="http://nifti.nimh.nih.gov/">NIfTI</a>, <a href="http://www.vtk.org/VTK/img/file-formats.pdf">VTK</a>, <a href="http://mindprod.com/jgloss/imageio.html">ImageIO</a>, Text, <a href="https://wiki.cse.ucdavis.edu/keckcaves/imagestacks">UC Davis Stack</a>, <a href="http://teem.sourceforge.net/nrrd/">NRRD</a></li>
+</ul>
+<h2 id="mask">Mask</h2>
+<p><img alt="" src="../images/Mask.png" /></p>
+<p><code>Mask</code> is a dataset for storing volumetric labels.  A <code>Mask</code>  has a similar voxel grid structure to a <code>Volume</code>, except the value stored at each voxel is instead an <code>Integer</code> label.  These labels are meant to discriminate between foreground and background voxels, and well as to indicate multiple labels for region-of-interest analysis.  <code>Mask</code> and <code>Volume</code> datasets can look similar when saved to disk, but they get treated very differently in QIT.  For example, when rendering an image slice, a <code>Mask</code> will use a discrete colormap with different values for each label, while a <code>Volume</code> will use a scalar colormap with continuously changing values assigned to pixel intensities.  Furthermore, QIT allows you to manually draw on masks, and some modules require data to be loaded as a <code>Mask</code>.  However, it you accidentally load a <code>Mask</code> as a <code>Volume</code>, there are menu items for converting between the two.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>same as <code>Volume</code></li>
+</ul>
+<h2 id="mesh">Mesh</h2>
+<p><img alt="" src="../images/Mesh.png" /></p>
+<p><code>Mesh</code> is a dataset representing a 3D triangulated surface.  Each <code>Mesh</code> consists of a collection of <code>Vertex</code> objects, representing the vertices of the triangles, and a collection of <code>Face</code> objects representing the triangles themselves.  The 3D position (and any other desired attribute) of the vertex is stored as named <code>Vect</code> objects associated with each <code>Vertex</code>.  The only required attribute is <code>coord</code>, which represents the 3D position of the <code>Vertex</code>; otherwise, attributes may have any name and <code>Vect</code> dimension.  The triangles are expected to form a manifold surface mesh, meaning they are locally flat and that each edge is shared by at most two faces.  The order of <code>Vertex</code> objects in each face reflects the orientation, and the edges of coincident faces should have opposite directions.  A mesh may have many disconnected components or even form a &ldquo;triangle soup&rdquo; of unconnected <code>Face</code> objects.  They are commonly used to represent boundaries between structures, level sets, and glyphs.  They are especially useful for illustrating 3D structures that are difficult to visualize from volumetric slices.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>
+<p>Input: <a href="http://www.vtk.org/VTK/img/file-formats.pdf">VTK</a>, <a href="http://www.geom.uiuc.edu/software/geomview/geomview_6.html#SEC36">GeomView OFF</a>, <a href="http://wideman-one.com/gw/brain/fs/surfacefileformats.htm">Freesurfer</a>, <a href="https://neurohut.blogspot.com/2013/10/how-to-read-minc-obj-file.html">MINC OBJ</a>, <a href="http://www.grahamwideman.com/gw/brain/fs/surfacefileformats.htm">Freesurfer Mesh</a></p>
+</li>
+<li>
+<p>Output: <a href="http://www.vtk.org/VTK/img/file-formats.pdf">VTK</a>, <a href="https://en.wikipedia.org/wiki/STL_(file_format)">STL</a>, <a href="http://www.geom.uiuc.edu/software/geomview/geomview_6.html#SEC36">GeomView OFF</a>, <a href="http://wideman-one.com/gw/brain/fs/surfacefileformats.htm">Freesurfer</a>, <a href="https://neurohut.blogspot.com/2013/10/how-to-read-minc-obj-file.html">MINC OBJ</a>, <a href="https://en.wikipedia.org/wiki/Wavefront_.obj_file">Lightwave OBJ</a></p>
+</li>
+</ul>
+<h2 id="curves">Curves</h2>
+<p><img alt="" src="../images/Curves.png" /></p>
+<p><code>Curves</code> is a dataset representing 3D space curves.  A <code>Curves</code> object consists of many <code>Curve</code> objects, which are each a sequence of points and line segments connecting them (also known as a simple polygonal chain or poly-line).  Each point along each curve also has named <code>Vect</code> attributes.  The only required attribute is <code>coord</code>, which represents the 3D position of the point.  There&rsquo;s no constraint placed on the spacing between points, and the attributes can have any dimension.  Typically, they are used to represent streamlines, iso-curves, or manually drawn landmark paths.  In particular, tractography produces <code>Curves</code> from diffusion MR volumes and include a variety of diffusion-derived attributes.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>
+<p>Input: [http://www.vtk.org/VTK/img/file-formats.pdf VTK], [http://mrtrix.readthedocs.io/en/latest/getting_started/image_data.html MRtrix], [http://trackvis.org TrackVis], [http://www.bic.mni.mcgill.ca/users/mishkin/mni_obj_format.pdf MNI OBJ], [http://graphics.stanford.edu/projects/dti/software/pdb_format.html PDB], [http://jdtournier.github.io/mrtrix-0.2/appendix/mrtrix.html MRtrix], Brown VRL, Text</p>
+</li>
+<li>
+<p>Output: [http://www.vtk.org/VTK/img/file-formats.pdf VTK],  [http://mrtrix.readthedocs.io/en/latest/getting_started/image_data.html MRtrix], [http://trackvis.org TrackVis], [http://www.bic.mni.mcgill.ca/users/mishkin/mni_obj_format.pdf MNI OBJ], [http://graphics.stanford.edu/projects/dti/software/pdb_format.html PDB], [http://jdtournier.github.io/mrtrix-0.2/appendix/mrtrix.html MRtrix], Brown VRL, Text, CSV</p>
+</li>
+</ul>
+<h2 id="solids">Solids</h2>
+<p><img alt="" src="../images/Solids.png" /></p>
+<p><code>Solids</code> is a dataset for represent regions of space using simple geometric objects.  These are typically used for querying other datatypes.  Each <code>Solids</code> is a collection of <code>Sphere</code> and <code>Box</code> objects.  Each <code>Sphere</code> has a 3D center and radius, and any point inside the<code>Sphere</code> is considered part of the <code>Solids</code>.  Each <code>Box</code> is a 3D axis-aligned cuboid with a 3D position and some width, length, and height.  Any point inside the <code>Box</code> is considered part of the <code>Solids</code>.  <code>Solids</code> objects are useful for querying spatial data, e.g. by selecting objects that are contained or intersect the solid.  Because these kinds of queries can be repeated many times, the components of a <code>Solid</code> are kept simple for efficiency.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>Input: JSON</li>
+<li>Output: JSON</li>
+</ul>
+<h2 id="vects">Vects</h2>
+<p><img alt="" src="../images/Vects.png" /></p>
+<p><code>Vects</code> is a dataset representing a list of <code>Vect</code> objects.  <code>Vect</code> is a
+basic vector dataset that represents an array of <code>double</code> floating point
+values.  This could be 3D positions in space, the intensities of an image,
+parameters of some model, etc.   This makes a <code>Vect</code> an important building
+block for the more complicated datasets described later in this page.  Many
+<code>Vect</code> operations are supported, including addition, subtraction, scalar
+multiplication, dot products, norms, etc.  When a <code>Vect</code> represents 3D
+spatial quantity, we use a right handed coordinate system when displayed.
+There are many uses for collections of vectors, for example, they can
+represent spatial landmarks, samples of some function, etc.  Because other
+datasets consist of <code>Vect</code> objects, <code>Vects</code> is also useful for querying and
+communication between more complex datasets.  Mathematically, a <code>Vects</code>
+consisting of 3D <code>Vect</code>s can be described:</p>
+<p><img alt="" src="../images/Vects_math.png" /></p>
+<p>Supported file formats:</p>
+<ul>
+<li>Input: Text, CSV, RAW (64-bit floating point binary), <a href="https://surfer.nmr.mgh.harvard.edu/fswiki/AnnotFiles">Freesurfer Annot</a>, <a href="http://www.grahamwideman.com/gw/brain/fs/surfacefileformats.htm">Freesurfer Curv</a></li>
+<li>Output: Text, CSV, JSON</li>
+</ul>
+<h2 id="table">Table</h2>
+<p><code>Table</code> is a dataset representing data organized into rows and named columns.  Each column has a name, each row has a unique identifier, and each element in the table is either a <code>String</code> or an empty value <code>null</code>. Each row can be extracted to a <code>Record</code> object, which represents the row&rsquo;s entries with a key-value mapping.  A <code>Table</code> is typically used to store statistical results and lookups that specify the relationship among labels, names, and colors.  In practice, the entries can be a mixture of alphabetical and numerical strings.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>Input: Text, CSV, [http://www.grahamwideman.com/gw/brain/fs/surfacefileformats.htm Freesurfer Annot]</li>
+<li>Output: Text, CSV, JSON</li>
+</ul>
+<h2 id="matrix">Matrix</h2>
+<p><code>Matrix</code> is a dataset representing a two dimensional array of <code>double</code> floating point values.  They are useful for representing linear transforms, graph connectivity, pairwise distances, and implementing algorithms that use linear algebra.  Many <code>Matrix</code> operations are supported, including multiplication, determinants, singular value decompositions, eigenvalue decompositions, etc.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>Input: Text, CSV, JSON, DTI-TK affine</li>
+<li>Output: Text, CSV, JSON</li>
+</ul>
+<h2 id="affine">Affine</h2>
+<p><code>Affine</code> is a dataset representing an affine spatial transformation, which is a linear transformation combined with a translation.  Besides using them to transform <code>Vects</code>, they can be composed, inverted, orthogonalized, etc.  They are most commonly used for linear and rigid-body registration of other datasets.  A <code>Matrix</code> can be used as an <code>Affine</code> as well.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>same as <code>Matrix</code></li>
+</ul>
+<h2 id="deformation">Deformation</h2>
+<p><code>Deformation</code> is a dataset representing arbitrary spatial transformations, that is, a mapping from 3D points to 3D points.  The <code>Deformation</code> is can be created from either an <code>Affine</code> or a sampled function stored in a <code>Volume</code>.  If a sampled function is used, the <code>Volume</code> representation is interpolated to produce a smooth function.  These are typically used for non-linear registration, e.g. for deforming an image to some typical reference image.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>same as <code>Volume</code></li>
+<li>same as <code>Affine</code></li>
+</ul>
+<h2 id="dataset">Dataset</h2>
+<p><code>Dataset</code> is a generic type representing any data that doesn&rsquo;t fit into the above categories.  For example, this could be parameters of a statistical model, such as a Gaussian mixture model.  For simplicity, these are always saved to JSON.  They aren&rsquo;t used by many modules though.</p>
+<p>Supported file formats:</p>
+<ul>
+<li>JSON</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../modules/" class="btn btn-neutral float-right" title="Modules">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../colormaps/" class="btn btn-neutral" title="Colormaps"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/cabeen/qit/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../colormaps/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../modules/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

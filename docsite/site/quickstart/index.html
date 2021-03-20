@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Quickstart - Quantitative Imaging Toolkit</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Quickstart";
+    var mkdocs_page_input_path = "quickstart.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-58725032-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Quantitative Imaging Toolkit</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Usage</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../install/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../citation/">Citation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../support/">Support</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Quickstart</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#starting-the-command-line">Starting the Command Line</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#main-interface">Main Interface</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#handling-file-formats">Handling file formats</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#scripting">Scripting</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#starting-the-viewer">Starting the Viewer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#starting-the-program">Starting the Program</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#loading-data">Loading data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#interacting-with-data">Interacting with data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#processing-data">Processing data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#checking-progress">Checking progress</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#saving-your-work">Saving your work</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Concepts</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../gallery/">Gallery</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interaction/">Interaction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../colormaps/">Colormaps</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../datasets/">Datasets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../modules/">Modules</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../models/">Models</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorials</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../workflow/">Workflow Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../masters-workshop/">Masters Workshop</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dmri-tutorial/">Diffusion MRI Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../tractography/">Tractography Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../freesurfer/">Freesurfer Tutorial</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Quantitative Imaging Toolkit</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Usage &raquo;</li>
+        
+      
+    
+    <li>Quickstart</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/cabeen/qit/edit/master/docs/quickstart.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="quickly-getting-qit-up-and-running">Quickly getting QIT up and running</h1>
+<p>This page provides some tips for getting quickly up to speed with using QIT on
+the command line and the viewer. </p>
+<h2 id="starting-the-command-line">Starting the Command Line</h2>
+<p>This section will help you get started with the toolkit&rsquo;s command line interface.  This can help you script various parts of your data analysis when you have a complex workflow, or you want to make your process reproducible.</p>
+<h2 id="main-interface">Main Interface</h2>
+<p>The command line interface to the toolkit can be accessed through a single program named <code>qit</code>.  There are a few global options available, which can be listed by running <code>qit --help</code>.  These most important ones are the following:</p>
+<ul>
+<li><code>--verbose</code>: print messages about progress</li>
+<li><code>--debug</code>: print debugging information when an error occurs</li>
+<li><code>--rseed value</code>: specify a random seed</li>
+</ul>
+<p>There are many modules for processing data that can be accessed through this interface.  You can get a list of available modules by running <code>qit --list</code>.  Once you find one that might be useful, you can learn more about it by adding it to the <code>qit</code> command.  For example, if you are intent on thresholding a volume, you could run:</p>
+<pre><code>$ qit VolumeThreshold
+
+Name:
+
+  VolumeThreshold
+
+Description:
+
+  Threshold a volume to make a mask
+
+Required Arguments:
+
+  --input &lt;Volume&gt;
+
+    input volume
+
+  --output &lt;Mask&gt;
+
+    output mask
+
+Optional Arguments:
+
+  --mask &lt;Mask&gt;
+
+    mask
+
+  --threshold &lt;double&gt;
+
+    threshold value (Default: 0.5)
+
+Author:
+
+  Ryan Cabeen
+</code></pre>
+<p>Then, you can plug in your data to run the command, for example:</p>
+<p><code>$ qit VolumeThreshold --input volume.nii.gz --threshold 0.5 --output threshold.nii.gz</code></p>
+<h2 id="handling-file-formats">Handling file formats</h2>
+<p>One benefit of the toolkit is that it handles many file formats automatically.  In the above help page, you&rsquo;ll notice that the input and output flags only ask for <code>Volume</code> and <code>Mask</code> objects.  These could be NIFTI, VTK, or a variety of others.  There is a more comprehensive discussion of this in the page on  [[Datasets]].</p>
+<h2 id="scripting">Scripting</h2>
+<p>You can use your favorite programs to write scripts using <code>qit</code>, but there is also a convenient Python scripting interface that is built-in.  This uses a Java implementation of Python called [http://www.jython.org Jython] to directly connect your script with the data objects available in the toolkit.  This is a advanced topic that will be described in later pages, but you can see and example script at <code>lib/modules/qit/VolumeBrainExtract.py</code>.</p>
+<h2 id="starting-the-viewer">Starting the Viewer</h2>
+<p>This section will help you get started with the toolkit&rsquo;s viewer, and with any luck, you&rsquo;ll be able to explore and visualize your data in no time!</p>
+<h2 id="starting-the-program">Starting the Program</h2>
+<p>The viewer is a single 3D rendering application named <code>qitview</code>.  If you followed the [[Installation]], you should only have to type this command in your terminal.  Then, the graphical interface will open and look like this:</p>
+<p><img alt="" src="../images/Gui.png" /></p>
+<p>There are three main components to the user interface:</p>
+<ul>
+<li><strong>Data Workspace</strong> (&lsquo;&rsquo;top left&rsquo;&lsquo;): a list of data in your workspace</li>
+<li><strong>Control panel</strong> (&lsquo;&rsquo;bottom left&rsquo;&lsquo;): Information and settings about the currently select data</li>
+<li><strong>Viewing Stage</strong> (&lsquo;&rsquo;right&rsquo;&lsquo;): a 3D rendering of the data</li>
+</ul>
+<p>There are also five menu options available:</p>
+<ul>
+<li><strong>File</strong>: load and save data, take screenshots, etc</li>
+<li><strong>View</strong>: toggle what is visible, move the camera, change the order of data objects, </li>
+<li><strong>Modules</strong>: a list of modules for processing data</li>
+<li><strong>Settings</strong>: modify colormaps, change rending options, show/hide messages and interpreter</li>
+<li><strong>Help</strong>: open up the user manual (what you&rsquo;re reading now)</li>
+</ul>
+<p>Without data, this isn&rsquo;t very useful, so let&rsquo;s try that next!</p>
+<h2 id="loading-data">Loading data</h2>
+<p>Data can be loaded in two ways: either interactively through the GUI or on the command line when starting the program.  To load data in the GUI, select <code>File&gt;Open&gt;${filetype}</code>, where <code>${filetype}</code>, may be one of the available datatypes.  To load data on the command line, you list the files after a flag indicating the type.  For example, to load a volume named <code>volume.nii.gz</code> and a mask named <code>mask.nii.gz</code>, you would execute:</p>
+<p><code>$ qitview --volume volume.nii.gz --mask mask.nii.gz</code></p>
+<p><img alt="" src="../images/Loaded.data.png" /></p>
+<p>It can take some time to load large datasets, so it can take some time to show up in the data workspace.</p>
+<p>Once that data is loaded, you can select it in the data panel.  This should populate the selection panel with various collapsable folders for working with that object.  If more than one object is selected, the first selection is the one shown in the panel.</p>
+<h2 id="interacting-with-data">Interacting with data</h2>
+<p>The viewer is based on a 3D rendering engine.  You can imagine your datasets is sitting on a stage surrounding by lights and a camera through which you are viewing the scene.  When you interact with the viewing panel, you are either changing the pose of the camera or interacting directly with the selected data object.  Here are the basic mouse interactions for changing the camera:</p>
+<ul>
+<li><strong>Mouse Primary Button + Drag</strong>: rotate the camera</li>
+<li><strong>Mouse Secondary Button + Drag</strong>: zoom in the camera (translate it towards the stage)</li>
+<li><strong>Mouse Middle Button + Drag</strong>: pan the camera (translate in orthogonal to the view)</li>
+</ul>
+<p>If you only have one mouse button, you can also use keyboard options:</p>
+<ul>
+<li><strong>Mouse Primary Button + Control + Drag</strong>: zoom in the camera</li>
+<li><strong>Mouse Primary Button + Shift + Drag</strong>: pan the camera (translate in orthogonal to the view)</li>
+</ul>
+<p>Again, the specific functions will depend on the datatype, and you can learn more in the [[Interaction]] section.</p>
+<h2 id="processing-data">Processing data</h2>
+<p>There are many modules available for processing data, and they are listed in Modules menu.  The modules are organized by the primary data type they operate on; however, many modules combine datatypes.  When you select a module, a window will open that will let you specify inputs, parameters, and outputs.  For example, the VolumeFilterMedian module will look like this:</p>
+<p><img alt="" src="../images/Module.png" style="height:50%;width:50%" /></p>
+<p>Each module includes documentation, which can be shown by clicking the <code>About</code> button.  Each parameter also has a brief description that can be revealed by hovering the mouse over the parameter name, e.g. <code>window</code> shown above.</p>
+<p>There are three options for output files:</p>
+<ul>
+<li><strong>Existing data object</strong>: write output to an existing data object (this will delete anything that was previously stored there)</li>
+<li><strong>New&hellip;</strong>: create a new data object for the output with a default name</li>
+<li><strong>New named&hellip;</strong>: create a new data object for the output and prompt the user for the new name</li>
+</ul>
+<h2 id="checking-progress">Checking progress</h2>
+<p><code>qitview</code> produces a lot of messages, either about what you are currently doing or what is happening in the background.  These are all printed to the command line, so it can be helpful to make the console visible.  Alternatively, you can open a messages window by selecting <code>Settings&gt;Messages...</code>.</p>
+<p><img alt="" src="../images/Messages.png" /></p>
+<h2 id="saving-your-work">Saving your work</h2>
+<p>After you&rsquo;ve explored and analyzed your data, there are several ways to save your work.  The simplest is to take a screenshot using <code>File&gt;Take Screenshot (1x)...</code>.  This will prompt you for a filename and save the screenshot there.  The tool also supports high resolution screenshots, for example, at twice the resolution of the viewing window (2x).  You can also save the data objects from your analysis using <code>File&gt;Save Selected File(s)</code>.  This will prompt you for a filename and save the selected data object there.  Once you have saved a data object, it will also remember the filename and save to the same place next time.  If you want to save the data object to a new place, you can instead select <code>File&gt;Save Selected File(s) As...</code>.  If you loaded your data from a file, the input filename will be associated with the file for saving.  You will see a warning before overwriting an existing file (such as the original input), but the more adventurous user can disable such warnings by selecting <code>File&gt;File clobbering</code>.  If you are more of a packrat, you can enable file backups by selecting <code>File&gt;File backups</code>, which will rename the existing file with a timestamp before writing the new data.  Finally, if you just want to save everything, you can select <code>File&gt;Save Entire Scene</code>, which will write everything to a single directory with some additional metadata about the scene.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../gallery/" class="btn btn-neutral float-right" title="Gallery">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../support/" class="btn btn-neutral" title="Support"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/cabeen/qit/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../support/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../gallery/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

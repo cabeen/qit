@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Masters Workshop - Quantitative Imaging Toolkit</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Masters Workshop";
+    var mkdocs_page_input_path = "masters-workshop.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-58725032-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Quantitative Imaging Toolkit</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Usage</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../install/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../citation/">Citation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../support/">Support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Concepts</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../gallery/">Gallery</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interaction/">Interaction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../colormaps/">Colormaps</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../datasets/">Datasets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../modules/">Modules</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../models/">Models</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorials</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../workflow/">Workflow Tutorial</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Masters Workshop</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dataset">Dataset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#agenda">Agenda</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#start-up-and-loading-data">Start Up and Loading Data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#visualizing-surface-anatomy">Visualizing Surface Anatomy</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#visualizing-diffusion-glyphs">Visualizing Diffusion Glyphs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#visualizing-track-density">Visualizing Track Density</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#comparing-diffusion-models">Comparing Diffusion Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#extracting-tracks-manually">Extracting Tracks Manually</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#filtering-tracks-interactively">Filtering Tracks Interactively</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#fin">Fin</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dmri-tutorial/">Diffusion MRI Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../tractography/">Tractography Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../freesurfer/">Freesurfer Tutorial</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Quantitative Imaging Toolkit</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Tutorials &raquo;</li>
+        
+      
+    
+    <li>Masters Workshop</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/cabeen/qit/edit/master/docs/masters-workshop.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="masters-program-workshop-for-qit">Masters Program Workshop for QIT</h1>
+<p>This page provides a guide for a QIT workshop held as part of the <a href="http://niin.usc.edu USC
+Master's of Science in Neuroimaging program">USC
+Master&rsquo;s of Science in Neuroimaging program</a>.  The goal of the workshop is
+to provide an opportunity to work directly with neuroimaging data and to
+gain hands-on experience with various diffusion MRI techniques.  The
+workshop doesn&rsquo;t require any prior programming experience, and it is
+designed to work on most laptops.  That said, an interested reader can also
+use this as a starting point for more advanced scripting of image analysis
+tasks or integrating QIT in compute-heavy workflows with other datasets
+using the LONI Pipeline.</p>
+<h2 id="setup">Setup</h2>
+<p>If you have not already, you can start by downloading the latest version from
+the <a href="../install/">Installation</a> page.  You may also benefit from checking
+out the <strong>Concepts</strong> pages linked on the left side panel, which will help you
+become familiar with the design and capabilities of QIT.  Next, you should
+download the sample dataset, decompress the archive, and keep it somewhere
+accessible:</p>
+<p><a href="http://cabeen.io/download/qit-workshop-average.zip"><img alt="Download" src="../images/download-icon.png" style="height:25px;width:25px" /> http://cabeen.io/download/qit-workshop-average.zip</a></p>
+<h2 id="dataset">Dataset</h2>
+<p>The data included in this workshop was created by averaging a collection of
+MRIs from typical adults, which were acquired as part of the
+<a href="http://www.humanconnectomeproject.org">Human Connectome Project</a>.  The images
+and data were moderately downsampled from the full resolution to make the
+workshop run smoothly, but most anatomical features present in the original
+data can be found in this data as well.  The archive contains the following
+groups of data:</p>
+<ul>
+<li><code>models.dti</code>: the diffusion tensor image volume (a Volume dataset)</li>
+<li><code>models.xfib</code>: the multi-fiber image volume (a Volume dataset)</li>
+<li><code>models.noddi</code>: the NODDI image volume (a Volume dataset)</li>
+<li><code>regions</code>: various atlas image labels (a set of Mask datasets)</li>
+<li><code>tracts</code>: various tractography reconstructions (a set of Curves datasets)</li>
+<li><code>meshes</code>: various surface models (a set of Mesh datasets)</li>
+<li><code>masks</code>: brain and white matter masks (Mask datasets)</li>
+</ul>
+<p><code>Volume</code> and <code>Mask</code> datasets are typically stored in the nifti format with the <code>nii.gz</code> extension.  <code>Mask</code> files typically have a <code>csv</code> stored alongside them that indicates the name of each label.  Diffusion models are stored as multiple volumes inside a directory, and while you can load the individual files, to do tractography or render glyphs you need to load the directory itself, e.g. <code>models.xfib</code>.  <code>Mesh</code> and <code>Curves</code> data are &lsquo;&rsquo;both&rsquo;&lsquo; stored as VTK files with the <code>vtk.gz</code> extension.  <code>qitview</code> should detect which is which based on the filename, but you should make sure the file loader correctly identifies the dataset type (the type can be changed using the combo box to the left of the filename).  You can read more about the various dataset types [[Datasets|here]].</p>
+<h2 id="agenda">Agenda</h2>
+<p>In this section, we provide instructions and video guides (no audio) for using QIT in various diffusion MRI tasks.  You will only need the data provided in the above mentioned archive, and after the first step, the others are mostly self-contained.  In total, the tutorial should take from 30-45 minutes to complete, but please feel free to take your time experimenting and to ask questions along the way!  </p>
+<h2 id="start-up-and-loading-data">Start Up and Loading Data</h2>
+<p>The first step will be to start <code>qitview</code> and load some data.  You should
+start by double clicking <code>qitview</code> (on macOS) or <code>qitview.py</code> (if you are on
+Windows).  You should see a terminal window open that prints status messages
+followed by a graphical interface with several panels.  You can load data by
+dragging data into the <code>qitview</code> window (or by navigating through the
+<strong>File&gt;Load Files</strong> menu item).  You should load the file named
+<code>models.dti/dti_S0.nii.gz</code> and try exploring the dataset.  &lsquo;&rsquo;Tip: you can
+quickly change slices by hold <strong>Alt</strong> while clicking and dragging on an
+image slice.&rsquo;&lsquo;</p>
+<video width="720" controls>
+  <source src="../videos/Niin.workshop.load.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<p><br> </p>
+<h2 id="visualizing-surface-anatomy">Visualizing Surface Anatomy</h2>
+<p>Next, we&rsquo;ll examine some 3D models of anatomy represented by surfaces.  You
+should load the data in the <code>meshes</code> directory into the viewer, along with
+an image volume for reference.  The surfaces show the boundaries of various
+anatomical structures.  The larger structure is a white matter surface, and
+the smaller structures are subcortical nuclei. &lsquo;&rsquo;Tip: try to change the
+coloring of the subcortical meshes to the label attribute like in the
+video.&rsquo;&lsquo;</p>
+<video width="720" controls>
+  <source src="../videos/Niin.workshop.mesh.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<p><br> </p>
+<h2 id="visualizing-diffusion-glyphs">Visualizing Diffusion Glyphs</h2>
+<p>Next, we&rsquo;ll examine 3D rendering that depict diffusion modeling.  You should
+load <code>models.dti</code> and <code>models.xfib</code> and follow the steps shown in the video
+below to create diffusion glyphs.  &lsquo;&rsquo;Tip:  watch for the step with a combo
+box incrementing from 0 to 1.  This nudges the glyphs off the image slice so
+they are completely visible.&rsquo;&lsquo;</p>
+<video width="720" controls>
+  <source src="../videos/Niin.workshop.glyphs.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<p><br> </p>
+<h2 id="visualizing-track-density">Visualizing Track Density</h2>
+<p>Next, we&rsquo;ll go over how to visualize fiber bundles in two ways.  You should
+load a fiber bundle model, e.g. <code>tracts/arcuate.vtk.gz</code> and a reference
+volume.  You can see the bundle is represented by curves.  The video shows
+how to convert it to a density map that can be viewed on top of the
+reference volume.  &lsquo;&rsquo;Tip: try changing the colormap and opacity of the
+density map.&rsquo;&lsquo;</p>
+<video width="720" controls>
+  <source src="../videos/Niin.workshop.density.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<p><br> </p>
+<h2 id="comparing-diffusion-models">Comparing Diffusion Models</h2>
+<p>Next we&rsquo;ll create new tractography reconstructions and compare two different
+diffusion models.  You should load two diffusion models, <code>models.dti</code> and
+<code>models.xfib</code>, along with a corpus callosum region mask
+<code>regions/fsa.ccwm/rois.nii.gz</code>.  The video shows how you can open the
+tractography module and create tracks for each of the diffusion models, and
+then observe the differences in the depicted anatomy.  &lsquo;&rsquo;Tip: the toggle
+keyboard shortcut (Command-T on macOS or Control-T otherwise) will let you
+switch on and off the visibility of the highlighted datasets.  You can also
+try changing the tractography parameters, e.g. increasing the samples or
+changing angle threshold.&rsquo;&lsquo;</p>
+<video width="720" controls>
+  <source src="../videos/Niin.workshop.cc.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<p><br> </p>
+<h2 id="extracting-tracks-manually">Extracting Tracks Manually</h2>
+<p>Next, we&rsquo;ll show how you can extract tracks using a manually drawn seed
+mask.  You should open a diffusion model volume and a reference dataset.
+<code>models.dti/dti_RGB.nii.gz</code> is an efficient way to visualize white matter
+anatomy.  You can also load atlas labels, e.g.
+<code>regions/jhu.regions/rois.nii.gz</code>.  You should create a new mask for seeding
+by right clicking on the model data and selecting the option shown in the
+video.  You can then draw on the mask: first, select the mask in the <strong>Data
+Panel</strong>, then click the <strong>Edit</strong>  tab in the <strong>Control Panel</strong> to see the
+options, then drag the mouse over the volume to draw the mask while holding
+down <strong>Alt+Control</strong>.  Try drawing a region of interest on the corticospinal
+tract in the brainstem.  &lsquo;&rsquo;Tip: you can erase a mask by dragging the mouse
+while holding down <strong>Alt+Control+Shift</strong>.&rsquo;&lsquo;</p>
+<video width="720" controls>
+  <source src="../videos/Niin.workshop.cst.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<p><br> </p>
+<h2 id="filtering-tracks-interactively">Filtering Tracks Interactively</h2>
+<p>Finally, we&rsquo;ll try interactively filtering tracks.  You should load a
+reference volume and one of the fiber bundles, e.g. <code>tracts/arcuate.vtk.gz</code>.
+You should create a sphere object as indicated in the video.  You can then
+modify the sphere by first selecting it in the the <strong>Data Panel</strong> and then
+clicking and dragging the mouse while holding down either <strong>Alt</strong> (to move
+the sphere) or <strong>Alt+Shift</strong> (to resize the sphere).   Then, you can filter
+the fiber bundle using the sphere by selecting the curves in the <strong>Data
+Panel</strong> and opening the <strong>Edit</strong> tab in the <strong>Control Panel</strong>.   You should
+select the sphere as an &lsquo;&rsquo;include&rsquo;&lsquo; criteria as shown in the video.  Now
+only the subset of curves that go through the sphere will be shown.  You can
+similarly set the sphere to &lsquo;&rsquo;exclude&rsquo;&lsquo; curves, as shown in the video.
+&lsquo;&rsquo;Tip: the filtering only changes what is shown on the screen.  If you want
+to save the filtered curves, you must either <strong>Export</strong> them or <strong>Retain</strong>
+them using the buttons in the <strong>Edit</strong> tab.&rsquo;&lsquo;</p>
+<video width="720" controls>
+  <source src="../videos/Niin.workshop.filter.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<p><br> </p>
+<h2 id="fin">Fin</h2>
+<p>That&rsquo;s it, congratulations on finishing the workshop!  Hopefully, you&rsquo;re now more familiar with a few common diffusion MRI tasks, and you have an idea of how to use <code>qitview</code> for other tasks you may encounter in the future.  Many of the tasks you completed in <code>qitview</code> can be scripted or run on the command line using the <code>qit</code> program.  To learn more, please feel free to explore the rest of the documentation on this site, experiment the features in <code>qitview</code>, or [mailto:rcabeen@loni.usc.edu email me] with any questions!</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../dmri-tutorial/" class="btn btn-neutral float-right" title="Diffusion MRI Tutorial">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../workflow/" class="btn btn-neutral" title="Workflow Tutorial"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/cabeen/qit/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../workflow/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../dmri-tutorial/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

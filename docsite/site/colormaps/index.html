@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Colormaps - Quantitative Imaging Toolkit</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Colormaps";
+    var mkdocs_page_input_path = "colormaps.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-58725032-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Quantitative Imaging Toolkit</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Usage</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../install/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../citation/">Citation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../support/">Support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Concepts</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../gallery/">Gallery</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interaction/">Interaction</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Colormaps</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#choosing-a-colormap">Choosing a colormap</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#solid-colormaps">Solid colormaps</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#discrete-colormaps">Discrete colormaps</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#scalar-colormaps">Scalar colormaps</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#vector-colormaps">Vector colormaps</a>
+    </li>
+    </ul>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../datasets/">Datasets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../modules/">Modules</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../models/">Models</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorials</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../workflow/">Workflow Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../masters-workshop/">Masters Workshop</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dmri-tutorial/">Diffusion MRI Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../tractography/">Tractography Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../freesurfer/">Freesurfer Tutorial</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Quantitative Imaging Toolkit</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Concepts &raquo;</li>
+        
+      
+    
+    <li>Colormaps</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/cabeen/qit/edit/master/docs/colormaps.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="applying-colormaps-in-qit">Applying colormaps in QIT</h1>
+<p>QIT has a flexible system for coloring data to visualize volumes and vertex attributes on meshes and curves.  At a high level, a colormap is a procedure for creating colors from numerical values associated with a dataset.  There are three basic types of colormaps: <code>solid</code>, <code>discrete</code>, <code>scalar</code>, and <code>vector</code>, which each take different types of input data and produce different ranges of colors.  In this section, we well discuss the basic colormap features that are available and how to use them in <code>qitview</code>.</p>
+<h2 id="choosing-a-colormap">Choosing a colormap</h2>
+<p>First, we will go over the basic interface for choosing colormaps.</p>
+<p><img alt="" src="../images/Colormaps.gui.png" /></p>
+<p>You can use QIT colormaps to visualize many different types of data, but the user interface is meant to be the same whether you are coloring a volume, mesh, or curves object.  The image above shows you you can specify the coloring of a curves object.  First, you check and select the data in the data list (A), then you open a control panel to see the coloring options (B), and optionally edit the colormap in the <strong>Settings</strong> menu (C).  In the control panel, the three most important options are:</p>
+<ul>
+<li><strong>Attribute</strong>: the vertex attribute used as input to the colormap</li>
+<li><strong>Colortype</strong>: whether the colormap is <code>solid</code>, <code>discrete</code>, <code>scalar</code>, and <code>vector</code></li>
+<li><strong>Colormap</strong>: the specific colormap to use (depends on the <strong>Colortype</strong></li>
+</ul>
+<p>So in this example, each vertex of the curves object is colored by extracting an <code>FA</code> value, converting it into a <code>scalar</code>, and supplying it to the <code>scalar1</code> colormap to produce a reddish color.</p>
+<p>Each <code>scalar</code> colormap has an input range, consisting of a minimum and maximum value.  You can detect these values from your specific dataset by clicking the <strong>Auto Min/Max</strong> button or selecting the <strong>Detect Intensity Range</strong> option in the <strong>Data</strong> menu.</p>
+<p>Now that you know how to choose a colormap, we will discuss the three types of colormaps and how you can edit them.</p>
+<h2 id="solid-colormaps">Solid colormaps</h2>
+<p>A <code>solid</code> colormap is the simplest kind of colormap.  They are defined by a single color that is used to color all possible input data values.  If you are just interested in the structure of your data, or you need to distinguish multiple objects in the view, <code>solid</code> colormap may be useful.</p>
+<p><img alt="" src="../images/Colormaps.basic.solid.png" style="height:50%;width:50%" /></p>
+<p>If you open the <strong>Settings&gt;Solid Colormaps</strong> menu, you can edit the available <code>solid</code> colormaps (see image shown above).  There are many provided by default, which you can modify as you like.  The image above shows the <strong>Name</strong> combobox for choosing the colormap to edit.  Once you have selected your desired colormap, you can change the associated color by selecting the <strong>Set&hellip;</strong> button.  The changes are not automatically applied to the data, so you should then select the <strong>Apply</strong> button to update the rendering.</p>
+<h2 id="discrete-colormaps">Discrete colormaps</h2>
+<p>A <code>discrete</code> colormap is a colormap that takes integer-valued labels and maps them onto a discrete set of colors.  These are useful for visualizing multi-label masks, where each label is associated with a different region-of-interest.  They can also be useful for viewing the results of applying a segmentation algorithm to a mesh, curves, or volume object.</p>
+<p><img alt="" src="../images/Colormaps.discrete.png" style="height:75%;width:75%" /></p>
+<p>If you open the <strong>Settings&gt;Discrete Colormaps</strong> menu, you can edit the available <code>discrete</code> colormaps.  There are many provided by default, which you can modify as you like.  The menu above shows the <strong>Name</strong> combobox for choosing the colormap to edit.  Once you have selected your desired colormap, can see that there is a collection of names, labels, alpha values, and colors.  You can edit these values by clicking on them.  If you craft a colormap by hand, you may also want to save it to a file using the <strong>Export</strong> button.  You can then load it back in next time you use <code>qitview</code> with the <strong>Import</strong> button.  The changes are not automatically applied to the data, so you should then select the <strong>Apply</strong> button to update the rendering.</p>
+<h2 id="scalar-colormaps">Scalar colormaps</h2>
+<p>A <code>scalar</code> colormap is a colormap that takes a floating point number and maps it onto a some continuous range of colors.  These are useful for visualizing model parameters and geometric features of a dataset.  They are also a bit more complex than other colormaps, due to the many ways you can specify the mapping.  Next, we will review how to define your own scalar colormaps.</p>
+<p><img alt="" src="../images/Colormaps.basic.scalar.png" style="height:75%;width:75%" /></p>
+<p>If you open the <strong>Settings&gt;Scalar Colormaps</strong> menu, you can edit the available <code>scalar</code> colormaps.  There are many provided by default, which you can modify as you like.  The menu above shows the <strong>Name</strong> combobox for choosing the colormap to edit.  Once you have selected your desired colormap, can a panel with many options.  First, there is a normalization function, which is defined by the graph shown above.  Second, there is a coloring, which comes from a fixed set provided with QIT.  The normalization function is a user defined mapping from your dataset to values ranging from zero to one.  You data is first passed through this normalization function, and the resulting values are used to select a color by interpolating the coloring, e.g. <code>grayscale</code> shown above.  In practice, you need to specify the normalization function to make a useful colormap by changing the <strong>Min</strong>, the <strong>Max</strong>, and the transfer function.  You can also set the min/max values manually in the colormap editor, or you can set them automatically from the data control panel or the <strong>Data&gt;Detect Intensity Range</strong> menu. The transfer function is an advanced feature.  You can usually leave it as it is, but if you would like to change it, read on.</p>
+<p><img alt="" src="../images/Colormaps.advanced.scalar.png" style="height:75%;width:75%" /></p>
+<p>The image above shows an advanced colormap that uses custom ranges, a custom
+transfer function, and a different coloring.  First, we set the coloring to
+<code>jet</code> using the <strong>Coloring</strong> combobox (A).  There are dozens of other scalar
+colormaps, so please explore then options if you are curious.  The panel
+below will then illustrate the coloring you chose.  Then, we set the minimum
+(B) and maximum (C) to 1 and 10, respectively.  Then, we specified the
+colormap by clicking on the panel and dragging control points around (D).
+You can remove the most recently added control point by selecting <strong>Pop</strong>,
+remove all control points using <strong>Reset</strong>, invert the transfer function
+using <strong>Invert</strong>.  You can also mirror the min/max values using <strong>Mirror</strong>,
+e.g. to change the range to -10 to 10.  You can save a PNG image depicting
+the colormap by selecting the <strong>Colorbar</strong> option, e.g. this can be used for
+making figures.  If you craft a colormap by hand, you may also want to save
+it to a file using the <strong>Export</strong> button.  You can then load it back in next
+time you use <code>qitview</code> with the <strong>Import</strong> button.  The changes are not
+automatically applied to the data, so you should then select the <strong>Apply</strong>
+button to update the rendering (E).</p>
+<h2 id="vector-colormaps">Vector colormaps</h2>
+<p><code>vector</code> colormaps provide a way to convert vector-valued data into colors.  This feature is still under development, so there is only an RGB colormap available at the moment.  This colormap take a 3D vector input and converts the x, y, and z values to red, green, and blue, respectively.  Zero is mapped to the minimum color channel intensity, and one is mapped to the maximum color channel intensity.  If the data is negative, the absolute value is taken, and large values are clamped to one.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../datasets/" class="btn btn-neutral float-right" title="Datasets">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../interaction/" class="btn btn-neutral" title="Interaction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/cabeen/qit/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../interaction/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../datasets/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

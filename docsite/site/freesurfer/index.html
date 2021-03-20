@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Freesurfer Tutorial - Quantitative Imaging Toolkit</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Freesurfer Tutorial";
+    var mkdocs_page_input_path = "freesurfer.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-58725032-1', 'auto');
+      ga('send', 'pageview');
+  </script>
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Quantitative Imaging Toolkit</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Usage</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../install/">Installation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../citation/">Citation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../support/">Support</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Concepts</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../gallery/">Gallery</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../interaction/">Interaction</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../colormaps/">Colormaps</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../datasets/">Datasets</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../modules/">Modules</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../models/">Models</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Tutorials</span></p>
+                <ul class="current">
+                    <li class="toctree-l1"><a class="reference internal" href="../workflow/">Workflow Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../masters-workshop/">Masters Workshop</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../dmri-tutorial/">Diffusion MRI Tutorial</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../tractography/">Tractography Tutorial</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Freesurfer Tutorial</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#downloading-the-sample-dataset">Downloading the sample dataset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#optional-converting-freesurfer-results">Optional: Converting FreeSurfer results</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tutorial">Tutorial</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#starting-qit">Starting QIT</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#file-loader">File loader</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#view-the-t1-weighted-mri">View the T1-weighted MRI</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#view-the-volumetric-segmentation">View the volumetric segmentation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#extract-subcortical-surfaces">Extract subcortical surfaces</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#smooth-the-subcortical-surfaces">Smooth the subcortical surfaces</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#view-the-subcortical-surfaces">View the subcortical surfaces</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#view-the-cortical-surface">View the cortical surface</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#view-cortical-thickness">View cortical thickness</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#change-the-cortical-thickness-coloring">Change the cortical thickness coloring</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#view-the-cortical-parcellation">View the cortical parcellation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#extract-statistics-optional">Extract statistics (Optional)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Quantitative Imaging Toolkit</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Tutorials &raquo;</li>
+        
+      
+    
+    <li>Freesurfer Tutorial</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/cabeen/qit/edit/master/docs/freesurfer.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="exploring-freesurfer-data-with-qit">Exploring Freesurfer data with QIT</h1>
+<p>This page provides a tutorial for visualizing
+[https://surfer.nmr.mgh.harvard.edu/ FreeSurfer] results with QIT.  You&rsquo;ll
+learn how to visualize volumetric segmentations of T1 MR images and visualize
+surface models of cortical and subcortical structures.</p>
+<h2 id="setup">Setup</h2>
+<p>Before starting the tutorial, you&rsquo;ll need a few things.  First, we will make sure you have the necessary dependencies; then, we will download and install QIT; finally, we will download the sample data.  </p>
+<h2 id="installation">Installation</h2>
+<p>First, make sure you&rsquo;ve installed QIT and its dependencies by following the [[Installation]] instructions.  You won&rsquo;t need the advanced dependencies for this tutorial, so you can skip that.</p>
+<h2 id="downloading-the-sample-dataset">Downloading the sample dataset</h2>
+<p>Next, we&rsquo;ll download the sample dataset, which is available here:</p>
+<p><a href="http://cabeen.io/download/fs.tutorial.zip"><img alt="Download" src="../images/download-icon.png" style="height:25px;width:25px" />  http://cabeen.io/download/fs.tutorial.zip</a></p>
+<p>After you decompress the archive, you should find these directories:</p>
+<ul>
+<li><code>freesurfer</code>: the subject directory produced by FreeSurfer</li>
+<li><code>fsimport</code>: the FreeSurfer data imported to a QIT-compatible format</li>
+</ul>
+<p>There are other files in the archive, but the ones above are strictly required
+for the tutorial.  This dataset was processed from a 1mm isotropic MPRAGE
+T1-weighted MRI acquired on a 1.5T scanner.  The dataset is described in more
+detail 
+<a href="https://pdfs.semanticscholar.org/fce5/928fd4519747c642f379208e6779106e6256.pdf">here</a></p>
+<h2 id="optional-converting-freesurfer-results">Optional: Converting FreeSurfer results</h2>
+<p>FreeSurfer uses its own file formats, and to visualize the results in QIT, you have to import them to more general purpose file formats.  To simplify the tutorial, we have already done this for you and saved the results to <code>fsimport</code>.  However, if you want to visualize other datasets, you will have to similarly import that data using a command like this:</p>
+<pre><code>qit FreesurferImport --input freesurfer --brain --segmentations --surfaces --output fsimport
+</code></pre>
+<p>This program assumes you&rsquo;ve installed FreeSurfer on your machine and put the binaries on the path, like described in the advanced section of the [[Installation]] page.</p>
+<h2 id="tutorial">Tutorial</h2>
+<p>Now that we have installed QIT and downloaded the sample data, we&rsquo;ll go over how to visualize the volumetric and geometric models produced by FreeSurfer.</p>
+<h2 id="starting-qit">Starting QIT</h2>
+<p>First, we&rsquo;ll start <code>qitview</code>.  You can do this by running <code>qitview</code> or <code>qitview.py</code>by either double clicking in your file explorer or executing them on the command line .  Once you&rsquo;ve started the program, you should see console messages about the progress and a window that looks like the image below.  There are three sections to the viewer:</p>
+<ul>
+<li><strong>Data Stage</strong>: the panel on the left, where data is visualized</li>
+<li><strong>Data Workspace</strong>: the panel on the top right, where a list of loaded data is shown</li>
+<li><strong>Data Controls</strong>: the panel on the bottom right, where you control how the selected data is visualized</li>
+</ul>
+<p><img alt="" src="../images/Fs.tutorial.screen01.png" /></p>
+<h2 id="file-loader">File loader</h2>
+<p>Next, we&rsquo;ll open the file loader.  You can find the file loader by clicking the File menu and then clicking &ldquo;Load Files&hellip;&rdquo;.  Next, we&rsquo;ll load the sample data for the tutorial.  The file loader lets you open a list of files in batch mode.  You can add files to the list by clicking the <strong>Add more files</strong> button (A) and selecting the file in the file chooser.  Each entry in the list displays the file type and file name.  You should add these files to the list:</p>
+<ul>
+<li><code>fsimport/brain.nii.gz</code> set to datatype <strong>Volume</strong></li>
+<li><code>fsimport/aparc+aseg.nii.gz</code> set to datatype <strong>Mask</strong></li>
+<li><code>fsimport/scgm/rois.nii.gz</code> set to datatype <strong>Mask</strong></li>
+<li><code>fsimport/surfaces/lh.pial.vtk</code> set to datatype <strong>Mesh</strong></li>
+<li><code>fsimport/surfaces/rh.pial.vtk</code> set to datatype <strong>Mesh</strong></li>
+</ul>
+<p>After that, you need to set the file types to the types listed above (B).  Then, you can load the files by clicking <strong>Load files into workspace</strong> (C):</p>
+<p><img alt="" src="../images/Fs.tutorial.screen02.png" /></p>
+<h2 id="view-the-t1-weighted-mri">View the T1-weighted MRI</h2>
+<p>Next, we will visualize the input T1-weighted MRI dataset.  First, click the box next to <code>brain.nii.gz</code> (A).  Next, we will isolate a coronal slice by first unchecking the <strong>Slice I</strong> and <strong>Slice K</strong> checkboxes (B) and then changing the <strong>Slice J</strong> index to 155 (C):</p>
+<p><img alt="" src="../images/Fs.tutorial.screen03.png" /></p>
+<h2 id="view-the-volumetric-segmentation">View the volumetric segmentation</h2>
+<p>Next, we&rsquo;ll visualize the volumetric segmentation.  First, you should select <code>aparc+aseg.nii.gz</code> and click the box next to it.  Next, you should change the colormap to <code>freesurfer</code>.  Now you should see an overlay segmentation on the T1 image:</p>
+<p><img alt="" src="../images/Fs.tutorial.screen04.png" /></p>
+<h2 id="extract-subcortical-surfaces">Extract subcortical surfaces</h2>
+<p>Next, we&rsquo;ll visualize the subcortical structures.  First, you should select <code>scgm.rois.nii.gz</code> and click the box next to it.  Then, you should open the module <strong>MaskMarchingCubes</strong>.  You should set the input to <code>scgm.rois.nii.gz</code> (A) and select the <strong>Apply</strong> button (B).  The module will then ask you for a name for the new mesh object, which you can call <code>scgm</code>:</p>
+<p><img alt="" src="../images/Fs.tutorial.screen05.png" /></p>
+<h2 id="smooth-the-subcortical-surfaces">Smooth the subcortical surfaces</h2>
+<p>The surface models created by the previous step are jagged due to aliasing, so next, we&rsquo;ll smooth surface to reduce the discretization effects.  First, you should open the model <strong>MeshSmooth</strong>.  You should ensure the input is <code>scgm</code> (A) and then set the output to <code>scgm</code>.  This will replace the original <code>scgm</code> with the new smoothed version.  Then select the <strong>Apply</strong> button to run the module (C):</p>
+<p><img alt="" src="../images/Fs.tutorial.screen06.png" /></p>
+<h2 id="view-the-subcortical-surfaces">View the subcortical surfaces</h2>
+<p>Next, we will visualize the surface models of the subcortical structures.  First, you should select the <code>scgm</code> object and select the box next to the name (A).  This needs some color to distinguish the different structures, so we can change the <strong>Attribute</strong> to <code>label</code> (B) and then change the <strong>Colormap</strong> to <code>discrete</code> (C).  This should now show meshes with distinct colors for each structure:</p>
+<p><img alt="" src="../images/Fs.tutorial.screen07.png" /></p>
+<h2 id="view-the-cortical-surface">View the cortical surface</h2>
+<p>Next, we will visualize the cortical surface.  First, you should hide the other objects by unchecking their visibility boxes.  Then, you should check the boxes next to <code>lh.pial.vtk</code> and <code>rh.pial.vtk.</code>.  This should show the two hemispheres:</p>
+<p><img alt="" src="../images/Fs.tutorial.screen08.png" /></p>
+<h2 id="view-cortical-thickness">View cortical thickness</h2>
+<p>Next, we will visualize cortical thickness on the surface.  First, you should change the <strong>Attribute</strong> to <code>thickness</code> (A), then change the <strong>Colortype</strong> to <code>scalar</code> (B), and then change the <strong>Colormap</strong> to <code>scalar2</code> . We need to change the scalar colormap because the T1 MRI is being visualized using <code>scalar1</code>.  Next, you should select the <strong>Auto Min/Max</strong> button to adjust the colormap range to match the cortical thickness values.  Currently, it&rsquo;s showing grayscale, so you should select the <strong>Edit Scalar Colormap</strong> to pick something else (E):</p>
+<p><img alt="" src="../images/Fs.tutorial.screen09.png" /></p>
+<h2 id="change-the-cortical-thickness-coloring">Change the cortical thickness coloring</h2>
+<p>Now, you should see a colormap editor window.  You should first change the <strong>Name</strong> to <code>scalar2</code> (A) and then change the <strong>Colormap</strong> to <code>diverging</code> (B).  You can also experiment with other colormaps besides that one.  Then, to apply the colormap, you should select the <strong>Apply</strong> button (C):</p>
+<p><img alt="" src="../images/Fs.tutorial.screen10.png" /></p>
+<h2 id="view-the-cortical-parcellation">View the cortical parcellation</h2>
+<p>Finally, we will view the cortical parcellation from the Desikan-Killiany atlas.  You should first make sure the <code>lh.pial.vtk</code> object is selected.  Then, you should change the <strong>Attribute</strong> to <code>aparc</code> (A), and change the <strong>Colortype</strong> to <code>discrete</code> (B), and then change the <strong>Colormap</strong> to <code>freesurfer</code>.  You should then see regions visualized on the cortical surface:</p>
+<p><img alt="" src="../images/Fs.tutorial.screen11.png" /></p>
+<h2 id="extract-statistics-optional">Extract statistics (Optional)</h2>
+<p>You can also use QIT to extract statistical tables from a FreeSurfer subject directory:</p>
+<pre><code>$ qfsmeas freesurfer fsmap
+</code></pre>
+<p>The output directory <code>fsmap</code> will contain a number of CSV files storing morphometric variables for a variety of cortical, white matter, and subcortical structures.  These are a bit more friendly for loading data into R, etc. than what FreeSurfer provides by default.  For example:</p>
+<pre><code>$ ls fsmap
+BA.area.csv                aparc.a2009s.volume.csv
+BA.meancurv.csv            aparc.area.csv
+BA.thickness.csv           aparc.meancurv.csv
+BA.volume.csv              aparc.thickness.csv
+aparc.a2009s.area.csv      aparc.volume.csv
+aparc.a2009s.meancurv.csv  aseg.stats.csv
+aparc.a2009s.thickness.csv wmparc.stats.csv
+</code></pre>
+<pre><code>$ head fsmap/aseg.stats.csv
+name,value
+Left-Lateral-Ventricle,4355
+Left-Inf-Lat-Vent,289
+Left-Cerebellum-White-Matter,12850
+Left-Cerebellum-Cortex,42203
+Left-Thalamus-Proper,6235
+Left-Caudate,3086
+Left-Putamen,5655
+Left-Pallidum,1594
+3rd-Ventricle,677
+</code></pre>
+<h2 id="conclusion">Conclusion</h2>
+<p>Congratulations!  You&rsquo;ve completed the tutorial for visualizing FreeSurfer results.  Feel free to experiment with other surface attributes and settings in <code>qitview</code> or ask around if you&rsquo;d like to know more about what else you can do.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../tractography/" class="btn btn-neutral" title="Tractography Tutorial"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/cabeen/qit/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../tractography/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

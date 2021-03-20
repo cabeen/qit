@@ -106,7 +106,7 @@ The following interactions will be applied only to the dataset that is highlight
  - ***Alt + Control + Click***: **Create a new vect**.  A blinking red circle will be shown before clicking the mouse to indicate where the new vect will be placed.
  - ***Alt + Shift + Control + Click***: **Remove the selected vect**.  Before you click the mouse, the selected dot will blink to indicate it is about to be removed.
 
-## Manually setting the interaction mode
+## Manual settings
 
 If for any reason you have difficulty using the mouse and keyboard at the same time, you can also specify the interaction mode using the mouse.  You can find this **3D Interaction** combo box in the **Global** tab of the **Control Panel**.  This will include camera interactions, such as `Rotate`, `Pan`, and `Zoom`.  You can quickly reset the interaction mode by pressing the **Escape** key.   Note, the **3D Interaction** menu will change based on the dataset you have highlighted for example, when a volume is highlighted, there is an interaction mode for changing the image slice.
 

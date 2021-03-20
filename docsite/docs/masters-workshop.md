@@ -14,7 +14,7 @@ using the LONI Pipeline.
 ## Setup
 
 If you have not already, you can start by downloading the latest version from
-the [Installation](installation.md) page.  You may also benefit from checking
+the [Installation](install.md) page.  You may also benefit from checking
 out the **Concepts** pages linked on the left side panel, which will help you
 become familiar with the design and capabilities of QIT.  Next, you should
 download the sample dataset, decompress the archive, and keep it somewhere
