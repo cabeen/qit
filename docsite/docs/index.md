@@ -8,8 +8,8 @@ Welcome to the main documentation site for the Quantitative Imaging Toolkit
 neuroimaging datasets. QIT supports a variety of magnetic resonance imaging
 (MRI) with advanced capabilities for mapping brain microstructure and
 connectivity using diffusion MRI, and it also has an expanding set of
-microscopy tools. You can learn more from the pages below, and you can download
-the latest version on the [Installation](install.md) page or the links below:
+microscopy tools. You can download the latest version on the
+[Installation](install.md) page or the links below:
 
 [![Download](images/download-icon.png){: style="height:25px;width:25px"} Download QIT for MacOS](https://github.com/cabeen/qit/releases/download/latest/qit-build-mac-latest.zip)
 &nbsp;
@@ -51,5 +51,5 @@ Chan Zuckerberg Imaging Scientist Program through grant number 2020-225670
 from the Chan Zuckerberg Initiative DAF, an advised fund of Silicon Valley
 Community Foundation. 
 
-Comments, criticism, and concerns are appreciated and can be directed
+Comments, criticism, and concerns are appreciated and can be directed to
 [cabeen@gmail.com](mailto:cabeen@gmail.com).
