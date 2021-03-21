@@ -17,7 +17,7 @@ First, make sure you've installed QIT and its dependencies by following the [[In
 
 Next, we'll download the sample dataset, which is available here:
 
-[![Download](images/download-icon.png){: style="height:25px;width:25px"}  http://cabeen.io/download/fs.tutorial.zip](http://cabeen.io/download/fs.tutorial.zip)
+[![Download](images/download-icon.png){: style="height:25px;width:25px"} Download fs.tutorial.zip](https://github.com/cabeen/qit/releases/download/data-2021-03-21/fs.tutorial.zip)
 
 After you decompress the archive, you should find these directories:
 

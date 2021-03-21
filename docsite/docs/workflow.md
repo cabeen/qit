@@ -99,13 +99,13 @@ input to be a diffusion-weighted MRI in the
 [NIfTI](https://nifti.nimh.nih.gov/) and associated text files for the
 b-vectors and b-values.  If you need data to try out, you can download this example clinical quality single shell dataset:
 
-[![Download](images/download-icon.png){: style="height:25px;width:25px"} http://cabeen.io/download/dmri.tutorial.data.zip](http://cabeen.io/download/dmri.tutorial.data.zip)
+[![Download](images/download-icon.png){: style="height:25px;width:25px"} Download dmri.tutorial.data.zip](https://github.com/cabeen/qit/releases/download/data-2021-03-21/dmri.tutorial.data.zip)
 
 If you'd like to skip the processing, you can also check out these example
 results:
 
 [![Download](images/download-icon.png){: style="height:25px;width:25px"}
-http://cabeen.io/download/qitdiff.demo.tar.gz](http://cabeen.io/download/qitdiff.demo.tar.gz)
+Download qitdiff.demo.tar.gz](https://github.com/cabeen/qit/releases/download/data-2021-03-21/qitdiff.demo.tar.gz)
 
 ### File format conversion
 

@@ -20,7 +20,7 @@ become familiar with the design and capabilities of QIT.  Next, you should
 download the sample dataset, decompress the archive, and keep it somewhere
 accessible:
 
-[![Download](images/download-icon.png){: style="height:25px;width:25px"} http://cabeen.io/download/qit-workshop-average.zip](http://cabeen.io/download/qit-workshop-average.zip)
+[![Download](images/download-icon.png){: style="height:25px;width:25px"} Download qit-workshop-average.zip](https://github.com/cabeen/qit/releases/download/data-2021-03-21/qit-workshop-average.zip)
 
 ## Dataset
 
