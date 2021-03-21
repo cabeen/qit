@@ -9,7 +9,15 @@ neuroimaging datasets. QIT supports a variety of magnetic resonance imaging
 (MRI) with advanced capabilities for mapping brain microstructure and
 connectivity using diffusion MRI, and it also has an expanding set of
 microscopy tools. You can learn more from the pages below, and you can download
-the latest version on the [Installation](install.md) page.
+the latest version on the [Installation](install.md) page or the links below:
+
+[![Download](images/download-icon.png){: style="height:25px;width:25px"} Download QIT for MacOS](https://github.com/cabeen/qit/releases/download/latest/qit-build-mac-latest.zip)
+&nbsp;
+&nbsp;
+[![Download](images/download-icon.png){: style="height:25px;width:25px"} Download QIT for Windows](https://github.com/cabeen/qit/releases/download/latest/qit-build-win-latest.zip) 
+&nbsp;
+&nbsp;
+[![Download](images/download-icon.png){: style="height:25px;width:25px"} Download QIT for Linux](https://github.com/cabeen/qit/releases/download/latest/qit-build-linux-latest.zip)
 
 ## What is QIT? 
 
