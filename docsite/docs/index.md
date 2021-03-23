@@ -5,10 +5,7 @@
 
 Welcome to the main documentation site for the Quantitative Imaging Toolkit
 (QIT), a software package for visualization, exploration, and analysis of
-neuroimaging datasets. QIT supports a variety of magnetic resonance imaging
-(MRI) with advanced capabilities for mapping brain microstructure and
-connectivity using diffusion MRI, and it also has an expanding set of
-microscopy tools. You can download the latest version on the
+neuroimaging datasets. You can download the latest version on the
 [Installation](install.md) page or the links below:
 
 [![Download](images/download-icon.png){: style="height:25px;width:25px"} Download QIT for MacOS](https://github.com/cabeen/qit/releases/download/latest/qit-build-mac-latest.zip)

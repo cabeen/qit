@@ -7,11 +7,10 @@ surface models of cortical and subcortical structures.
 
 ## Setup
 
-Before starting the tutorial, you'll need a few things.  First, we will make sure you have the necessary dependencies; then, we will download and install QIT; finally, we will download the sample data.  
-
-## Installation
-
-First, make sure you've installed QIT and its dependencies by following the [[Installation]] instructions.  You won't need the advanced dependencies for this tutorial, so you can skip that.
+Before starting the tutorial, you'll need a few things.  First, make sure
+you've installed QIT and its dependencies by following the
+[Installation](installation.md) instructions.  You won't need the advanced
+dependencies for this tutorial, so you can skip that.
 
 ## Downloading the sample dataset
 
