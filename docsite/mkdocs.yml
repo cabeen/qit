@@ -23,6 +23,7 @@ nav:
     - License: license.md
     - Support: support.md
     - Quickstart: quickstart.md
+    - Library: library.md
   - Concepts:
     - Gallery: gallery.md
     - Interaction: interaction.md
