@@ -7,9 +7,31 @@ out via email to [cabeen@gmail.com](mailto:cabeen@gmail.com).  Otherwise, there 
 
 ## Frequently Asked Questions
 
+### Why do I get an error about developer verification on macOS?
+
+![](images/verification.png)
+
+On recent version of macOS, you may encounter the above error message about
+developer verification for `java`.  This is due to increasing limitations on
+running software distributed outside the App Store.  You can fix these
+permissions issues by running this script bundled with QIT: 
+
+`qit-build-mac-latest/bin/qitfixmac`
+
+**Note:** you should select `Cancel` in the popup.  If you do happen to select
+`Move to Trash`, this may corrupt the QIT installation, in which case you,
+should re-install and try again.
+
 ### Why does `qitview` close immediately after opening it?
 
-This is most likely because you have a 32-bit version of Java installed.  Imaging datasets can easily exceed the maximum memory allowed by a 32-bit address space, so you should try installing a 64-bit version of Java Note: on the Java download page, 64-bit is usually named x64, and 32-bit is usually named x86.
+This is most likely because you have a 32-bit version of Java installed.
+Imaging datasets can easily exceed the maximum memory allowed by a 32-bit
+address space, so you should try installing a 64-bit version of Java.  On the
+Java download page, 64-bit is usually named x64, and 32-bit is usually named
+x86.
+
+**Note:** The latest version of QIT includes a Java runtime, so you should try
+downloading the latest version if you continue to have this problem. 
 
 ### Why did I get an error "Out of Memory Error (Java heap space)"?
 
