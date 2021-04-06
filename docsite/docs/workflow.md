@@ -304,9 +304,9 @@ subdivisions along their length.  These can be run using the following
 
 - **diff.tract/bundles.map**:
     - whole bundle parameters, such as volume, length, etc.
-- **diff.tract/bundles.dti.map**:  
+- **diff.tract/bundles.whole.vertex.dti.map**:  
     - whole bundle DTI parameters, such as FA, MD, etc.
-- **diff.tract/bundles.along.dti.map**: 
+- **diff.tract/bundles.along.vertex.dti.map**: 
     - along-bundle DTI parameters, e.g. FA measured at each of a sequence of bundle subdivisions
 
 Similar to ROI analysis, you can also extract multi-shell diffusion MRI
@@ -315,7 +315,7 @@ concrete example, if you wanted to compute NODDI parameters along each bundle,
 you could run something like so:
 
 ```
-$ qitdiff --subject qitsubject --dwi scan/dwi.nii.gz --bvecs scan/bvecs.txt --bvals scan/bvals.txt diff.tract/bundles.along.noddi.map
+$ qitdiff --subject qitsubject --dwi scan/dwi.nii.gz --bvecs scan/bvecs.txt --bvals scan/bvals.txt diff.tract/bundles.along.vertex.noddi.map
 ```
 
 ## Multi-modal analysis
