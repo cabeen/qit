@@ -413,6 +413,94 @@ all of the other metrics stored in `map` directories.  If you would like to
 create tables for many different variables, there is a more complex but
 powerful script called `qitmaketables` that you can check out.
 
+## Fiber Bundle References
+
+The fiber bundle pipeline uses the following abbreviations:
+
+| Identifier | Description |
+| :---       | :--- | 
+| ant_comm | Anterior commisure, connecting temporal poles |
+| cc_all | Corpus callosum, all connections combined |
+| cc_dlpfc | Corpus callosum, dorsolateral prefrontal cortex connections |
+| cc_dmpfc | Corpus callosum, dorsomedial prefrontal cortex connections |
+| cc_occip | Corpus callosum, occipital lobe connections |
+| cc_parcen | Corpus callosum, central parietal cortex connections |
+| cc_parinf | Corpus callosum, inferior parietal cortex connections |
+| cc_parmar | Corpus callosum, marginal parietal cortex connections |
+| cc_parmed | Corpus callosum, medial parietal cortex connections    |
+| cc_parsup | Corpus callosum, superior parietal cortex connections |
+| cc_pma | Corpus callosum, premotor area connections |
+| cc_postcentral |  Corpus callosum, postcentral gyrus connections |
+| cc_precentral | Corpus callosum, precentral gyrus connections |
+| cc_sma | Corpus callosum, supplementary motor area connections |
+| cc_tempinf | Corpus callosum, inferior temporal connections |
+| cc_tempmid | Corpus callosum, middle temporal connections |
+| cc_tempsup | Corpus callosum, superior temporal cortex connections |
+| cc_vlpfc | Corpus callosum, ventrolateral prefrontal cortex connections |
+| cc_vmpfc | Corpus callosum, ventromedial prefrontal cortex connections |
+| forceps_major | Forceps major, connections through the splenium of the corpus callosum |
+| forceps_minor | Forceps minor , connections through the genu of the corpus callosum    |
+| mid_cerebellar | Middle cerebellar peduncle |
+| lh_acoustic | Acoustic radiations, from thalamus to superior temporal lobe |
+| lh_aft | Acumbofrontal tract, connecting nucleus accumbens and prefrontal cortex    |
+| lh_amyfug | Amygofugal tract, connecting amygdala and hypothalamus |
+| lh_arc_ant | Arcuate fasciculus, anterior segment |
+| lh_arc_long | Arcuate fasciculus, long segment |
+| lh_arc_post | Arcuate fasciculus, posterior segment |
+| lh_atr | Anterior thalamic radiation |
+| lh_cerebellar_inf | Inferior cerebellar peduncle |
+| lh_cerebellar_sup | Superior cerebellar peduncle |
+| lh_cing_body | Cingulum bundle, body |
+| lh_cing_dor | Cingulum bundle, dorsal connections of cingulate cortex |
+| lh_cing_genu | Cingulum bundle, segment around genu of the corpus callosum |
+| lh_cing_long | Cingulum bundle, long segment connecting frontal and temporal lobes |
+| lh_cing_ven | Cingulum bundle, ventral portion in temporal lobe |
+| lh_corona_ant | Corona radiata, anterior portion |
+| lh_corona_post | Corona radiata, posterior portion |
+| lh_cst | Corticospinal tract |
+| lh_fat | Frontoaslant tract |
+| lh_fornix | Fornix |
+| lh_ifof | Inferior fronto-occipital fasciculus |
+| lh_ilf | Inferior longitudinal fasciculus |
+| lh_lat_lem | Lateral leminiscus |
+| lh_med_lem | Medial leminiscus |
+| lh_mlf | Middle longitudinal fasciculus |
+| lh_opticrad | Optic radiation |
+| lh_slfi | Superior longitudinal fasciculus I, connections to superior frontal cortex |
+| lh_slfii | Superior longitudinal fasciculus II, connections to middle frontal cortex |
+| lh_slfiii | Superior longitudinal fasciculus III, connections of inferior frontal cortex |
+| lh_str | Superior thalamic radiation |
+| lh_thal_pcc | Thalamocortical pathway, posterior cingulate connections |
+| lh_thal_pole | Thalamocortical pathway, temporal pole connections|
+| lh_thal_stem | Thalamocortical pathway, brainstem connections |
+| lh_thal_dlpfc | Thalamocortical pathway, dorsolateral prefrontal cortex connections |
+| lh_thal_dmpfc | Thalamocortical pathway, dorsomedial prefrontal cortex connections |
+| lh_thal_occ | Thalamocortical pathway, occipital lobe connections |
+| lh_thal_parcen | Thalamocortical pathway, central parietal cortex connections |
+| lh_thal_parinf | Thalamocortical pathway, inferior parietal cortex connections |
+| lh_thal_parmar | Thalamocortical pathway, marginal parietal cortex connections |
+| lh_thal_parmed | Thalamocortical pathway, medial parietal cortex connections    |
+| lh_thal_parsup | Thalamocortical pathway, superior parietal cortex connections |
+| lh_thal_pma | Thalamocortical pathway, premotor area connections |
+| lh_thal_postcentral |  Thalamocortical pathway, postcentral gyrus connections |
+| lh_thal_precentral | Thalamocortical pathway, precentral gyrus connections |
+| lh_thal_sma | Thalamocortical pathway, supplementary motor area connections |
+| lh_thal_tempinf | Thalamocortical pathway, inferior temporal connections |
+| lh_thal_tempmid | Thalamocortical pathway, middle temporal connections |
+| lh_thal_tempsup | Thalamocortical pathway, superior temporal cortex connections |
+| lh_thal_vlpfc | Thalamocortical pathway, ventrolateral prefrontal cortex connections |
+| lh_thal_vmpfc | Thalamocortical pathway, ventromedial prefrontal cortex connections |
+| lh_umotor | U-fibers of motor cortex  |
+| lh_usomato | U-fibers of somatosensory cortex  |
+| lh_unc | Uncinate fasciculus, connecting prefrontal cortex to temporal pole |
+| lh_unc_lat | Uncinate fasciculus, connection lateral prefrontal cortex to temporal pole |
+| lh_unc_med | Uncinate fasciculus, connection medial prefrontal cortex to temporal pole |
+| lh_vof | Vertical occipital fasciculus |
+| lh_vof_lat | Vertical occipital fasciculus, lateral portion |
+| lh_vof_med | Vertical occipital fasciculus, medial portion |
+
+*Note: `lh` and `rh` indicate the left and right hemisphere bundles, respectively.  Only the left bundles are listed above for brevity*
+
 ## Acknowledgements
 
 If you find QIT is valuable in your work, we ask that you clearly
