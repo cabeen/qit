@@ -47,7 +47,7 @@ Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 You should first follow the instructions on the [Installation](install.md) page, and make sure that the `bin` directory is included in your shell `PATH` variable.  You can read [https://linuxize.com/post/how-to-add-directory-to-path-in-linux/ this page] to learn more about adding a directory to your path.  After installing, you can check that things worked by running the following command and seeing if it produces something analogous (your version should be this one or later):
 
 ```
-$ qit --version <br>
+$ qit --version
 QIT build revision: 2005\:2019, build time: 03/25/2020 05\:09 PM`
 ```
 
@@ -419,7 +419,7 @@ The fiber bundle pipeline uses the following abbreviations:
 
 | Identifier | Description |
 | :---       | :--- | 
-| ant_comm | Anterior commisure, connecting temporal poles |
+| ant_comm | Anterior commissure, connecting temporal poles |
 | cc_all | Corpus callosum, all connections combined |
 | cc_dlpfc | Corpus callosum, dorsolateral prefrontal cortex connections |
 | cc_dmpfc | Corpus callosum, dorsomedial prefrontal cortex connections |
