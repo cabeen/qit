@@ -365,6 +365,20 @@ There are various other T1-related targets available, which are summarized here:
 - **tone.region/fs.dkgm.dti.map**:
     - DTI parameters statistics for each Freesurfer Desikan gray matter ROI
 
+# Multi-modal Tractography Analysis
+
+The QIT workflow also supports performing tract-based analysis in T1 space.
+This can be helpful for visualizing bundles with the relatively high resolution
+reference of the T1 scan and cortical surface models.  To do this, you simply
+need to replace `diff.tract` with `tone.tract` in the workflow target.  For
+example, the following command:
+
+```
+$ qitdiff --subject qitsubject --dwi scan/dwi.nii.gz --bvecs scan/bvecs.txt --bvals scan/bvals.txt --freesurfer fs_subject_dir tone.tract/bundles.map
+```
+
+*Note*: the above commands perform linear intra-subject registration.  This makes sense if you have minimal artifact or performed artifact correction.  If you are working with clinical data where there may be morphometric differences between the T1 and DWI scans, you can enable deformable intra-subject registration by adding this flag: `INTRA_DEFORM=1`
+
 ## Aggregating results
 
 Once you've finished processing your data, you may want to combine the results into data tables, that is, aggregating metrics from all of the research subjects into a spreadsheet.  The QIT workflow was designed to make this easy by saving results in a standardized format.  You may notice that each target ends in `map`; this indicates that the target is a directory that contains summary statistics.  Each `map` directory contains an array of CSV files store simple name-value pairs.  For example, the bundle-specific analysis produces this CSV file among many others:
