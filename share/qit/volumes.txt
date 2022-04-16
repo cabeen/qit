@@ -1,0 +1,14 @@
+aparc.a2009s+aseg
+aparc+aseg
+aseg.auto
+aseg.auto_noCCseg
+aseg
+brainmask
+brain
+ribbon
+lh.ribbon
+rh.ribbon
+T1
+wm
+wmparc
+wm.seg

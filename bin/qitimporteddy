@@ -1,0 +1,120 @@
+#! /usr/bin/env bash
+################################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+################################################################################
+
+if [ $# -ne 3 ]; then
+    echo ""
+    echo "Name: $(basename $0)"
+    echo ""
+    echo "Description:"
+    echo "  Prepare diffusion-weighted imaging data processed with FSL EDDY for"
+    echo "  the qitmake brain pipeline.  This will standardize the image "
+    echo "  orientation, flip the b-vectors, and create a subject directory."
+    echo ""
+    echo "  The inputs are the following files:"
+    echo "    eddy_bn: the basename to the FSL EDDY results"
+    echo "    bvals: the b-values file"
+    echo "    output: the output directory of data ready for the qit pipeline"
+    echo ""
+    echo "Usage: $(basename $0) <eddy_bn> <bvals> <output>"
+    echo ""
+    echo "Author: Ryan Cabeen"
+    echo ""
+  exit
+fi
+
+eddy=$1
+bvals=$2
+subject=$3
+
+eddy_bvecs=${eddy}.eddy_rotated_bvecs
+eddy_dwi=${eddy}.nii.gz
+
+qit_bvals=${subject}/bvals.txt
+qit_bvecs=${subject}/bvecs.txt
+qit_dwi=${subject}/dwi.nii.gz
+qit_xfm=${subject}/xfm.txt
+qit_invxfm=${subject}/invxfm.txt
+
+echo "started"
+echo "... using eddy dir: ${eddy}"
+echo "... using bvals: ${bvals}"
+echo "... using subject dir: ${subject}"
+
+mkdir -p ${subject}
+
+QIT="qit --verbose --debug -Xmx8G"
+
+if [ ! -e ${qit_bvals} ]; then
+  echo "... importing bvals"
+  ${QIT} VectsTransform \
+    --rows --input ${bvals} --output ${qit_bvals}
+fi
+
+if [ ! -e ${qit_bvecs} ]; then
+  echo "... importing bvecs"
+  ${QIT} VectsTransform \
+    --rows --input ${eddy_bvecs} --flip x --output ${qit_bvecs}
+fi
+
+if [ ! -e ${qit_dwi} ]; then
+  echo "... importing dwi"
+  ${QIT} VolumeStandardize \
+    --input ${eddy_dwi} \
+    --output ${qit_dwi} \
+    --xfm ${qit_xfm} \
+    --invxfm ${qit_invxfm}
+fi
+
+echo "finished"
+
+################################################################################
+# End 
+################################################################################

@@ -1,0 +1,183 @@
+#! /bin/bash
+################################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+################################################################################
+
+echo "started $(basename $0)"
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -q|--qsub)
+    QSUB=1
+    shift # past argument
+    ;;
+    -i|--inner)
+    INNER=1
+    shift # past argument
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+if [ "${INNER}" != "" ]; then 
+
+  sdir=$1
+  slist=$2
+  input=$3
+  output=$4
+
+  echo "...processing ${output}"
+    qit --verbose MapCat \
+      --skip \
+      --pattern ${sdir}/$input \
+      --vars subject=${slist} \
+      --output ${output}.long.csv
+
+  if [ -e ${output}.long.csv ]; then 
+    qit --verbose TableWiden \
+      --input ${output}.long.csv \
+      --output ${output}.wide.csv
+
+    mv ${output}.wide.csv ${output}.wide.csv.tmp
+    cat ${output}.wide.csv.tmp | sed 's/null/NA/g' > ${output}.wide.csv
+    rm ${output}.wide.csv.tmp
+
+    qit --verbose TableScoreZ --absolute \
+      --input ${output}.long.csv \
+      --group name \
+      --output ${output}.zscores.csv
+
+    qit --verbose TableStats \
+      --input ${output}.zscores.csv \
+      --group subject \
+      --which mean,std,min,max,num \
+      --output ${output}.zstats.csv
+
+    qit --verbose TableStats \
+      --input ${output}.long.csv \
+      --group name \
+      --which mean,std,min,max,num \
+      --output ${output}.stats.csv
+  fi
+else
+
+  if [ $# -ne "4" ]; then
+    echo "
+USAGE: $(basename $0) [--qsub] <subjects_pattern> <subjects_list> <target_list> <output_dir>
+
+DESCRIPTION:
+
+Aggregate results from subjects and store them in CSV data tables.  The idea is
+that you have a collection of name,value csv files for each subject, and you 
+would like to create tables that store the data from your entire cohort. The 
+command line arguments are as follows:
+
+<subjects_pattern>:  a pattern for locating subject directories, this should
+                     contain '%{subject}' where the subject identifier should be
+                     substituted, e.g. your/study/%{subject}/qitdiffout 
+
+<subjects_list>:     a plain text file listing each subject identifier on its 
+                     own line.  This is used with the subjects pattern to 
+                     locate the subject directory 
+
+<target_list>:       a plain text file listing each csv target on its own line,
+                     that is, the name-value pairs to combine.  these should be
+                     relative paths within each subject directory, e.g. 
+                     tone.fs.map/aseg.stats.csv
+
+<output_dir>:        a directory for saving the results
+
+AUTHOR: Ryan Cabeen, cabeen@gmail.com
+"
+    exit
+  fi
+
+  sdir=$1
+  slist=$2
+  tlist=$3
+  output=$4
+
+  function check_file 
+  {
+    if [ ! -e $2 ]; then
+      echo "ERROR: $1 not found at $2"
+      exit
+    fi
+    echo "  using $1: $2"
+  }
+
+  check_file "subject list" ${slist}
+  check_file "target list" ${tlist}
+
+  mkdir -p ${output} 
+  for p in $(cat ${tlist}); do
+    base=$(echo ${p} | sed 's/\//./g' | sed 's/.csv//g')
+    args="$0 --inner $sdir $slist ${p} ${output}/${base}"
+
+    if [ "$QSUB" != "" ]; then
+      qsubcmd bash ${args}
+    else
+      bash ${args}
+    fi
+  done
+fi
+
+echo "finished $(basename $0)"
+
+################################################################################
+# FIN
+################################################################################

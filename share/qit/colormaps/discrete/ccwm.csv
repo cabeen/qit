@@ -1,0 +1,6 @@
+index,name,r,g,b,a
+1,CC_Posterior,0,0,64,0
+2,CC_Mid_Posterior,0,0,112,0
+3,CC_Central,0,0,160,0
+4,CC_Mid_Anterior,0,0,208,0
+5,CC_Anterior,0,0,255,0

@@ -1,0 +1,222 @@
+#! /bin/bash
+################################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+################################################################################
+
+################################################################################
+# This script is part of the QIT Diffusion Pipeline  
+################################################################################
+
+source $(dirname $0)/source.qit.sh
+
+echo "started $(basename $0)"
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -q|--qsub)
+    QSUB=1
+    shift # past argument
+    ;;
+    -i|--inner)
+    INNER=1
+    shift # past argument
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+qit_check
+
+if [ "${INNER}" != "" ]; then 
+
+  sdir=$1
+  slist=$2
+  input=$3
+  output=$4
+
+  echo "...processing ${output}"
+    qit --verbose MapCat \
+      --skip \
+      --pattern ${sdir}/'${subject}'/$input \
+      --vars subject=${slist} \
+      --output ${output}.csv
+
+  if [ -e ${output}.csv ]; then 
+    qit --verbose TableWiden \
+      --input ${output}.csv \
+      --output ${output}.wide.csv
+
+    mv ${output}.wide.csv ${output}.wide.csv.tmp
+    cat ${output}.wide.csv.tmp | sed 's/null/NA/g' > ${output}.wide.csv
+    rm ${output}.wide.csv.tmp
+
+    qit --verbose TableScoreZ --absolute \
+      --input ${output}.csv \
+      --group name \
+      --output ${output}.zscores.csv
+
+    qit --verbose TableStats \
+      --input ${output}.zscores.csv \
+      --group subject \
+      --output ${output}.zstats.csv
+
+    qit --verbose TableStats \
+      --input ${output}.csv \
+      --group name \
+      --output ${output}.stats.csv
+  fi
+else
+
+  if [ $# -ne "3" ]; then
+    echo "
+USAGE: $(basename $0) [--qsub] <subjects_dir> <subjects_list> <output_dir>
+
+DESCRIPTION:
+
+Aggregate results from subjects and store them in CSV data tables.  Once all of
+your subjects are through the QIT diffusion pipeline, you can run this script
+to make data tables of all of the quantitative results.  The input should be
+the path to the subjects directory, e.g. the one that contains a directory for
+each subject.  You must also provide a list of subjects to include (a text file
+with one identifier per line, matching the names in the subject directory).
+Finally, you provide an output directory name, where the output tables will be
+save.
+
+AUTHOR: Ryan Cabeen, cabeen@gmail.com
+"
+    exit
+  fi
+
+  sdir=$1
+  slist=$2
+  output=$3
+
+  if [ ! -e ${sdir} ]; then
+    echo "ERROR: subjects directory not found at ${sdir}"
+    exit
+  fi
+
+  if [ ! -e ${slist} ]; then
+    echo "ERROR: subjects list not found at ${sdir}"
+    exit
+  fi
+
+  echo "  using SUBJECTS_DIR: ${sdir}"
+  echo "  using SUBJECTS_LIST: ${slist}"
+  echo "  using OUTPUT: ${output}"
+
+  mkdir -p ${output} 
+
+  function make_table
+  {
+    # $1 is the input basename
+    # $2 is the output basename
+    args="$0 --inner $sdir $slist $1 ${output}/$2"
+
+    if [ "$QSUB" != "" ]; then
+      qsubcmd bash ${args}
+    else
+      bash ${args}
+    fi
+  }
+
+  for i in aseg.stats \
+           aparc.{meancurv,thickness,volume,area}  \
+           aparc.a2009s.{meancurv,thickness,volume,area}; do
+
+    make_table tone.fs.map/${i}.csv table.fs.${i}
+  done
+
+  for i in bundles,num_curves bundles,length_mean bundles,length_sum \
+    bundles,volume bundles,frac_mean bundles,frac_sum bundles,diff_mean \
+    bundles,density_mean bundles,bundles.density_sum bundles,density_max \
+    along,frac_mean along,diff_mean; do
+    IFS=',' read a b <<< "${i}"
+
+    make_table diff.tracts/${a}.map/${b}.csv table.tracts.${a}.${b}
+  done
+
+  for j in bundles density along; do
+    for i in noddi,nFICVF noddi,nODI noddi,nFISO \
+             dti,FA dti,MD dti,RD dti,AD dti,CP dti,CS dti,CL \
+             fwdti,tFA fwdti,tMD fwdti,tRD fwdti,tAD fwdti,FW; do
+
+      IFS=',' read a b <<< "${i}"
+
+      make_table diff.tracts/${j}.${a}.map/${b}_mean.csv table.tracts.${j}.${a}.${b}
+    done
+  done
+
+  for s in atlas diff; do
+    for a in jhu.labels fsa.{scgm,wbbm,dkwm} hox.{cort,sub} ini.bstem; do
+      for j in noddi,nFICVF noddi,nODI noddi,nFISO \
+               dti,FA dti,MD dti,RD dti,AD dti,CP dti,CS dti,CL \
+               fwdti,tFA fwdti,tMD fwdti,tRD fwdti,tAD fwdti,FW; do
+
+        IFS=',' read b c <<< "${j}"
+
+        make_table ${s}.regions/${a}.${b}.map/${c}_mean.csv table.roi.${s}.${a}.${b}.${c}
+      done
+    done
+  done
+fi
+
+echo "finished $(basename $0)"
+
+################################################################################
+# FIN
+################################################################################

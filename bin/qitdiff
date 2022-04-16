@@ -1,0 +1,330 @@
+#! /usr/bin/env bash
+##############################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+##############################################################################
+
+usage()
+{
+    echo "
+Name: $(basename $0)
+
+Description:
+
+  Process diffusion-weighted imaging data using the qit diffusion workflow.
+  The first time you run this script, you must provide the DWI, bvecs, and
+  bvals for your subject.  After that, you only need to specify the targets. 
+    
+Usage: 
+
+  $(basename $0) [opts] --subject subject [targets]
+
+Required Input Data (only necessary on the first run):
+
+   --dwi dwi.nii.gz:   the diffusion weighted MRI file, stored in NIFTI
+   --bvecs bvecs:      the diffusion b-vectors file, stored as text
+   --bvals bvals:      the diffusion b-values file, stored as text
+
+Optional Inputs Data (only necessary on the first run):
+
+   --mask <fn>:        use the given user-provided brain mask
+   --tone <fn>:        specify a T1-weighted MRI
+   --freesurfer <dn>:  use the given precomputed freesurfer subject directory 
+                       (this is exclusive with the --tone option)
+
+Optional Parameters (may be included in the first run, but not afterwards):
+
+   --eddy:             apply FSL EDDY (only applicable for data with a 
+                       single phase encoding direction) 
+   --denoise:          denoise the dwi with the automated noise estimation
+   --denoiseh <num>:   denoise the dwi with the given noise level bandwdith (h)
+   --denoisehrel:      treat the denoising bandwidth as relative to the mean 
+   --round:            round the b-values to the nearest 100 
+   --motion:           correct and measure motion (exclusive with eddy)
+   --nomatch:          skip gradient matching step
+   --bet <num>:        use the given FSL BET frac parameter 
+                       (exclusive with --mask, default is 0.3)
+   --mem:              use the given amount of memory (default: 5G)
+
+Author: Ryan Cabeen
+"
+
+exit 1
+}
+
+if [ $# -eq 0 ]; then usage; fi
+
+dwi=
+bvecs=
+bvals=
+subject=$(pwd)
+
+mask=
+eddy=
+round=
+tone=
+freesurfer=
+denoise=
+denoiseh=
+denoisehrel=
+motion=
+nomatch=
+bet=0.3
+tracts=
+mem=5G
+
+posit=""
+
+while [ "$1" != "" ]; do
+    case $1 in
+        --dwi)          shift; dwi=$1 ;;
+        --bvecs)        shift; bvecs=$1 ;;
+        --bvals)        shift; bvals=$1 ;;
+        --mask)         shift; mask=$1 ;;
+        --bet)          shift; bet=$1 ;;
+        --denoise)      denoise=1; ;;
+        --denoiseh)     shift; denoiseh=$1 ;;
+        --denoisehrel)  hrel="--hrel" ;;
+        --eddy)         eddy=1 ;;
+        --round)        round=1 ;;
+        --motion)       motion=1 ;;
+        --nomatch)      nomatch=1 ;;
+        --mem)          shift; mem=$1 ;;
+        --tone)         shift; tone=$1 ;;
+        --freesurfer)   shift; freesurfer=$1 ;;
+        --tracts)       shift; tracts=$1 ;;
+        --subject)      shift; subject=$1 ;;
+        --help )        usage ;;
+        * )             posit="${posit} $1" ;;
+    esac
+    shift
+done
+
+function runit
+{
+  echo "[info] running command: $@"
+  $@
+  if [ $? != 0 ]; then
+    echo "[error] command failed: $@"
+    exit;
+  fi
+}
+
+mybin=$(cd $(dirname $0); pwd)
+run="runit ${mybin}/qit --verbose --debug -Xmx${mem}"
+
+echo "[info] started $(basename $0)" 
+echo "[info] using version: $(qit --version)"
+echo "[info] using subject: ${subject}" 
+echo "[info] using dwi: ${dwi}" 
+echo "[info] using bvecs: ${bvecs}" 
+echo "[info] using bvals: ${bvals}" 
+echo "[info] using mask: ${mask}" 
+echo "[info] using denoise: ${denoise}" 
+echo "[info] using denoiseh: ${denoiseh}" 
+echo "[info] using denoisehrel: ${hrel}" 
+echo "[info] using motion: ${motion}" 
+echo "[info] using nomatch: ${nomatch}" 
+echo "[info] using qitbin: ${mybin}" 
+echo "[info] using qitmake: ${posit}" 
+
+if [ ! -e ${subject}/input ]; then
+  echo "[info] preparing input"
+	tmp=${subject}/input.tmp.${RANDOM}
+
+	mkdir -p ${tmp}
+	mkdir -p ${tmp}/raw
+
+	if [ ! -e ${tmp}/t1.nii.gz ] && [ "${tone}" != "" ]; then
+		echo "[info] importing t1 scan"
+		runit cp ${tone} ${tmp}/t1.nii.gz
+	fi
+
+	if [ ! -e ${tmp}/dwi.nii.gz ] && [ "${dwi}" != "" ]; then
+		if [ "${bvecs}" == "" ]; then echo "bvecs is missing!"; exit 1; fi 
+		if [ "${bvals}" == "" ]; then echo "bvals is missing!"; exit 1; fi 
+
+		if [ ! -e ${bvecs} ]; then echo "bvecs not found!"; exit 1; fi 
+		if [ ! -e ${bvals} ]; then echo "bvals not found!"; exit 1; fi 
+
+		cp ${bvecs} ${tmp}/raw/bvecs.txt
+		cp ${bvals} ${tmp}/raw/bvals.txt
+
+		if [[ ${dwi} == *nii ]]; then 
+			runit cp ${dwi} ${tmp}/raw/dwi.nii
+			runit gzip ${tmp}/raw/dwi.nii
+		elif [[ ${dwi} == *nii.gz ]]; then
+			runit cp ${dwi} ${tmp}/raw/dwi.nii.gz
+		else
+			echo "expected nifti dwi: ${dwi}"
+			exit 1
+		fi
+
+		echo "[info] standardizing dwi"
+		${run} VolumeConvert --fresh \
+			--input ${tmp}/raw/dwi.nii.gz \
+			--output ${tmp}/dwi.nii.gz
+
+		if [ "${mask}" != "" ]; then
+			echo "[info] importing user mask"
+			cp ${mask} ${tmp}/raw/mask.nii.gz
+			${run} VolumeConvert \
+				--input ${tmp}/raw/mask.nii.gz \
+				--output ${tmp}/mask.nii.gz
+		else
+			echo "[info] extracting mask"
+			${run} VolumeDwiBaseline \
+				--input ${tmp}/dwi.nii.gz \
+				--gradients ${tmp}/raw/bvecs.txt \
+				--mean ${tmp}/baseline.nii.gz
+			${run} VolumeBrainExtract \
+				--input ${tmp}/baseline.nii.gz \
+				--frac ${bet} \
+				--output ${tmp}/mask.nii.gz
+		fi
+
+		if [ "${denoise}" != "" ]; then
+			echo "[info] auto denoising"
+			${run} VolumeDenoiseAnts \
+				--input ${tmp}/dwi.nii.gz \
+				--multi \
+				--mem ${mem} \
+				--output ${tmp}/dwi.nii.gz
+		elif [ "${denoiseh}" != "" ]; then
+			echo "[info] denoising"
+			${run} VolumeFilterNLM \
+				--rician --h ${denoiseh} ${hrel} \
+				--hrelMask ${tmp}/mask.nii.gz \
+				--input ${tmp}/dwi.nii.gz \
+				--output ${tmp}/dwi.nii.gz
+		fi
+
+		if [ "${eddy}" != "" ]; then
+      matchflag=""
+      if [ "${nomatch}" != "" ]; then matchflag="--nomatch"; fi
+
+			echo "[info] running basic eddy"
+			qiteddybasic ${matchflag} \
+				${tmp}/dwi.nii.gz \
+				${tmp}/raw/bvecs.txt \
+				${tmp}/raw/bvals.txt \
+				${tmp}/mask.nii.gz \
+				${tmp}/eddyout
+			 
+				for f in dwi.nii.gz bvecs.txt bvals.txt; do 
+					mv ${tmp}/eddyout/${f} ${tmp}/${f}
+				done
+				mv ${tmp}/eddyout/map.csv ${tmp}/eddy.csv
+
+				# we can now skip matching 
+        # because qitbasiceddy does it
+				nomatch=1
+		elif [ "${nomatch}" != "" ]; then
+			echo "[info] skipping gradient matching"
+			${run} GradientsConvert \
+				--input ${tmp}/raw/bvecs.txt \
+				--output ${tmp}/bvecs.txt
+		else
+			echo "[info] matching gradients"
+			${run} GradientsMatch \
+				--input ${tmp}/raw/bvecs.txt \
+				--dwi ${tmp}/dwi.nii.gz \
+				--mask ${tmp}/mask.nii.gz \
+				--output ${tmp}/bvecs.txt
+		fi
+
+		if [ "${round}" != "" ]; then
+			echo "[info] rounding b-values"
+			${run} GradientsTransform --round \
+				--input ${tmp}/bvecs.txt \
+				--output ${tmp}/bvecs.txt
+		fi
+
+		if [ "${motion}" != "" ]; then
+			echo "[info] running motion correction"
+			${run} VolumeDwiMotionEstimation \
+				--input ${tmp}/dwi.nii.gz \
+				--output ${tmp}/motion
+
+			${run} VolumeDwiCorrect \
+				--input-dwi ${tmp}/dwi.nii.gz \
+				--input-bvecs ${tmp}/bvecs.txt \
+				--input-bvals ${tmp}/bvals.txt \
+				--output-dwi ${tmp}/dwi.nii.gz \
+				--output-bvecs ${tmp}/bvecs.txt \
+				--output-bvals ${tmp}/bvals.txt
+		fi
+	fi
+
+	rm -rf ${tmp}/raw
+	mv ${tmp} ${subject}/input
+else
+  echo "[info] using existing input"
+fi
+
+if [ ! -e ${subject}/tone.fs ] && [ "${freesurfer}" != "" ]; then
+	echo "[info] importing user freesurfer results"
+	if [ ! -e ${subject}/input/t1.nii.gz ]; then
+		touch ${subject}/input/t1.nii.gz
+	fi
+	runit cp -r ${freesurfer} ${subject}/tone.fs
+fi
+
+extras=""
+
+if [ "${tracts}" != "" ]; then
+  extras="${extras} --make ${tracts}/Makefile"
+fi
+
+${mybin}/qitmake QIT_MEMORY=${mem} -C ${subject} ${posit} ${extras}
+
+echo "[info] finished $(basename $0)"
+
+##############################################################################
+# End of file
+##############################################################################

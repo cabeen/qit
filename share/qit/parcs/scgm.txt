@@ -1,0 +1,14 @@
+Left-Thalamus-Proper
+Left-Caudate
+Left-Putamen
+Left-Pallidum
+Left-Hippocampus
+Left-Amygdala
+Left-Accumbens-area
+Right-Thalamus-Proper
+Right-Caudate
+Right-Putamen
+Right-Pallidum
+Right-Hippocampus
+Right-Amygdala
+Right-Accumbens-area

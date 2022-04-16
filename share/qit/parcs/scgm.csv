@@ -1,0 +1,15 @@
+index,name,r,g,b,a
+1,lh_thalamus_proper,0,118,14,0
+2,lh_caudate,122,186,220,0
+3,lh_putamen,236,13,176,0
+4,lh_pallidum,12,48,255,0
+5,lh_hippocampus,220,216,20,0
+6,lh_amygdala,103,255,255,0
+7,lh_accumbens_area,255,165,0,0
+8,rh_thalamus_proper,0,118,14,0
+9,rh_caudate,122,186,220,0
+10,rh_putamen,236,13,176,0
+11,rh_pallidum,13,48,255,0
+12,rh_hippocampus,220,216,20,0
+13,rh_amygdala,103,255,255,0
+14,rh_accumbens_area,255,165,0,0

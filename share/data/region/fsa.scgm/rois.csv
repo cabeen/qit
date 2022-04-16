@@ -1,0 +1,15 @@
+name,index
+lh_thalamus_proper,1
+lh_caudate,2
+lh_putamen,3
+lh_pallidum,4
+lh_hippocampus,5
+lh_amygdala,6
+lh_accumbens_area,7
+rh_thalamus_proper,8
+rh_caudate,9
+rh_putamen,10
+rh_pallidum,11
+rh_hippocampus,12
+rh_amygdala,13
+rh_accumbens_area,14

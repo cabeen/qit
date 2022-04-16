@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline version=".2">
+        <connections>
+                <connection source="diffusion-weightedMRI_1.Output" sink="QITDiffusion-PrepareSubject_1.dwi" />
+                <connection source="b-vectors_1.Output" sink="QITDiffusion-PrepareSubject_1.bvecs" />
+                <connection source="b-values_1.Output" sink="QITDiffusion-PrepareSubject_1.bvals" />
+                <connection source="subjectdirectory_1.Output" sink="QITDiffusion-PrepareSubject_1.subject" />
+                <connection source="T1wMRI_1.Output" sink="QITDiffusion-PrepareSubject_1.tone" />
+        </connections>
+        <icons>
+                <icon id="0" value="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&#xA;xpt47TNLUwAAAABJRU5ErkJggg==" />
+        </icons>
+        <moduleGroup id="qitmake_1" name="qitmake" posX="0" posY="0" sourceCode="">
+                <module id="QITDiffusion-PrepareSubject_1" name="QIT Diffusion - Prepare Subject" package="Quantitative Imaging Toolkit" version="1.0b" description="Prepare a DWI dataset for the QIT diffusion pipeline. " icon="0" posX="116" posY="660" sourceCode="" location="pipeline://cranium.loni.usc.edu//ifshome/rcabeen/bin/qitdwiprep" executableVersion="1.0b">
+                        <authors>
+                                <author fullName="Ryan Cabeen" email="cabeen@gmail.com" website="http://cabeen.io" />
+                        </authors>
+                        <tag />
+                        <metadata>
+                                <data key="__creationDateKey" value="Thu Mar 14 12:37:25 PDT 2019" />
+                        </metadata>
+                        <input id="QITDiffusion-PrepareSubject_1.dwi" name="dwi" description="The input DWI image, should be in the nifti format" required="true" enabled="true" order="0" prefix="--dwi" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.bvecs" name="bvecs" description="The b-vectors file, may be row or column oriented.  The number of b-values must match the number of b-vectors" required="true" enabled="true" order="1" prefix="--bvecs" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.bvals" name="bvals" description="the b-values file, may be row or column oriented.  The number of b-values must match the number of b-vectors" required="true" enabled="true" order="2" prefix="--bvals" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.subject" name="subject" description="The subject directory" required="true" enabled="true" order="9" prefix="--subject" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="Directory" cardinality="1" />
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.tone" name="tone" description="provide an optional T1 MRI (note: you can alternatively provide a freesurfer directory with another flag)" required="false" enabled="true" order="3" prefix="--tone" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.freesurfer" name="freesurfer" description="provide an optional freesurfer subject directory (note: you can alternatively provide a T1 MRI with another flag)" required="false" enabled="false" order="4" prefix="--freesurfer" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="Directory" cardinality="1" />
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.motion" name="motion" description="apply intra-session motion correction using FSL" required="false" enabled="true" order="8" prefix="--motion" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="Number" cardinality="0" />
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.denoise" name="denoise" description="apply Rician-corrected non-local means denoising to the DWI with the given bandwidth parameter (expected standard deviation of the noise, e.g. measured in a background ROI)" required="false" enabled="true" order="6" prefix="--denoise" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="Number" cardinality="1" />
+                                <values>
+                                        <value>25</value>
+                                </values>
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.bet" name="bet" description="specify a FSL BET fraction parameter for skull stripping (default if 0.3)" required="false" enabled="false" order="7" prefix="--bet" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="Number" cardinality="1" />
+                        </input>
+                        <input id="QITDiffusion-PrepareSubject_1.mask" name="mask" description="provide a user-defined brain mask (otherwise, one will be automatically extracted using FSL BET)" required="false" enabled="false" order="5" prefix="--mask" prefixSpaced="true" prefixAllArgs="false">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </input>
+                        <executableAuthors>
+                                <author fullName="Ryan Cabeen" email="cabeen@gmail.com" website="http://cabeen.io" />
+                        </executableAuthors>
+                        <license>Quantitative Imaging Toolkit (QIT) (c) 2017 Ryan Cabeen
+All rights reserved.
+
+The Software remains the property of Ryan Cabeen ("the Author").
+
+The Software is distributed "AS IS" under this Licence solely for
+non-commercial use in the hope that it will be useful, but in order
+that the Author as a charitable foundation protects its assets for
+the benefit of its educational and research purposes, the Author
+makes clear that no condition is made or to be implied, nor is any
+warranty given or to be implied, as to the accuracy of the Software,
+or that it will be suitable for any particular purpose or for use
+under any specific conditions. Furthermore, the Author disclaims
+all responsibility for the use which is made of the Software. It
+further disclaims any liability for the outcomes arising from using
+the Software.
+
+The Licensee agrees to indemnify the Author and hold the
+Author harmless from and against any and all claims, damages and
+liabilities asserted by third parties (including claims for
+negligence) which arise directly or indirectly from the use of the
+Software or the sale of any products based on the Software.
+
+No part of the Software may be reproduced, modified, transmitted or
+transferred in any form or by any means, electronic or mechanical,
+without the express permission of the Author. The permission of
+the Author is not required if the said reproduction, modification,
+transmission or transference is done without financial return, the
+conditions of this Licence are imposed upon the receiver of the
+product, and all original and amended source code is included in any
+transmitted product. You may be held legally responsible for any
+copyright infringement that is caused or encouraged by your failure to
+abide by these terms and conditions.
+
+You are not permitted under this Licence to use this Software
+commercially. Use for which any financial return is received shall be
+defined as commercial use, and includes (1) integration of all or part
+of the source code or the Software into a product for sale or license
+by or on behalf of Licensee to third parties or (2) use of the
+Software or any derivative of it for research with the final aim of
+developing software products for sale or license to a third party or
+(3) use of the Software or any derivative of it for research with the
+final aim of developing non-software products for sale or license to a
+third party, or (4) use of the Software to provide any service to an
+external organisation for which payment is received.</license>
+                </module>
+                <dataModule id="diffusion-weightedMRI_1" name="diffusion-weighted MRI" posX="105" posY="269" sourceCode="" type="File" source="true" loopIndex="false" serverAddress="cranium.loni.usc.edu">
+                        <tag />
+                        <metadata>
+                                <data key="__creationDateKey" value="Thu Mar 14 12:48:03 PDT 2019" />
+                        </metadata>
+                        <output id="diffusion-weightedMRI_1.Output" name="Output" required="true" enabled="true" order="-1">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </output>
+                        <fileTypes>
+                                <filetype name="File" extension="" description="Any type of data file" />
+                        </fileTypes>
+                        <values>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP173203/DTI/DTI64dir.nii.gz</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP188603/DTI/DTI64dir.nii.gz</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP272703/DTI/DTI64dir.nii.gz</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP307603/DTI/DTI64dir.nii.gz</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP904603/DTI/DTI64dir.nii.gz</value>
+                        </values>
+                </dataModule>
+                <dataModule id="b-vectors_1" name="b-vectors" posX="154" posY="344" sourceCode="" type="File" source="true" loopIndex="false" serverAddress="cranium.loni.usc.edu">
+                        <tag />
+                        <metadata>
+                                <data key="__creationDateKey" value="Thu Mar 14 12:48:03 PDT 2019" />
+                        </metadata>
+                        <output id="b-vectors_1.Output" name="Output" required="true" enabled="true" order="-1">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </output>
+                        <fileTypes>
+                                <filetype name="File" extension="" description="Any type of data file" />
+                        </fileTypes>
+                        <values>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP173203/DTI/DTI64dir.bvec</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP188603/DTI/DTI64dir.bvec</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP272703/DTI/DTI64dir.bvec</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP307603/DTI/DTI64dir.bvec</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP904603/DTI/DTI64dir.bvec</value>
+                        </values>
+                </dataModule>
+                <dataModule id="b-values_1" name="b-values" posX="199" posY="418" sourceCode="" type="File" source="true" loopIndex="false" serverAddress="cranium.loni.usc.edu">
+                        <tag />
+                        <metadata>
+                                <data key="__creationDateKey" value="Thu Mar 14 12:48:03 PDT 2019" />
+                        </metadata>
+                        <output id="b-values_1.Output" name="Output" required="true" enabled="true" order="-1">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </output>
+                        <fileTypes>
+                                <filetype name="File" extension="" description="Any type of data file" />
+                        </fileTypes>
+                        <values>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP173203/DTI/DTI64dir.bval</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP188603/DTI/DTI64dir.bval</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP272703/DTI/DTI64dir.bval</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP307603/DTI/DTI64dir.bval</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP904603/DTI/DTI64dir.bval</value>
+                        </values>
+                </dataModule>
+                <dataModule id="subjectdirectory_1" name="subject directory" posX="294" posY="561" sourceCode="" type="Directory" source="true" loopIndex="false" serverAddress="cranium.loni.usc.edu">
+                        <tag />
+                        <metadata>
+                                <data key="__creationDateKey" value="Thu Mar 14 12:48:03 PDT 2019" />
+                        </metadata>
+                        <output id="subjectdirectory_1.Output" name="Output" required="true" enabled="true" order="-1">
+                                <format type="Directory" cardinality="1" />
+                        </output>
+                        <values>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level2/KP173203</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level2/KP188603</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level2/KP272703</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level2/KP307603</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level2/KP904603</value>
+                        </values>
+                </dataModule>
+                <dataModule id="T1wMRI_1" name="T1w MRI" posX="244" posY="485" sourceCode="" type="File" source="true" loopIndex="false" serverAddress="cranium.loni.usc.edu">
+                        <tag />
+                        <metadata>
+                                <data key="__creationDateKey" value="Thu Mar 14 12:48:03 PDT 2019" />
+                        </metadata>
+                        <output id="T1wMRI_1.Output" name="Output" required="true" enabled="true" order="-1">
+                                <format type="File" cardinality="1">
+                                        <fileTypes>
+                                                <filetype name="File" extension="" description="Any type of data file" />
+                                        </fileTypes>
+                                </format>
+                        </output>
+                        <fileTypes>
+                                <filetype name="File" extension="" description="Any type of data file" />
+                        </fileTypes>
+                        <values>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP173203/T1/MPRAGEBWM.nii.gz</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP188603/T1/MPRAGEBWM.nii.gz</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP272703/T1/MPRAGEBWM.nii.gz</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP307603/T1/MPRAGEBWM.nii.gz</value>
+                                <value>pipeline://cranium.loni.usc.edu//ifs/loni/postdocs/rcabeen/shared/vanhorn/level1/KP904603/T1/MPRAGEBWM.nii.gz</value>
+                        </values>
+                </dataModule>
+                <annotations visible="true">
+                        <annotation width="430" height="161" posX="52" posY="76" background="255,255,153,100" foreground="0,0,0,255" expanded="true" type="text" name="Quantitative Imaging Toolkit (QIT) - Diffusion Workflow&#xA;&#xA;The QIT Diffusion Pipeline provides a way to process your diffusion MRI data to produce a variety of different quantitative metrics that can be used to characterize the microstructure and connectivity of the brain.&#xA;&#xA;The pipeline consists of several workflows to accomplish the following steps&#xA;&#xA;1. Prepare Subjects (from raw diffusion MRI data)&#xA;2. Process Subjects (specify which parameters you want)&#xA;3. Export Datasets (export specific datasets that you can visualize)">
+                                <styles>
+                                        <style name="Quantitative Imaging Toolkit (QIT) - Diffusion Workflow&#xA;&#xA;$0" fontSize="11" isBold="true" />
+                                        <style name="The QIT Diffusion Pipeline provides a way to process your diffusion MRI data to produce a variety of different quantitative metrics that can be used to characterize the microstructure and connectivity of the brain.&#xA;&#xA;The pipeline consists of several workflows to accomplish the following steps&#xA;&#xA;1. Prepare Subjects (from raw diffusion MRI data)&#xA;2. Process Subjects (specify which parameters you want)&#xA;3. Export Datasets (export specific datasets that you can visualize)$57" fontSize="11" />
+                                </styles>
+                        </annotation>
+                        <annotation width="371" height="147" posX="491" posY="239" background="255,255,153,100" foreground="0,0,0,255" expanded="true" type="text" name="This particular workflow is designed to prepare your diffusion MRI data for further processing by QIT. This will take anywhere from minutes to hours depending on the size of the dataset (image resolution and number of gradients), and it includes steps for:&#xA;&#xA;- standardizing the image header&#xA;- denoising (optional)&#xA;- motion correction (optional)&#xA;- brain extraction&#xA;- diffusion gradient registration&#xA;&#xA;You should provide a list of diffusion-weighted MRIs (in nifti) and matching b-vectors and b-values text files.  You must also provide a list of subject direectories where the results will be stored.&#xA;&#xA;There are a few optional items that you can provide: a user-created brain mask, a T1 MRI or a freesurfer subject directory.&#xA;&#xA;After running your subject data throgh this workflow, you can then provide the subject directories to the &quot;process&quot; workflow to do the full diffusion analysis">
+                                <styles>
+                                        <style name="This particular workflow is designed to prepare your diffusion MRI data for further processing by QIT. This will take anywhere from minutes to hours depending on the size of the dataset (image resolution and number of gradients), and it includes steps for:&#xA;&#xA;- standardizing the image header&#xA;- denoising (optional)&#xA;- motion correction (optional)&#xA;- brain extraction&#xA;- diffusion gradient registration&#xA;&#xA;You should provide a list of diffusion-weighted MRIs (in nifti) and matching b-vectors and b-values text files.  You must also provide a list of subject direectories where the results will be stored.&#xA;&#xA;There are a few optional items that you can provide: a user-created brain mask, a T1 MRI or a freesurfer subject directory.&#xA;&#xA;After running your subject data throgh this workflow, you can then provide the subject directories to the &quot;process&quot; workflow to do the full diffusion analysis$0" fontSize="11" />
+                                </styles>
+                        </annotation>
+                </annotations>
+        </moduleGroup>
+</pipeline>
+

@@ -1,0 +1,311 @@
+#!/usr/bin/env python
+################################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+################################################################################
+
+"""  qitmake: a pipeline tool based on make, with extensions to support
+analytic pipelines in population imaging studies.  It supports two modes of
+operations: standard mode and batch processing mode (apply make to each
+directory matching '${study}/${id}').  This supports logging and runtime
+provenance, as well as distributed processing through qsub in the batch
+processing mode. """
+
+from os.path import join
+from os.path import basename
+from os.path import dirname
+from os.path import exists
+from os.path import abspath
+from os.path import pardir
+from os import environ
+from os import chdir 
+from os import listdir
+from os import makedirs
+from os import getcwd
+from shutil import copyfile
+from sys import argv
+from sys import exit
+from sys import stdout
+from sys import stderr
+from time import time
+from random import randint
+from time import sleep
+from re import search
+from os.path import expanduser
+from optparse import (OptionParser,BadOptionError,AmbiguousOptionError)
+
+import subprocess
+import sys
+import os
+import platform
+
+def assume(test, msg):
+  if not test:
+      print("error: %s" % msg)
+      exit(1)
+
+def info(msg):
+  print("  [%s] %s" % (basename(argv[0]), msg))
+
+def mklog(base):
+    while True:
+      tid = "session.%d%d" % (int(time() * 1000), randint(10000,99999))
+      log_dir = join(base, tid)
+      if exists(log_dir):
+          sleep(0.1)
+      else:
+          makedirs(log_dir)
+          break
+
+    ps = ["architecture", "dist"]
+    ps += ["win32_ver", "linux_distribution", "mac_ver"]
+    ps += ["machine", "node", "platform"]
+    ps += ["processor", "python_build", "python_compiler"]
+    ps += ["python_implementation", "python_version"]
+    ps += ["release", "system", "uname", "version"]
+
+    pf = open(join(log_dir, "platform.properties"), "w")
+    for p in ps:
+        f = platform.__dict__.get(p)
+        if f is not None:
+            pf.write("%s: %s\n" % (p, str(f())))
+    pf.close()
+
+    ef = open(join(log_dir, "environ.properties"), "w")
+    for key in os.environ.keys():
+        ef.write("%s: %s\n" % (key, os.environ[key]))
+    ef.close()
+
+    info("using log dir: %s" % log_dir)
+    return log_dir
+
+def run_local(cmd, log_dir, nopipe=False):
+    """run a command locally"""
+
+    info("running cmd: %s" % " ".join(cmd))
+    script = join(log_dir, "run.sh")
+    sout = join(log_dir, "run.out")
+    pipe = join(log_dir, "pipe")
+    scmd = " ".join(cmd)
+
+    if nopipe:
+        f = open(script, "w")
+        f.write("#!/usr/bin/env bash\n")
+        f.write("%s\n" % scmd)
+        f.write("rc=$?\n")
+        f.write("exit ${rc}\n")
+        f.close()
+    else:
+        f = open(script, "w")
+        f.write("#!/usr/bin/env bash\n")
+        f.write("mkfifo %s\n" % pipe)
+        f.write("tee %s < %s &\n" % (sout, pipe))
+        f.write("%s &> %s\n" % (scmd, pipe))
+        f.write("rc=$?\n")
+        f.write("rm %s\n" % pipe)
+        f.write("exit ${rc}\n")
+        f.close()
+
+    if subprocess.call(["bash", script], shell=False):
+      info("make failed")
+      sys.exit(1)
+
+def run_qsub(cmd, log_dir, qflags):
+    """submit a command to qsub"""
+
+    script = join(log_dir, "run.sh")
+    sout = join(log_dir, "run.out")
+
+    f = open(script, "w")
+    f.write("#!/usr/bin/env bash\n")
+    f.write(" ".join(cmd) + "\n")
+    f.close()
+
+    qcmd = ["qsub"] + qflags.split(" ") + ["-o", sout, "-e", sout, script]
+    subprocess.call(qcmd)
+
+class PassThroughOptionParser(OptionParser):
+    def _process_args(self, largs, rargs, values):
+        while rargs:
+            try:
+                OptionParser._process_args(self,largs,rargs,values)
+            except BadOptionError as e:
+                largs.append(e.opt_str)
+            except AmbiguousOptionError as e:
+                largs.append(e.opt_str)
+
+def main():
+    usage = "%s <options> <args>" % basename(argv[0])
+    parser = PassThroughOptionParser(usage=usage, description=__doc__)
+    parser.add_option("--make", metavar="<fn>", \
+        help="specify a makefile")
+    parser.add_option("--batch", action="store_true", \
+        help="run in batch processing mode")
+    parser.add_option("--study", metavar="<dir>", \
+        help="specify a study directory for batch mode processing (default is ${pwd})")
+    parser.add_option("--ids", metavar="<fn>", \
+        help="specify a text list of case identifiers for batch mode processing (default is ${study}/*)")
+    parser.add_option("--qsub", action="store_true", \
+        help="use qsub to parallize batch processing")
+    parser.add_option("--qsub-flags", metavar="<flags>", \
+        help="specify custom qsub flags", default="-V")
+    parser.add_option("--nopipe", action="store_true", \
+        help="run without piping output to a log (necessary for vfat fs)")
+
+    opts, pos = parser.parse_args()
+
+    if len(argv) == 1:
+        parser.print_help()
+        return
+
+    info("starting")
+
+    qit_dir = abspath(join(dirname(argv[0]), pardir))
+    info("using qit directory: %s" % qit_dir)
+
+    include_dir = join(qit_dir, "lib", "qitmake")
+    info("using include dir: %s" % include_dir)
+
+    def qmklog(base):
+        log_dir = mklog(base)
+        build_fn = join(qit_dir, "doc", "build.properties")
+        copyfile(build_fn, join(log_dir, "build.properties"))
+        return log_dir
+
+    if opts.make:
+        makefile = opts.make
+    else:
+        makefile = join(qit_dir, "lib", "qitmake", "brain.makefile")
+    
+    if not exists(makefile):
+        makefile = join(qit_dir, "lib", "qitmake", makefile)
+
+    makefile = abspath(makefile)
+    assume(exists(makefile), "makefile does not exist %s" % makefile)
+    info("using makefile: %s" % makefile)
+
+    if opts.batch:
+        info("running batch mode")
+
+        if opts.study:
+            study = abspath(opts.study)
+        else:
+            study = getcwd()
+        assume(exists(study), "study directory does not exist")
+        info("using study directory: %s" % study)
+
+        if opts.ids and exists(opts.ids):
+            sids = [s.strip() for s in open(opts.ids)]
+        else:
+            sids = listdir(study)
+
+        info("processing %d cases" % len(sids))
+
+        case_dirs = []
+        for sid in sids:
+            batch_dir = join(study, sid)
+            if not exists(batch_dir):
+                info("skipping case %s" % sid)
+                continue
+            case_dirs.append(batch_dir)
+
+        if opts.qsub:
+            info("using qsub execution")
+        else:
+            info("using local execution")
+
+        for batch_dir in case_dirs:
+            info("processing: %s" % batch_dir)
+
+            log_dir = qmklog(join(batch_dir, ".%s" % basename(argv[0])))
+            makefile_log = join(log_dir, "Makefile")
+            copyfile(makefile, makefile_log)
+
+            cmd = ["make"]
+            cmd += ["-f", makefile]
+            cmd += ["-C", batch_dir]
+            cmd += ["-I", include_dir]
+            for p in pos:
+              for pp in p.split(" "):
+                if len(pp) > 0:
+                  cmd += ["\"%s\"" % pp]
+
+            if opts.qsub:
+                run_qsub(cmd, log_dir, opts.qsub_flags)
+            else:
+                run_local(cmd, log_dir, opts.nopipe)
+
+    else:
+        info("running standard mode")
+
+        cmd = ["make"]
+        cmd += ["-f", makefile]
+        cmd += ["-I", include_dir]
+        for p in pos:
+          for pp in p.split(" "):
+            if len(pp) > 0:
+              cmd += ["\"%s\"" % pp]
+
+        mydir = getcwd()
+        if "-C" in pos:
+          mydir = pos[pos.index("-C") + 1]
+        log_dir = qmklog(join(mydir, ".qit", "%s" % basename(argv[0])))
+
+        if opts.qsub:
+            run_qsub(cmd, log_dir, opts.qsub_flags)
+        else:
+            run_local(cmd, log_dir, opts.nopipe)
+
+    info("finished")
+
+if __name__ == "__main__":
+    main()
+
+################################################################################
+# End of file
+################################################################################

@@ -1,0 +1,17 @@
+index,name,r,g,b
+9,Left_Thalamus,0,118,14
+10,Left_Thalamus_Proper,0,118,14
+11,Left_Caudate,122,186,220
+12,Left_Putamen,236,13,176
+13,Left_Pallidum,12,48,255
+17,Left_Hippocampus,220,216,20
+18,Left_Amygdala,103,255,255
+26,Left_Accumbens_area,255,165,0
+48,Right_Thalamus,0,118,14
+49,Right_Thalamus_Proper,0,118,14
+50,Right_Caudate,122,186,220
+51,Right_Putamen,236,13,176
+52,Right_Pallidum,13,48,255
+53,Right_Hippocampus,220,216,20
+54,Right_Amygdala,103,255,255
+58,Right_Accumbens_area,255,165,0

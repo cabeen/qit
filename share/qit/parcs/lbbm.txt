@@ -1,0 +1,10 @@
+left-temporal
+left-parietal
+left-occipital
+left-frontal
+left-subcortical
+right-temporal
+right-parietal
+right-occipital
+right-frontal
+right-subcortical

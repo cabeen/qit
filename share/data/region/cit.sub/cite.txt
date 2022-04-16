@@ -1,0 +1,11 @@
+https://evendim.sites.caltech.edu/subcortical-atlas-new
+https://osf.io/r2hvk/
+https://neurovault.org/collections/3145/
+
+Pauli, W. M., Nili, A. N. & Tyszka, J. M. A High-Resolution Probabilistic In
+Vivo Atlas of Human Subcortical Brain Nuclei. bioRxiv 211201 (2017).
+doi:10.1101/211201
+
+Pauli, W. M., Nili, A. N. & Tyszka, J. M. A high-resolution probabilistic in
+vivo atlas of human subcortical brain nuclei. Sci Data 5, 180063 (2018).
+doi:10.1038/sdata.2018.63 

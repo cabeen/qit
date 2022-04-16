@@ -1,0 +1,177 @@
+#! /usr/bin/env bash
+################################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+################################################################################
+
+qlog="${HOME}/.qlog"
+qargs="-V"
+qbase="job"
+qcmd="qsub"
+
+usage()
+{
+    echo "
+Name: $(basename $0)
+
+Description:
+
+  Submit a command to a grid engine.  This will wrap the command in a script
+  that preserves the current environment and working directory.  Logs will
+  be written to ~/.qlog to record the script, and standard input and output.
+    
+Usage: 
+
+  $(basename $0) [options] your_script your_arg1 your_arg2 [...]
+
+Options:
+
+   --qargs:   specify the flags given to qsub when submitting the job
+              (default: ${qargs})
+
+   --qlog:    specify the directory to save the job script, input, and output  
+              (default: ${qlog})
+
+   --qbase:   specify the basename for naming the job
+              (default: ${qbase})
+
+   --qcmd:   specify the qsub command
+              (default: ${qcmd})
+
+Author: Ryan Cabeen
+"
+
+exit 1
+}
+
+if [ $# -eq 0 ]; then usage; fi
+
+posit=""
+
+while [ "$1" != "" ]; do
+    case $1 in
+        --qbigjob)      qargs="-V -l hostslots=2,h_vmem=16G"
+                        ;;
+        --qbigmem)      qargs="-V -l h_vmem=12G"
+                        ;;
+        --qmedmem)      qargs="-V -l h_vmem=8G"
+                        ;;
+        --qargs)        shift
+                        qargs=$1
+                        ;;
+        --qlog)         shift
+                        qlog=$1
+                        ;;
+        --qbase)        shift
+                        qbase=$1
+                        ;;
+        --qcmd)         shift
+                        qcmd=$1
+                        ;;
+        -help|--help )  usage
+                        ;;
+        * )             posit="${posit} $1" 
+                        ;;
+    esac
+    shift
+done
+
+if [ ! -e ${qlog} ]; then
+  mkdir -p ${qlog}
+fi
+
+qname=${qbase}_${RANDOM}
+
+qroot=$(readlink -e ${qlog})/${qname}
+script="${qroot}.sh"
+qout="${qroot}.out"
+qerr="${qroot}.err"
+qmes="${qroot}.sub"
+
+echo "started $(basename $0)" 
+echo "... using args: ${qargs}" 
+echo "... using log: ${qlog}" 
+echo "... using base: ${qbase}" 
+echo "... using script: ${script}" 
+echo "... using stdout: ${qout}" 
+echo "... using stderr: ${qerr}" 
+echo "... using root: ${PWD}" 
+echo "... using command: ${posit}" 
+
+for f in ${script} ${qout} ${qerr}; do 
+    if [ -e ${f} ]; then
+        rm ${f}
+    fi
+done
+
+# note: the -V flag in SGE does not preserve the PATH variable
+#       but it is saved to SGE_O_PATH, so we add it back below
+
+echo "#!/usr/bin/env bash" > ${script}
+echo 'export PATH=$PATH:$SGE_O_PATH' >> ${script}
+echo "cd ${PWD}" >> ${script}
+echo "${posit}" >> ${script}
+echo "if [ "'$?'" -ne \"0\" ]; then touch ${qroot}.fail; else touch ${qroot}.pass; fi" >> ${script}
+
+chmod a+x ${script}
+
+run="${qcmd} ${qargs} -N ${qname} -o ${qout} -e ${qerr} ${script}"
+echo ${run} &> ${qmes}
+${run} &>> ${qmes}
+
+if [ $? != 0 ]; then
+  echo "[error] job submission failed."
+  cat ${qmes}
+  exit
+fi
+
+echo "finished $(basename $0)" 
+
+################################################################################
+# End of file
+################################################################################

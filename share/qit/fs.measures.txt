@@ -1,0 +1,17 @@
+BA.area
+BA.meancurv
+BA.thickness
+BA.volume
+BA.lgi
+aparc.a2009s.area
+aparc.a2009s.meancurv
+aparc.a2009s.thickness
+aparc.a2009s.volume
+aparc.a2009s.lgi
+aparc.area
+aparc.meancurv
+aparc.thickness
+aparc.volume
+aparc.lgi
+aseg.stats
+wmparc.stats

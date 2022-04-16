@@ -1,0 +1,407 @@
+#! /usr/bin/env bash
+##############################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+##############################################################################
+
+if [ $# -eq 0 ]; then usage; fi
+
+memory=4G
+threads=4
+method=Hybrid
+
+angle=45
+min=0.075
+step=1.0
+maxlen=10000
+disperse=0.05
+factor=1
+interp=Trilinear
+
+hybridAngle=90
+hybridMin=0.025
+hybridDisperse=0.1
+hybridFactor=5
+hybridFsum=0.01
+hybridSmooth=-0.75
+
+projectAngle=45
+projectNorm=0.01
+projectFrac=0.01
+projectFsum=0.05
+projectSigma=0.0
+
+termNum=2
+simpleCount=10000
+simpleDist=1
+
+usage()
+{
+    echo "
+Name: $(basename $0)
+
+Description:
+
+	Segment a bundle using a bundle atlas definition, which should include the
+  following components:
+
+    * end.nii.gz: a mask that defines the bundle endpoints (terminations)
+    * include.nii.gz: a mask that bundle must touch (may be empty)
+    * exclude.nii.gz: a mask that defines where the bundle may not go
+    * seed.nii.gz: a mask that defines the bundle location
+    * seed.txt.gz: a gzipped text file of seed positions
+    * proto.vtk.gz: a prototype curve for along tract analysis
+    * tom.nii.gz: a tract orientation map (only for prior tractography)
+   
+Usage: 
+
+  $(basename $0) [opts] <bundles> --output output
+
+Required Parameters:
+
+   --models <models.xfib>:     the subject multi-fiber data
+   --mask <mask.nii.gz>:       the subject brain mask 
+   --atlas <indir>:            the atlas bundle definition
+   --output <outdir>:          the output subject bundle directory
+
+Optional Parameters:
+
+   --warp <nii.gz>:          the warp from (nifti file, from atlas to subject)
+   --invwarp <nii.gz>:       the inverse warp (nifti volume, displacement from subject to atlas)
+
+   --memory <str>:           the memory allocation (default: ${memory})
+   --threads <num>:          the number of threads (default: ${threads})
+
+   --method <num>:           the tractography method (default: Hybrid, options: Prior Determ Prob)
+   --interp <str>:           the interpolation method (default: ${interp}, options: Nearest Trilinear)
+
+   --factor <num>:           the seed multiplicative factor (default: ${factor})
+   --angle <num>:            the maximum turning angle (default: ${angle})
+   --min <num>:              the minimum volume fraction (default: ${min})
+   --step <num>:             the step size (default: ${step})
+   --maxlen <num>:           the maximum length (default: ${maxlen})
+   --disperse <num>:         the tracking dispersion (default: ${disperse})
+
+   --hybridFactor <num>:     the seed multiplier for hybrid (default: ${hybridFactor})
+   --hybridAngle <num>:      the angle for hybrid  (default: ${hybridAngle})
+   --hybridMin <num>:        the minimum fraction for hybrid (default: ${hybridMin})
+   --hybridDisperse <num>:   the dispersion for hybrid (default: ${hybridDispersion})
+   --hybridFsum <num>:       the min total fraction for hybrid (default: ${hybridFsum})
+   --hybridSmooth <num>:     the smoothing for hybrid (default: ${hybridSmooth})
+
+   --projectAngle <num>:     the projection angle for prior (default: ${projectAngle})
+   --projectNorm <num>:      the projection norm for prior (default: ${projectNorm})
+   --projectFrac <num>:      the projection min frac for prior (default: ${projectFrac})
+   --projectFsum <num>:      the projection min total frac for prior (default: ${projectFsum})
+   --projectSigma <num>:     the projection sigma for prior (default: ${projectSigma})
+
+   --simpleCount <num>:      the simplification count (default: ${simpleCount})
+   --simpleDist <num>:       the simplification distance (default: ${simpleDist})
+
+Author: Ryan Cabeen
+"; exit 1;
+}
+
+models=""
+mask=""
+warp=""
+invwarp=""
+atlas=""
+output=""
+
+posit=""
+cmd="$@"
+
+while [ "$1" != "" ]; do
+  case $1 in
+    --models)          shift; models=$1 ;;
+    --mask)            shift; mask=$1 ;;
+    --warp)            shift; warp=$1 ;;
+    --invwarp)         shift; invwarp=$1 ;;
+    --atlas)           shift; atlas=$1 ;;
+    --output)          shift; output=$1 ;;
+    --memory)          shift; memory=$1 ;;
+    --threads)         shift; threads=$1 ;;
+    --method)          shift; method=$1 ;;
+    --angle)           shift; angle=$1 ;;
+    --min)             shift; min=$1 ;;
+    --step)            shift; step=$1 ;;
+    --maxlen)          shift; maxlen=$1 ;;
+    --disperse)        shift; disperse=$1 ;;
+    --factor)          shift; factor=$1 ;;
+    --interp)          shift; interp=$1 ;;
+    --hybridAngle)     shift; hybridAngle=$1 ;;
+    --hybridMin)       shift; hybridMin=$1 ;;
+    --hybridDisperse)  shift; hybridDisperse=$1 ;;
+    --hybridFactor)    shift; hybridFactor=$1 ;;
+    --hybridFsum)      shift; hybridFsum=$1 ;;
+    --hybridSmooth)    shift; hybridSmooth=$1 ;;
+    --projectAngle)    shift; projectAngle=$1 ;;
+    --projectNorm)     shift; projectNorm=$1 ;;
+    --projectFrac)     shift; projectFrac=$1 ;;
+    --projectFsum)     shift; projectFsum=$1 ;;
+    --projectSigma)    shift; projectSigma=$1 ;;
+    --termNum)         shift; termNum=$1 ;;
+    --simpleCount)     shift; simpleCount=$1 ;;
+    --simpleDist)      shift; simpleDist=$1 ;;
+    --help )      usage ;;
+    -* | --*)     echo "unknown flag: $1"; usage ;;
+    * )           posit+=" $1" ;;
+  esac; shift
+done
+
+if [ "${models}" == "" ]; then "error: no models found!"; usage; fi
+if [ "${mask}" == "" ]; then "error: no mask found!"; usage; fi
+if [ "${atlas}" == "" ]; then "error: no atlas found!"; usage; fi
+if [ "${output}" == "" ]; then "error: no output found!"; usage; fi
+if [ "${posit}" != "" ]; then "error: unrecognized flags: ${posit}"; usage; fi
+
+echo "using models: ${models}"
+echo "using mask: ${mask}"
+echo "using atlas: ${atlas}"
+echo "using output: ${output}"
+
+warpFlag=""
+inwarpFlag=""
+
+
+if [ "${warp}" != "" ] && [ "${invwarp}" != "" ]; then 
+
+   echo "using warp: ${warp}"
+   echo "using invwarp: ${invwarp}"
+
+   warpFlag="--deform ${warp}"
+   invwarpFlag="--deform ${invwarp}"
+
+elif [ "${warp}" == "" ] && [ "${invwarp}" == "" ]; then 
+
+   echo "using no warp"
+
+else
+
+   echo "error: invalid warp and invwarp pair"
+   exit 1
+
+fi
+
+myoutput=${output}.tmp.${RANDOM}
+mkdir -p ${myoutput}
+
+ref=${models}
+qitcmd="qit -Xmx${memory} --verbose --debug"
+
+${qitcmd} MaskTransformBatch \
+    --threads ${threads} \
+    --input ${atlas}/%s.nii.gz \
+    --names seed,include,exclude,end \
+    --reference ${mask} \
+    ${invwarpFlag} \
+    --output ${myoutput}/%s.nii.gz
+
+${qitcmd} VectsTransform \
+  --input ${atlas}/seeds.txt.gz \
+  ${warpFlag} \
+  --output ${myoutput}/seeds.txt.gz
+
+${qitcmd} CurvesTransform \
+  --input ${atlas}/proto.vtk.gz \
+  ${warpFlag} \
+  --output ${myoutput}/proto.vtk.gz
+
+if [ ${method} == "Hybrid" ]; then
+
+  ${qitcmd} VolumeModelTrackStreamline \
+      --angle ${hybridAngle} \
+      --min ${min} \
+      --step ${step} \
+      --interp ${interp}  \
+      --maxlen ${maxlen} \
+      --disperse ${disperse}  \
+      --samplesFactor ${factor}  \
+      --threads ${threads}  \
+      --hybrid \
+      --hybridAngle ${angle}  \
+      --hybridMin ${hybridMin} \
+      --hybridDisperse ${hybridDisperse} \
+      --hybridSamplesFactor ${hybridFactor}  \
+      --hybridProjFsum ${hybridFsum} \
+      --hybridPresmooth ${hybridSmooth} \
+      --hybridPostsmooth ${hybridSmooth} \
+      --input ${models} \
+      --seedVects ${myoutput}/seeds.txt.gz \
+      --includeMask ${myoutput}/include.nii.gz \
+      --includeAddMask ${myoutput}/end.nii.gz \
+      --excludeMask ${myoutput}/exclude.nii.gz \
+      --hybridStopMask ${myoutput}/exclude.nii.gz \
+      --hybridConnectMask ${myoutput}/end.nii.gz \
+      --output ${myoutput}/curves.vtk.gz
+
+elif [ ${method} == "Prior" ]; then
+
+	${qitcmd} VolumeFibersProjectVector \
+		--smooth \
+		--restrict \
+		--angle ${projectAngle} \
+		--norm ${projectNorm} \
+		--frac ${projectFrac} \
+		--fsum ${projectFsum} \
+		--sigma ${projectSigma} \
+		--input ${models} \
+		--reference ${atlas}/tom.nii.gz \
+		--mask ${myoutput}/seed.nii.gz \
+    ${invwarpFlag} \
+		--threads ${threads} \
+		--output ${myoutput}/tom.nii.gz
+
+  ${qitcmd} VolumeModelTrackStreamline \
+    --vector \
+    --angle ${hybridAngle}  \
+    --min ${min} \
+    --step ${step} \
+    --interp ${interp}  \
+    --maxlen ${maxlen} \
+    --disperse ${disperse}  \
+    --threads ${threads}  \
+    --samplesFactor ${factor} \
+    --input ${myoutput}/tom.nii.gz \
+    --seedVects ${myoutput}/seeds.txt.gz \
+    --includeMask ${myoutput}/include.nii.gz \
+    --includeAddMask ${myoutput}/end.nii.gz \
+    --output ${myoutput}/curves.vtk.gz
+
+elif [ ${method} == "Determ" ]; then
+
+  ${qitcmd} VolumeModelTrackStreamline \
+    --angle ${angle}  \
+    --min ${min} \
+    --step ${step} \
+    --interp ${interp}  \
+    --maxlen ${maxlen} \
+    --threads ${threads}  \
+    --samplesFactor ${factor} \
+    --input ${models} \
+    --seedVects ${myoutput}/seeds.txt.gz \
+    --includeMask ${myoutput}/include.nii.gz \
+    --excludeMask ${myoutput}/exclude.nii.gz \
+    --stopMask ${myoutput}/exclude.nii.gz \
+    --connectMask ${myoutput}/end.nii.gz \
+    --output ${myoutput}/curves.vtk.gz
+
+elif [ ${method} == "Prob" ]; then
+
+  ${qitcmd} VolumeModelTrackStreamline \
+    --prob \
+    --angle ${angle} \
+    --min ${min} \
+    --step ${step} \
+    --interp Nearest \
+    --maxlen ${maxlen} \
+    --disperse ${disperse}  \
+    --threads ${threads}  \
+    --samplesFactor ${factor} \
+    --input ${models} \
+    --seedVects ${myoutput}/seeds.txt.gz \
+    --includeMask ${myoutput}/include.nii.gz \
+    --excludeMask ${myoutput}/exclude.nii.gz \
+    --stopMask ${myoutput}/exclude.nii.gz \
+    --connectMask ${myoutput}/end.nii.gz \
+    --output ${myoutput}/curves.vtk.gz
+
+else
+  
+  echo "error: invalid method: ${method}"; exit 1
+
+fi
+
+${qitcmd} CurvesSegmentAlong \
+  --input ${myoutput}/curves.vtk.gz \
+  --proto ${myoutput}/proto.vtk.gz \
+  --outputCore ${myoutput}/core.vtk.gz \
+  --output ${myoutput}/curves.vtk.gz
+
+${qitcmd} CurvesClusterSCPT \
+  --input ${myoutput}/curves.vtk.gz \
+  --subset ${simpleCount} \
+  --thresh ${simpleDist} \
+  --protos ${myoutput}/simple.vtk.gz
+
+${qitcmd} CurvesAttributes \
+  --retain coord \
+  --input ${myoutput}/simple.vtk.gz \
+  --output ${myoutput}/simple.vtk.gz
+
+${qitcmd} CurvesOrientationMap \
+  --input ${myoutput}/curves.vtk.gz \
+  --refmask ${mask} \
+  --output ${myoutput}/rgb.nii.gz
+
+${qitcmd} CurvesDensity \
+  --input ${myoutput}/curves.vtk.gz \
+  --reference ${mask} \
+  --output ${myoutput}/density.nii.gz
+
+${qitcmd} CurvesEndpointMask \
+  --input ${myoutput}/curves.vtk.gz \
+  --reference ${mask} \
+  --num ${termNum} \
+  --output ${myoutput}/term.nii.gz
+
+if [ -e ${output} ]; then
+  bck=${output}.bck.${RANDOM}
+  echo "backing up previous results: ${bck}"
+  mv ${output} ${bck}
+fi
+
+echo "saving results: ${output}"
+mv ${myoutput} ${output}
+
+echo "finished $(basename $0)"
+
+##############################################################################
+# End of file
+##############################################################################

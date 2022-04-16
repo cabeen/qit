@@ -1,0 +1,161 @@
+#! /usr/bin/env bash
+################################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+################################################################################
+#
+# Name: QVOLCHAN
+#
+# Description:
+#
+#   Apply an image processing operation to each channel of a multi-channel
+#   volume with compution distributed over a grid.  This splits the volume
+#   into a volume for each channel, runs the operation on each channel
+#   separately, and then combines the result.
+# 
+#   The module must have an interface like so:
+# 
+#     qit ModuleName [opts] \
+#        --input input.nii.gz \
+#        --output output.nii.gz \
+#
+# Author: Ryan Cabeen
+#
+################################################################################
+
+name=$(basename $0)
+
+if [ $# -lt "3" ]; then
+    echo "Usage: ${name} <input> <output> <module> [opts]"
+    exit
+fi
+
+echo "started ${name}"
+
+# this assumes that the parent directory must exist 
+# (although not the specific file)
+abspath() 
+{
+    cd "$(dirname "$1")"
+    printf "%s/%s\n" "$(pwd)" "$(basename "$1")"; 
+}
+
+name=$(basename $0)
+qitcmd="qit --dtype float -Xmx12G --verbose --debug"
+
+input=$(abspath ${1})
+output=$(abspath ${2})
+args=${@:3}
+
+base=$(basename ${output})
+rid=${RANDOM}
+tmp=$(dirname ${output})/${name}.tmp.${rid}
+tmp=${output}.tmp.${rid}
+
+echo "... using input: ${input}"
+echo "... using output: ${output}"
+echo "... using args: ${args}"
+echo "... using rid: ${rid}"
+echo "... using tmp: ${tmp}"
+
+rm -rf ${tmp}
+mkdir -p ${tmp}
+
+echo "... splitting volumes"
+${qitcmd} VolumeSplit \
+  --input ${input} \
+  --output ${tmp}/channels/channel.%05d/input.nii.gz
+
+echo "... submitting jobs blockwise fitting" 
+bids=$(echo ${tmp}/channels/channel.* | xargs -n 1 echo | sed 's/.*channel\.//g')
+for bid in ${bids}; do
+  jdir=${tmp}/channels/channel.${bid}
+
+  jid="qvolchan.job.${rid}.channel.${bid}"
+  jids="${jids}${jids+,}${jid}"
+
+  jbin=${jdir}/run.sh
+  jout=${jdir}/run.out
+  jerr=${jdir}/run.err
+
+  if [ -z "${QARGS+xxx}" ]; then
+      QARGS="-V"
+  fi
+  
+  echo "#!/usr/bin/env bash" > ${jbin}
+  echo "cd ${jdir}" >> ${jbin}
+  echo "${qitcmd} ${args} --input input.nii.gz --output output.nii.gz" >> ${jbin}
+  chmod a+x ${jbin}
+
+  echo "...... submitting job for channel ${bid} with job id ${jid}"
+
+  ${QCMD-qsub} ${QARGS} -N ${jid} -o ${jout} -e ${jerr} ${jbin}
+done
+
+echo "... waiting for jobs to finish"
+${QCMD-qsub} -sync y -N ${name}.sync.${rid} -hold_jid ${jids} \
+    -o /dev/null -e /dev/null -b y "echo done"
+
+join=${tmp}/join.sh
+echo "#!/usr/bin/env bash" > ${join}
+echo "cd ${tmp}" >> ${join}
+echo "${qitcmd} VolumeFuse --input channels/*/output.nii.gz --output-cat ${output}" >> ${join}
+
+echo "... fusing output"
+bash ${join}
+
+if [ $? -eq "0" ]; then 
+  echo "... cleaning up"
+  rm -rf ${tmp}
+
+	echo "finished"
+fi
+
+################################################################################
+# End of file
+################################################################################

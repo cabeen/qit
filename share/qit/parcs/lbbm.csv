@@ -1,0 +1,13 @@
+index,name
+1,lh_temporal
+2,lh_parietal
+3,lh_occipital
+4,lh_frontal
+5,lh_subcortical
+6,rh_temporal
+7,rh_parietal
+8,rh_occipital
+9,rh_frontal
+10,rh_subcortical
+11,lh_insula
+12,rh_insula

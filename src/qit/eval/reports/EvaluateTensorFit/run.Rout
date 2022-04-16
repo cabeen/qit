@@ -1,0 +1,91 @@
+
+R version 3.3.2 (2016-10-31) -- "Sincere Pumpkin Patch"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin16.1.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(ggplot2)
+> 
+> summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
++                       conf.interval=.95, .drop=TRUE) {
++     library(plyr)
++ 
++     # New version of length which can handle NA's: if na.rm==T, don't count them
++     length2 <- function (x, na.rm=FALSE) {
++         if (na.rm) sum(!is.na(x))
++         else       length(x)
++     }
++ 
++     # This does the summary. For each group's data frame, return a vector with
++     # N, mean, and sd
++     datac <- ddply(data, groupvars, .drop=.drop,
++       .fun = function(xx, col) {
++         c(N    = length2(xx[[col]], na.rm=na.rm),
++           mean = mean   (xx[[col]], na.rm=na.rm),
++           sd   = sd     (xx[[col]], na.rm=na.rm)
++         )
++       },
++       measurevar
++     )
++ 
++     # Rename the "mean" column    
++     datac <- rename(datac, c("mean" = measurevar))
++ 
++     datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
++ 
++     # Confidence interval multiplier for standard error
++     # Calculate t-statistic for confidence interval: 
++     # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
++     ciMult <- qt(conf.interval/2 + .5, datac$N-1)
++     datac$ci <- datac$se * ciMult
++ 
++     return(datac)
++ }
+> 
+> # Run the simulation and load the results
+> 
+> bn <- "EvaluateTensorFit"
+> fn <- "data.csv"
+> system(sprintf("qit %s --gradients bvecs.txt --output %s", bn, fn))
+> df <- read.csv(fn)
+> df$fitter <- factor(df$fitter, c("blls", "bwlls", "lls", "wlls", "bnlls", "nlls"))
+> 
+> # Plot the data
+> 
+> for (param in c("sigerr", "faerr", "mderr", "aderr", "rderr", "direrr", "firsterr", "seconderr", "thirderr"))
++ {
++   df$value <- df[,param]
++   dfs <- summarySE(df, measurevar="value", groupvars=c("fitter", "noise"))
++   myplot <- ggplot(data=dfs, aes(x=noise, y=value, group=fitter, fill=fitter)) 
++   myplot <- myplot + geom_bar(stat="identity", position=position_dodge()) 
++   myplot <- myplot + geom_errorbar(aes(ymin=value-se, ymax=value+se), width=.2, position=position_dodge(.9))
++   myplot <- myplot + ylab(param)
++   ggsave(sprintf("plot.%s.pdf", param))
++ }
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 34.930   2.146  27.768 

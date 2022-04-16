@@ -1,0 +1,165 @@
+/*******************************************************************************
+  *
+  * Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+  * All rights reserved.
+  *
+  * The Software remains the property of Ryan Cabeen ("the Author").
+  *
+  * The Software is distributed "AS IS" under this Licence solely for
+  * non-commercial use in the hope that it will be useful, but in order
+  * that the Author as a charitable foundation protects its assets for
+  * the benefit of its educational and research purposes, the Author
+  * makes clear that no condition is made or to be implied, nor is any
+  * warranty given or to be implied, as to the accuracy of the Software,
+  * or that it will be suitable for any particular purpose or for use
+  * under any specific conditions. Furthermore, the Author disclaims
+  * all responsibility for the use which is made of the Software. It
+  * further disclaims any liability for the outcomes arising from using
+  * the Software.
+  *
+  * The Licensee agrees to indemnify the Author and hold the
+  * Author harmless from and against any and all claims, damages and
+  * liabilities asserted by third parties (including claims for
+  * negligence) which arise directly or indirectly from the use of the
+  * Software or the sale of any products based on the Software.
+  *
+  * No part of the Software may be reproduced, modified, transmitted or
+  * transferred in any form or by any means, electronic or mechanical,
+  * without the express permission of the Author. The permission of
+  * the Author is not required if the said reproduction, modification,
+  * transmission or transference is done without financial return, the
+  * conditions of this Licence are imposed upon the receiver of the
+  * product, and all original and amended source code is included in any
+  * transmitted product. You may be held legally responsible for any
+  * copyright infringement that is caused or encouraged by your failure to
+  * abide by these terms and conditions.
+  *
+  * You are not permitted under this Licence to use this Software
+  * commercially. Use for which any financial return is received shall be
+  * defined as commercial use, and includes (1) integration of all or part
+  * of the source code or the Software into a product for sale or license
+  * by or on behalf of Licensee to third parties or (2) use of the
+  * Software or any derivative of it for research with the final aim of
+  * developing software products for sale or license to a third party or
+  * (3) use of the Software or any derivative of it for research with the
+  * final aim of developing non-software products for sale or license to a
+  * third party, or (4) use of the Software to provide any service to an
+  * external organisation for which payment is received.
+  *
+  ******************************************************************************/
+
+package qit.data.modules.volume;
+
+import qit.base.Global;
+import qit.base.Logging;
+import qit.base.Module;
+import qit.base.annot.ModuleAuthor;
+import qit.base.annot.ModuleDescription;
+import qit.base.annot.ModuleInput;
+import qit.base.annot.ModuleOptional;
+import qit.base.annot.ModuleOutput;
+import qit.base.annot.ModuleParameter;
+import qit.base.structs.Integers;
+import qit.base.structs.Pair;
+import qit.data.datasets.Affine;
+import qit.data.datasets.Curves;
+import qit.data.datasets.Mask;
+import qit.data.datasets.Matrix;
+import qit.data.datasets.Sampling;
+import qit.data.datasets.Solids;
+import qit.data.datasets.Vect;
+import qit.data.datasets.Vects;
+import qit.data.datasets.Volume;
+import qit.data.source.MatrixSource;
+import qit.data.source.VectSource;
+import qit.data.utils.VectUtils;
+import qit.data.utils.VectsUtils;
+import qit.data.utils.VolumeUtils;
+import qit.data.utils.enums.InterpolationType;
+import qit.data.utils.volume.VolumeSample;
+import qit.math.structs.Box;
+import qit.math.structs.Line;
+import qit.math.structs.Plane;
+import qit.math.structs.Quaternion;
+
+@ModuleDescription("Reslice a volume using ACPC alignment (anterior and posterior commissure).  You must provide a vects object with three points for the AC, PC, and another midline position (order must match)")
+@ModuleAuthor("Ryan Cabeen")
+public class VolumeResliceACPC implements Module
+{
+    private enum VolumeResliceMode {I, J, K}
+
+    @ModuleInput
+    @ModuleDescription("input volume")
+    private Volume input;
+
+    @ModuleInput
+    @ModuleDescription("a vects containing three points: the anterior commisure, the posterior commissure, and any other midline point that is superior to the AC-PC axis")
+    private Vects acpcmid;
+
+    @ModuleInput
+    @ModuleOptional
+    @ModuleDescription("points that bound the region of interest (by default the whole volume will be used)")
+    private Vects bounds;
+
+    @ModuleParameter
+    @ModuleOptional
+    @ModuleDescription("the voxel spacing (by default it detects it from the input)")
+    private Double delta;
+
+    @ModuleParameter
+    @ModuleDescription("image interpolation method")
+    public InterpolationType interp = InterpolationType.Trilinear;
+
+    @ModuleOutput
+    @ModuleDescription("output volume")
+    private Volume output;
+
+    public VolumeResliceACPC run()
+    {
+        Global.assume(this.acpcmid.size() == 3, "expected three vects in acpcmid");
+
+        Vect ac = this.acpcmid.get(0);
+        Vect pc = this.acpcmid.get(1);
+        Vect mid = this.acpcmid.get(2);
+
+        Vect cen = ac.plus(pc).times(0.5);
+        Vect ydir = ac.minus(pc).normalize();
+
+        Vect ztmp = mid.minus(cen).normalize();
+        Vect zdir = ztmp.minus(ydir.times(ztmp.dot(ydir))).normalize();
+        Vect xdir = ydir.cross(zdir);
+
+        Matrix rot = new Matrix(3, 3);
+        rot.setColumn(0, xdir);
+        rot.setColumn(1, ydir);
+        rot.setColumn(2, zdir);
+
+        Affine xfm = new Affine(rot, cen);
+        Affine inv = xfm.inv();
+
+        Sampling sampling = this.input.getSampling();
+        Vects mybounds = this.bounds != null ? this.bounds : sampling.corners();
+        Box box = Box.create(VectsUtils.apply(mybounds, inv));
+
+        Vect min = box.getMin();
+        Vect max = box.getMax();
+
+        double deltaMin = this.delta != null ? this.delta : sampling.deltaMin();
+        int ni = (int) Math.ceil((max.getX() - min.getX()) / deltaMin);
+        int nj = (int) Math.ceil((max.getY() - min.getY()) / deltaMin);
+        int nk = (int) Math.ceil((max.getZ() - min.getZ()) / deltaMin);
+
+        Vect start = xfm.apply(min);
+        Vect deltas = VectSource.create3D(deltaMin, deltaMin, deltaMin);
+        Integers nums = new Integers(ni, nj, nk);
+
+        VolumeSample sampler = new VolumeSample();
+        sampler.withSampling(new Sampling(start, deltas, new Quaternion(rot), nums));
+        sampler.withFunction(VolumeUtils.interp(this.interp, this.input));
+        Volume out = sampler.getOutput();
+
+        this.output = out;
+
+        return this;
+    }
+}

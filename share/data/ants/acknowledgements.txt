@@ -1,0 +1,8 @@
+This data is derived from the ANTs OASIS template, which was released under the
+CC BY 4.0 license, and downloaded from here on 
+
+https://figshare.com/articles/ANTs_ANTsR_Brain_Templates/915436
+
+The OASIS template was registered to the QIT HCP template using ANTs.
+
+Date: October 6, 2020

@@ -1,0 +1,105 @@
+
+R version 3.4.1 (2017-06-30) -- "Single Candle"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin16.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> #! /usr/bin/env R CMD BATCH
+> 
+> library(ggplot2)
+> 
+> summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
++                       conf.interval=.95, .drop=TRUE) {
++     library(plyr)
++ 
++     # New version of length which can handle NA's: if na.rm==T, don't count them
++     length2 <- function (x, na.rm=FALSE) {
++         if (na.rm) sum(!is.na(x))
++         else       length(x)
++     }
++ 
++     # This does the summary. For each group's data frame, return a vector with
++     # N, mean, and sd
++     datac <- ddply(data, groupvars, .drop=.drop,
++       .fun = function(xx, col) {
++         c(N    = length2(xx[[col]], na.rm=na.rm),
++           mean = mean   (xx[[col]], na.rm=na.rm),
++           sd   = sd     (xx[[col]], na.rm=na.rm)
++         )
++       },
++       measurevar
++     )
++ 
++     # Rename the "mean" column    
++     datac <- rename(datac, c("mean" = measurevar))
++ 
++     datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
++ 
++     # Confidence interval multiplier for standard error
++     # Calculate t-statistic for confidence interval: 
++     # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
++     ciMult <- qt(conf.interval/2 + .5, datac$N-1)
++     datac$ci <- datac$se * ciMult
++ 
++     return(datac)
++ }
+> 
+> # Run the simulation and load the results
+> 
+> bn <- "EvaluateGaussianMixtureFit"
+> fn <- "data.csv"
+> system(sprintf("qit %s --output %s", bn, fn))
+java.lang.RuntimeException: invalid covariance estimator: null
+	at qit.base.Logging.error(Logging.java:115)
+	at qit.data.utils.vects.stats.VectsGaussianFitter.run(VectsGaussianFitter.java:187)
+	at qit.data.utils.vects.stats.VectsGaussianFitter.getOutput(VectsGaussianFitter.java:210)
+	at qit.data.utils.vects.cluster.VectsClusterGM.maximization(VectsClusterGM.java:165)
+	at qit.data.utils.vects.cluster.VectsClusterGM.init(VectsClusterGM.java:127)
+	at qit.data.utils.vects.cluster.VectsClusterGM.init(VectsClusterGM.java:135)
+	at qit.data.utils.vects.cluster.VectsClusterGM.init(VectsClusterGM.java:49)
+	at qit.data.utils.vects.cluster.VectsClusterEM.runSingle(VectsClusterEM.java:181)
+	at qit.data.utils.vects.cluster.VectsClusterEM.run(VectsClusterEM.java:164)
+	at qit.eval.data.EvaluateGaussianMixtureFit.run(EvaluateGaussianMixtureFit.java:141)
+	at qit.eval.data.EvaluateGaussianMixtureFit.run(EvaluateGaussianMixtureFit.java:55)
+	at qit.base.cli.CommandLineModule.run(CommandLineModule.java:89)
+	at qit.main.QitMain.runCommand(QitMain.java:170)
+	at qit.main.QitMain.main(QitMain.java:284)
+error: failed to run EvaluateGaussianMixtureFit: invalid covariance estimator: null
+> df <- read.csv(fn)
+> df <- df[df$divSym < 2,]
+> 
+> # Plot the data
+> 
+> for (param in c("divLeft", "divRight", "divSym"))
++ {
++   df$value <- df[,param]
++   dfs <- summarySE(df, measurevar="value", groupvars=c("samples"))
++   myplot <- ggplot(data=dfs, aes(x=samples, y=value)) 
++   myplot <- myplot + geom_bar(stat="identity", position=position_dodge()) 
++   myplot <- myplot + geom_errorbar(aes(ymin=value-se, ymax=value+se), width=.2, position=position_dodge(.9))
++   myplot <- myplot + ggtitle(param)
++   ggsave(sprintf("plot.%s.pdf", param))
++ }
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  4.085   0.214   2.771 

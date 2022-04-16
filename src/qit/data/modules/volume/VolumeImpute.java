@@ -1,0 +1,201 @@
+/*******************************************************************************
+ *
+ * Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+ * All rights reserved.
+ *
+ * The Software remains the property of Ryan Cabeen ("the Author").
+ *
+ * The Software is distributed "AS IS" under this Licence solely for
+ * non-commercial use in the hope that it will be useful, but in order
+ * that the Author as a charitable foundation protects its assets for
+ * the benefit of its educational and research purposes, the Author
+ * makes clear that no condition is made or to be implied, nor is any
+ * warranty given or to be implied, as to the accuracy of the Software,
+ * or that it will be suitable for any particular purpose or for use
+ * under any specific conditions. Furthermore, the Author disclaims
+ * all responsibility for the use which is made of the Software. It
+ * further disclaims any liability for the outcomes arising from using
+ * the Software.
+ *
+ * The Licensee agrees to indemnify the Author and hold the
+ * Author harmless from and against any and all claims, damages and
+ * liabilities asserted by third parties (including claims for
+ * negligence) which arise directly or indirectly from the use of the
+ * Software or the sale of any products based on the Software.
+ *
+ * No part of the Software may be reproduced, modified, transmitted or
+ * transferred in any form or by any means, electronic or mechanical,
+ * without the express permission of the Author. The permission of
+ * the Author is not required if the said reproduction, modification,
+ * transmission or transference is done without financial return, the
+ * conditions of this Licence are imposed upon the receiver of the
+ * product, and all original and amended source code is included in any
+ * transmitted product. You may be held legally responsible for any
+ * copyright infringement that is caused or encouraged by your failure to
+ * abide by these terms and conditions.
+ *
+ * You are not permitted under this Licence to use this Software
+ * commercially. Use for which any financial return is received shall be
+ * defined as commercial use, and includes (1) integration of all or part
+ * of the source code or the Software into a product for sale or license
+ * by or on behalf of Licensee to third parties or (2) use of the
+ * Software or any derivative of it for research with the final aim of
+ * developing software products for sale or license to a third party or
+ * (3) use of the Software or any derivative of it for research with the
+ * final aim of developing non-software products for sale or license to a
+ * third party, or (4) use of the Software to provide any service to an
+ * external organisation for which payment is received.
+ *
+ ******************************************************************************/
+
+package qit.data.modules.volume;
+
+import com.google.common.collect.Lists;
+import qit.base.Global;
+import qit.base.Logging;
+import qit.base.Module;
+import qit.base.annot.ModuleAuthor;
+import qit.base.annot.ModuleDescription;
+import qit.base.annot.ModuleInput;
+import qit.base.annot.ModuleOptional;
+import qit.base.annot.ModuleOutput;
+import qit.base.annot.ModuleParameter;
+import qit.base.structs.Integers;
+import qit.data.datasets.Mask;
+import qit.data.datasets.Sample;
+import qit.data.datasets.Sampling;
+import qit.data.datasets.Vect;
+import qit.data.datasets.Volume;
+import qit.data.source.VectSource;
+import qit.data.utils.MaskUtils;
+import qit.data.utils.VectUtils;
+import qit.data.utils.volume.VolumeVoxelStats;
+import qit.math.utils.MathUtils;
+
+import java.util.List;
+
+@ModuleDescription("Impute voxels by computing a moving average")
+@ModuleAuthor("Ryan Cabeen")
+public class VolumeImpute implements Module
+{
+    @ModuleInput
+    @ModuleDescription("input Volume")
+    public Volume input;
+
+    @ModuleInput
+    @ModuleOptional
+    @ModuleDescription("input mask")
+    public Mask mask;
+
+    @ModuleInput
+    @ModuleOptional
+    @ModuleDescription("input imputation mask")
+    public Mask impute;
+
+    @ModuleParameter
+    @ModuleDescription("the radius for imputation")
+    public int support = 5;
+
+    @ModuleParameter
+    @ModuleDescription("the k-nearest neighbors for imputation")
+    public int knn = 6;
+
+    @ModuleParameter
+    @ModuleOptional
+    @ModuleDescription("a value for missing cases (when imputation region is larger than the support)")
+    public Double missing = null;
+
+    @ModuleParameter
+    @ModuleOptional
+    @ModuleDescription("remove extreme values (specify a k value for Tukey's fence, e.g. 1.5 for outliers or 3 for far out)")
+    public Double outlier = null;
+
+    @ModuleOutput
+    @ModuleOptional
+    @ModuleDescription("output Volume")
+    public Volume output;
+
+    @ModuleOutput
+    @ModuleOptional
+    @ModuleDescription("output outlier mask")
+    public Mask outputOutlier;
+
+    @Override
+    public VolumeImpute run()
+    {
+        Mask myImpute = this.impute;
+
+        if (this.outlier != null)
+        {
+            VolumeVoxelStats stats = new VolumeVoxelStats().withInput(this.input).withMask(this.mask).run();
+            double thresh = stats.qhigh + this.outlier * stats.iqr;
+            Logging.info("outlier threshold: " + thresh);
+            myImpute = MaskUtils.and(VolumeThreshold.apply(this.input, this.mask, thresh), myImpute);
+        }
+
+        Global.assume(myImpute != null, "no imputation mask was made");
+
+        int count = 0;
+        Volume out = this.input.proto();
+
+        for (Sample sample : this.input.getSampling())
+        {
+            if (this.input.valid(sample, this.mask))
+            {
+                double value = this.input.get(sample, 0);
+
+                if (myImpute.foreground(sample))
+                {
+                    List<Double> dists = Lists.newArrayList();
+                    List<Double> values = Lists.newArrayList();
+
+                    for (int i = -this.support; i <= this.support; i++)
+                    {
+                        for (int j = -this.support; j <= this.support; j++)
+                        {
+                            for (int k = -this.support; k <= this.support; k++)
+                            {
+                                Sample neighbor = sample.offset(new Integers(i, j, k));
+                                if (!neighbor.equals(sample) && this.input.valid(neighbor, this.mask) && myImpute.background(neighbor))
+                                {
+                                    dists.add(Math.sqrt(i * i + j * j + k * k));
+                                    values.add(this.input.get(neighbor, 0));
+                                }
+                            }
+                        }
+                    }
+
+                    if (dists.size() > 0)
+                    {
+                        int[] perm = VectUtils.permutation(VectSource.create(dists));
+
+                        double sum = 0;
+                        int num = Math.min(this.knn, perm.length);
+
+                        for (int i = 0; i < num; i++)
+                        {
+                            sum += values.get(perm[i]);
+                        }
+
+                        value = sum / (double) num;
+                        count += 1;
+                    }
+                    else if (this.missing != null)
+                    {
+                        value = this.missing;
+                    }
+                }
+
+                out.set(sample, 0, value);
+            }
+        }
+
+        Logging.info("imputed %d voxels", count);
+
+        this.output = out;
+        this.outputOutlier = myImpute;
+
+        return this;
+    }
+}
+

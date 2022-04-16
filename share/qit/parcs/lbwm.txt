@@ -1,0 +1,8 @@
+left-temporal
+left-parietal
+left-occipital
+left-frontal
+right-temporal
+right-parietal
+right-occipital
+right-frontal

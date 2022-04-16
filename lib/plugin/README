@@ -1,0 +1,31 @@
+What is this?
+=============
+
+This is example code for developing a QIT plugin.  This lets you implement a
+new tool that can be integrated directly into QIT.  The basic idea is to help
+avoid having to implement code to handle file formats, command line arguments,
+and basic algorithms.
+
+How do I use it?
+================
+
+Check out these examples:
+
+  ${THIS_DIR}/src/qit/data/modules/volume/ModuleTemplate.java
+  ${THIS_DIR}/src/qit/main/MainTemplate.java
+
+The first is an example of a module.  This is the easiest option, since it
+handles the command line arguments for you and will be accessible in qitview.
+The second option is an example of a more flexible program with a custom
+command line interface, which is only necessary if you have input/output needs
+that don't fit the module framework.
+
+Once you have done this, you can build and install it with:
+
+  ant install
+
+This will compile the code and copy it to a place in "~/.qit" where qitview can
+find it.  If all goes, your new module will show up on the menu in qitview.
+
+Author: Ryan Cabeen
+Date: July 19, 2016

@@ -1,0 +1,11 @@
+index,name
+1,lh_temporal
+2,lh_parietal
+3,lh_occipital
+4,lh_frontal
+5,rh_temporal
+6,rh_parietal
+7,rh_occipital
+8,rh_frontal
+9,lh_insula
+10,rh_insula

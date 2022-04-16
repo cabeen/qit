@@ -1,0 +1,197 @@
+#! /usr/bin/env bash
+################################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+################################################################################
+#
+# Name: QMODELFIT
+#
+# Description:
+#
+#   Fit a diffusion model volume with parallel processing.  This breaks the 
+#   volume into blocks (smaller than a slice), distributes model fittings
+#   to the grid, and combines the results back into a full model volume.  
+#   This can reduce the total runtime from hours to under 20 minutes.
+# 
+#   The module must have an interface like so:
+# 
+#     qit ModuleName \
+#        --input dwi.nii.gz \
+#        --gradients bvecs.txt \
+#        --mask mask.nii.gz \
+#        --output output.modelname \
+#        [opts]
+#
+#   The module supports the following environment variables:
+#
+#     QMODELFIT_I: the size of the block in the i-dimension
+#     QMODELFIT_J: the size of the block in the j-dimension
+#     QMODELFIT_K: the size of the block in the k-dimension
+#
+# Author: Ryan Cabeen
+#
+################################################################################
+
+if [ $# -lt "4" ]; then
+    echo "Usage: $(basename $0) <module> <dwi> <bvecs> <mask> <output> [opts]"
+    exit
+fi
+
+echo started
+
+# this assumes that the parent directory must exist 
+# (although not the specific file)
+abspath() 
+{
+    cd "$(dirname "$1")"
+    printf "%s/%s\n" "$(pwd)" "$(basename "$1")"; 
+}
+
+if [ -z "${QMODELFIT_I+xxx}" ]; then
+    QMODELFIT_I="1"
+fi
+
+if [ -z "${QMODELFIT_J+xxx}" ]; then
+    QMODELFIT_J="64"
+fi
+
+if [ -z "${QMODELFIT_K+xxx}" ]; then
+    QMODELFIT_K="64"
+fi
+
+name=$(basename $0)
+barg="--i ${QMODELFIT_I} --j ${QMODELFIT_J} --k ${QMODELFIT_K}"
+qitcmd="qit --dtype float -Xmx8G --verbose --debug"
+
+module=${1}
+dwi=$(abspath ${2})
+bvecs=$(abspath ${3})
+mask=$(abspath ${4})
+out=$(abspath ${5})
+args=${@:6}
+
+base=$(basename ${out})
+rid=${RANDOM}
+tmp=$(dirname ${out})/${name}.tmp.${rid}
+tmp=${out}.tmp.${rid}
+
+echo using dwi: ${dwi}
+echo using bvecs: ${bvecs}
+echo using mask: ${mask}
+echo using out: ${out}
+echo using args: ${args}
+echo using rid: ${rid}
+echo using tmp: ${tmp}
+
+rm -rf ${tmp}
+mkdir -p ${tmp}
+
+echo blocking volumes
+${qitcmd} VolumeBlockWrite --input ${dwi} --output ${tmp}/blocks/block.%d/dwi.nii.gz ${barg}
+${qitcmd} VolumeBlockWrite --input ${mask} --output ${tmp}/blocks/block.%d/mask.nii.gz ${barg}
+
+echo submitting jobs blockwise fitting 
+bids=$(echo ${tmp}/blocks/block.* | xargs -n 1 echo | sed 's/.*block\.//g')
+for bid in ${bids}; do
+  echo "... submitting job for block ${bid}"
+  jdir=${tmp}/blocks/block.${bid}
+  cp ${bvecs} ${jdir}/bvecs.txt 
+  cp $(echo ${bvecs} | sed 's/bvec/bval/g') ${jdir}/bvals.txt 
+
+  jid="qmodelfit.job.${rid}.block.${bid}"
+  jids="${jids}${jids+,}${jid}"
+
+  jbin=${jdir}/run.sh
+  jout=${jdir}/run.out
+  jerr=${jdir}/run.err
+
+  if [ -z "${QARGS+xxx}" ]; then
+      QARGS="-V"
+  fi
+  
+  echo "#!/usr/bin/env bash" > ${jbin}
+  echo "cd ${jdir}" >> ${jbin}
+  echo "qit --verbose --debug ${module} ${args} --input dwi.nii.gz --gradients bvecs.txt  --mask mask.nii.gz --output ${base}" >> ${jbin}
+  chmod a+x ${jbin}
+
+  ${QCMD-qsub} ${QARGS} -N ${jid} -o ${jout} -e ${jerr} ${jbin}
+done
+
+echo waiting for jobs to finish
+${QCMD-qsub} -sync y -N ${name}.sync.${rid} -hold_jid ${jids} \
+    -o /dev/null -e /dev/null -b y "echo done"
+
+join=${tmp}/join.sh
+echo "#!/usr/bin/env bash" > ${join}
+echo "cd ${tmp}" >> ${join}
+echo "${qitcmd} VolumeBlockRead --ref ${mask} --input blocks/block.%d/${base} --output ${base} ${barg}" >> ${join}
+
+echo joining models 
+bash ${join}
+
+if [ $? -eq "0" ]; then 
+	echo cleaning up
+	if  [ -e ${out} ]; then
+			bout=${out}.bck.${rid}
+			echo "warning: backing up existing results to ${bout}"
+			mv ${out} ${bout}
+	fi
+
+	mv ${tmp}/${base} ${out}
+
+	if  [ -e ${out} ]; then
+		echo "cleaning up"
+		rm -rf ${tmp}
+	fi
+
+	echo finished
+fi
+
+################################################################################
+# End of file
+################################################################################

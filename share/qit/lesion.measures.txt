@@ -1,0 +1,15 @@
+lesion_dist_min
+lesion_dist_mean
+lesion_dist_sum
+lesion_dist_wmean
+lesion_dist_wsum
+lesion_soft_min
+lesion_soft_mean
+lesion_soft_sum
+lesion_soft_wmean
+lesion_soft_wsum
+lesion_hard_min
+lesion_hard_mean
+lesion_hard_sum
+lesion_hard_wmean
+lesion_hard_wsum

@@ -1,0 +1,6 @@
+If this is used for a publication, please cite the following abstract:
+
+Cabeen RP, Laidlaw DH, Toga AW. Quantitative Imaging Toolkit: Software for
+Interactive 3D Visualization, Data Exploration, and Computational Analysis of
+Neuroimaging Datasets. In Proc International Society for Magnetic Resonance in
+Medicine (ISMRM) 2018 (p. 2854)
