@@ -1,0 +1,6 @@
+build
+dist
+out
+qit-main.iml
+.idea
+.DS_Store
