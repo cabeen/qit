@@ -1,4 +1,4 @@
-![alt-text](https://github.com/cabeen/qit/blob/main/splash.jpg?raw=true)
+![alt-text](https://github.com/cabeen/qit/blob/main/share/gfx/splash.jpg?raw=true)
 
 # The Quantitative Imaging Toolkit
 
@@ -38,6 +38,16 @@ International Society for Magnetic Resonance in Medicine (ISMRM), 2854.
 ```
 
 You can also find the license agreement for QIT use in the `LICENSE` file.
+
+## Build Instructions
+
+You can build QIT by running `ant` in the root directory.  This will create a
+QIT package in `dist`.  This requires the following packages to be installed:
+
+* [Apache Ant](https://ant.apache.org/)
+* [JDK 12](https://www.oracle.com/java/technologies/javase/jdk12-archive-downloads.html)
+* [Python](https://www.python.org/)
+
 
 ## How is QIT developed?
 
