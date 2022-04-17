@@ -52,11 +52,8 @@ QIT package in `dist`.  This requires the following packages to be installed:
 ## How is QIT developed?
 
 QIT was originally designed and developed by [Ryan Cabeen](http://cabeen.io)
-for his Ph.D under advisement of [David H.
-Laidlaw](http://cs.brown.edu/people/dhl/) in the [Department of Computer
-Science at Brown University](http://cs.brown.edu) starting in 2012.  Currently,
-QIT is actively being developed under advisement of Dr. Arthur Toga at the USC
-[http://resource.loni.usc.edu/ Laboratory of Neuro Imaging Resource].
+for his Ph.D in the [Department of Computer
+Science at Brown University](http://cs.brown.edu) starting in 2012.
 
 QIT was developed using [IntelliJ IDEA](https://www.jetbrains.com/idea/) with a
 combination of Java (version 11 and above) and Python (version 2.7 and above).
