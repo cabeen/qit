@@ -85,4 +85,4 @@ software package under `doc/licensing`.
 
 # Contact
 
-Comments, criticism, and concerns are appreciated and can be directed to [Ryan Cabeen](cabeen@gmail.com).
+Comments, criticism, and concerns are appreciated and can be directed to [Ryan Cabeen](https://cabeen.io) <cabeen@gmail.com>.
