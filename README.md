@@ -51,9 +51,9 @@ QIT package in `dist`.  This requires the following packages to be installed:
 
 ## How is QIT developed?
 
-QIT was originally designed and developed by [Ryan Cabeen](http://cabeen.io)
-for his Ph.D in the [Department of Computer
-Science at Brown University](http://cs.brown.edu) starting in 2012.
+QIT is designed and developed by [Ryan Cabeen](http://cabeen.io), and it started in 2012 to 
+support work for his Ph.D in the [Department of Computer
+Science at Brown University](http://cs.brown.edu).
 
 QIT was developed using [IntelliJ IDEA](https://www.jetbrains.com/idea/) with a
 combination of Java (version 11 and above) and Python (version 2.7 and above).
