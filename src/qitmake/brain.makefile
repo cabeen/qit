@@ -278,7 +278,9 @@ ATLAS_FS_SURFS     ?= atlas.fs.surfaces
 
 TONE_FS_BRAIN      ?= tone.fs.brain
 TONE_FS_REGIONS    ?= tone.fs.region
-TONE_FS_SURFS      ?= tone.fs.surfaces
+TONE_SURF_BASE     ?= tone
+TONE_FS_SURFS      ?= $(TONE_SURF_BASE).fs.surfaces
+TONE_CORTEX        ?= $(TONE_SURF_BASE).cortex
 
 DIFF_BRAIN         ?= diff.brain/brain.nii.gz
 DIFF_DTI_GM        ?= diff.brain/dti_gm.nii.gz
@@ -294,8 +296,6 @@ ATLAS_BRAIN        ?= atlas.brain/brain.nii.gz
 ATLAS_DTI_GM       ?= atlas.brain/dti_gm.nii.gz
 ATLAS_DTI_WM       ?= atlas.brain/dti_wm.nii.gz
 ATLAS_DTI_LABELS   ?= atlas.brain/dti_labels.nii.gz
-
-TONE_CORTEX        ?= tone.cortex
 
 DIFF_MASK          ?= diff.brain/mask.nii.gz
 TONE_MASK          ?= tone.brain/mask.nii.gz
@@ -318,6 +318,7 @@ DIFF_SELF_XFM      ?= diff.self.reg/ident.xfm
 TONE_SELF_XFM      ?= tone.self.reg/ident.xfm
 
 ATLAS_PROJECT      ?= atlas.project.xfib
+ATLAS_SPHERE       ?= $(QIT_ATLAS)/meshes/sphere.vtk.gz
 
 ################################################################################
 # Helper Functions 
@@ -1000,7 +1001,7 @@ $(TONE_FS_SURFS): | $(TONE_FS)
 	-@[ -e $@ ] && mv -f $@ $@.$(BCK)
 	$(QIT_CMD) FreesurferImport \
     --surfaces \
-    --resample $(QIT_ATLAS)/meshes/sphere.vtk.gz \
+    --resample $(ATLAS_SPHERE) \
     --input $| \
     --output $@ 
 
