@@ -87,6 +87,7 @@ public class ColormapSource
     public static final String TURBO = "turbo";
     public static final String RAINBOW = "rainbow";
     public static final String JET = "jet";
+    public static final String JETGRAY = "jetgray";
 
     public static final String WHITE = "White";
     public static final String RED = "Red";
@@ -487,6 +488,32 @@ public class ColormapSource
                 }
                 VectFunction function = VectFunctionSource.linearInterp(xs, ys);
                 SCALAR.put(JET, function);
+            }
+            {
+                // http://imagej.1557.x6.nabble.com/Jet-colormap-LUT-td5003222.html
+                int num = 256;
+                double[] xs = new double[num+2];
+                Vect[] ys = new Vect[num+2];
+
+                xs[0] = 0.0;
+                ys[0] = VectSource.create4D(0.5, 0.5, 0.5, 1.0);
+
+                for (int i = 0; i < num; i++)
+                {
+                    double i4 = 4 * i / 256.0;
+                    double red = Math.min(Math.max(Math.min(i4 - 1.5, -i4 + 4.5), 0), 1);
+                    double green = Math.min(Math.max(Math.min(i4 - 0.5, -i4 + 3.5), 0), 1);
+                    double blue = Math.min(Math.max(Math.min(i4 + 0.5, -i4 + 2.5), 0), 1);
+
+                    xs[i+1] = i / (double) (num+1);
+                    ys[i+1] = VectSource.create4D(red, green, blue, 1.0);
+                }
+
+                xs[num+1] = 1.0;
+                ys[num+1] = VectSource.create4D(0.5, 0.5, 0.5, 1.0);
+
+                VectFunction function = VectFunctionSource.linearInterp(xs, ys);
+                SCALAR.put(JETGRAY, function);
             }
             {
                 // https://observablehq.com/@mbostock/turbo
