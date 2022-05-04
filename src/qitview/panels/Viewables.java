@@ -1221,10 +1221,19 @@ public class Viewables implements Iterable<Viewable<?>>
                         PathUtils.backupFile(fn);
                     }
 
-                    String msg = "File(s) exists!  Overwrite?";
+                    String msg = String.format("Warning: save path %s already exists!  Are you sure you want to overwrite it?", fn);
                     if (!clobber && PathUtils.exists(fn) && !SwingUtils.getDecision(msg))
                     {
                         return;
+                    }
+
+                    if (PathUtils.isDir(fn))
+                    {
+                        msg = String.format("Warning: the save path %s is a directory/folder!  This is unusual, are you absolutely sure you want to overwrite it?", fn);
+                        if (!SwingUtils.getDecision(msg))
+                        {
+                            return;
+                        }
                     }
 
                     Viewer.getInstance().qrun.offer(Pair.of(String.format("Saving %s", viewable.getName()), () ->
