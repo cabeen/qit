@@ -1221,7 +1221,7 @@ public class Viewables implements Iterable<Viewable<?>>
                         PathUtils.backupFile(fn);
                     }
 
-                    String msg = String.format("Warning: save path %s already exists!  Are you sure you want to overwrite it?", fn);
+                    String msg = String.format("Warning: save path '%s' already exists!  Are you sure you want to overwrite it?", fn);
                     if (!clobber && PathUtils.exists(fn) && !SwingUtils.getDecision(msg))
                     {
                         return;
@@ -1229,7 +1229,7 @@ public class Viewables implements Iterable<Viewable<?>>
 
                     if (PathUtils.isDir(fn))
                     {
-                        msg = String.format("Warning: the save path %s is a directory/folder!  This is unusual, are you absolutely sure you want to overwrite it?", fn);
+                        msg = String.format("Warning: the save path '%s' is a directory/folder!  This is unusual, are you absolutely sure you want to overwrite it?", fn);
                         if (!SwingUtils.getDecision(msg))
                         {
                             return;
