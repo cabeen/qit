@@ -127,21 +127,20 @@ public class VolumeParseEchoes implements CliMain
                 Volume volume = Volume.read(fn);
                 volumes.add(volume);
 
-                double echo = 0;
                 try
                 {
                     String fnJson = fn.replace("nii.gz", "json");
                     Logging.info("reading json: " + fnJson);
                     String stringJson = FileUtils.readFileToString(new File(fnJson));
                     JsonObject dataJson = new Gson().fromJson(stringJson, JsonObject.class);
-                    echo = Double.valueOf(dataJson.get("EchoTime").toString());
+                    double echo = Double.valueOf(dataJson.get("EchoTime").toString());
                     Logging.info("parsed echo time: " + echo);
+                    echoes.add(VectSource.create1D(echo));
                 }
                 catch (RuntimeException e)
                 {
                     e.printStackTrace();
                 }
-                echoes.add(VectSource.create1D(echo));
             }
 
             int num = volumes.size();
