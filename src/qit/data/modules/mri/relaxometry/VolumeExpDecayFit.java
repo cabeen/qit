@@ -92,8 +92,14 @@ public class VolumeExpDecayFit implements Module
     @ModuleParameter
     @ModuleOptional
     @ModuleAdvanced
-    @ModuleDescription("specify a speciic subset of values to include (as opposed to indices)")
+    @ModuleDescription("specify a subset of values to include (as opposed to indices)")
     public String select = null;
+
+    @ModuleParameter
+    @ModuleOptional
+    @ModuleAdvanced
+    @ModuleDescription("skip the first value if there are more than the given number of values (this is for an unusual edge case)")
+    public Integer skipFirstThresh = null;
 
     @ModuleParameter
     @ModuleOptional
@@ -177,6 +183,19 @@ public class VolumeExpDecayFit implements Module
         if (this.thresh != null)
         {
             myinput = VolumeUtils.mask(myinput, VolumeThreshold.apply(myinput, this.thresh));
+        }
+
+        if (this.skipFirstThresh != null)
+        {
+            if (mynum > this.skipFirstThresh)
+            {
+                Logging.info("skipping first value");
+                VectFunction mysubset = VectFunctionSource.subset(mynum, null, "0");
+
+                myparam = mysubset.apply(myparam);
+                myinput = VolumeUtils.apply(myinput, mysubset);
+                mynum = myinput.getDim();
+            }
         }
 
         if (this.which != null || this.exclude != null)
