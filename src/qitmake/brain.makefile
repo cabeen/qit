@@ -189,7 +189,7 @@ FS_RGN_NAMES       += lh.subfields rh.subfields
 
 ATLAS_RGN_NAMES    :=
 ATLAS_RGN_NAMES    += skeleton
-ATLAS_RGN_NAMES    += ini.bstem
+ATLAS_RGN_NAMES    += ini.bstem fic
 ATLAS_RGN_NAMES    += hox.sub hox.cort
 ATLAS_RGN_NAMES    += cit.sub cit.amy cit.alm
 ATLAS_RGN_NAMES    += jhu.labels jhu.tracts
