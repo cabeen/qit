@@ -81,16 +81,16 @@ def main():
     if not exists(sub_dir):
         makedirs(sub_dir)
 
-    sub_id = "subject"
+    sub_id = "mysubject"
 
     script_fn = join(tmp_dir, "run_fs.sh")
 
     sf = open(script_fn, "w")
     sf.write('#! /bin/bash\n')
+    sf.write('export SUBJECTS_DIR=%s\n' % sub_dir)
     sf.write('recon-all \\\n')
     sf.write(' -i %s \\\n' % opts.input)
     sf.write(' -s %s \\\n' % sub_id)
-    sf.write(' -sd %s \\\n' % sub_dir)
     sf.write(' -all \\\n')
     sf.close()
 
