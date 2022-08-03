@@ -71,6 +71,7 @@ if [ $# -ne "2" ]; then
     exit
 fi
 
+
 abspath() 
 {
     cd "$(dirname "$1")"
@@ -86,6 +87,7 @@ tmp_dir=/tmp/$(basename ${0}).tmp.${RANDOM}
 echo using input dir: ${input_dir} 
 echo using output fn: ${output} 
 echo using temp dir: ${tmp_dir} 
+echo using FREESURFER_HOME: $FREESURFER_HOME
 
 mkdir -p ${tmp_dir}
 
@@ -103,8 +105,9 @@ for stats in aseg.stats wmparc.stats; do
     src="${tmp_dir}/${stats}.tmp.csv"
     comb="${tmp_dir}/${stats}.csv"
 
-    # This requires python2...
-    python2 $(which asegstats2table) ${args} \
+    # In the latest version of freesurfer changed this from a
+    # python script to a bash script to wrap up python
+    asegstats2table ${args} \
       --meas volume \
       --statsfile ${stats} \
       --all-segs \
@@ -131,7 +134,7 @@ for parc in aparc aparc.a2009s; do
     for meas in thickness volume area meancurv; do
         for hemi in lh rh; do
             echo converting ${hemi} ${parc} ${meas} 
-            python2 $(which aparcstats2table) ${args} \
+            aparcstats2table ${args} \
               --parc ${parc} \
               --hemi ${hemi} \
               --meas ${meas} \
@@ -159,7 +162,7 @@ for parc in aparc aparc.a2009s; do
             infn=${input_dir}/stats/${hemi}.${parc}.lgi.stats
             outfn=${tmp_dir}/${hemi}.${parc}.lgi.csv
             echo converting ${hemi} ${parc}
-            python2 $(which asegstats2table) \
+            asegstats2table \
               -m mean \
               --inputs ${infn} \
               --transpose -d comma \
@@ -180,7 +183,13 @@ for parc in aparc aparc.a2009s; do
 done
 
 echo cleaning up
-mv ${tmp_dir} $output
+f=${tmp_dir}/aseg.stats.csv
+if [ -e ${f} ] && [[ $(cat ${f} | wc -l) -gt 1 ]]; then 
+  mv ${tmp_dir} $output
+else
+  echo "error: freesurfer mapping "
+  exit 1
+fi
 
 echo finished
 
