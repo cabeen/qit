@@ -1,0 +1,189 @@
+#!/bin/bash
+################################################################################
+#
+# Quantitative Imaging Toolkit (QIT) (c) 2012-2022 Ryan Cabeen
+# All rights reserved.
+#
+# The Software remains the property of Ryan Cabeen ("the Author").
+#
+# The Software is distributed "AS IS" under this Licence solely for
+# non-commercial use in the hope that it will be useful, but in order
+# that the Author as a charitable foundation protects its assets for
+# the benefit of its educational and research purposes, the Author
+# makes clear that no condition is made or to be implied, nor is any
+# warranty given or to be implied, as to the accuracy of the Software,
+# or that it will be suitable for any particular purpose or for use
+# under any specific conditions. Furthermore, the Author disclaims
+# all responsibility for the use which is made of the Software. It
+# further disclaims any liability for the outcomes arising from using
+# the Software.
+#
+# The Licensee agrees to indemnify the Author and hold the
+# Author harmless from and against any and all claims, damages and
+# liabilities asserted by third parties (including claims for
+# negligence) which arise directly or indirectly from the use of the
+# Software or the sale of any products based on the Software.
+#
+# No part of the Software may be reproduced, modified, transmitted or
+# transferred in any form or by any means, electronic or mechanical,
+# without the express permission of the Author. The permission of
+# the Author is not required if the said reproduction, modification,
+# transmission or transference is done without financial return, the
+# conditions of this Licence are imposed upon the receiver of the
+# product, and all original and amended source code is included in any
+# transmitted product. You may be held legally responsible for any
+# copyright infringement that is caused or encouraged by your failure to
+# abide by these terms and conditions.
+#
+# You are not permitted under this Licence to use this Software
+# commercially. Use for which any financial return is received shall be
+# defined as commercial use, and includes (1) integration of all or part
+# of the source code or the Software into a product for sale or license
+# by or on behalf of Licensee to third parties or (2) use of the
+# Software or any derivative of it for research with the final aim of
+# developing software products for sale or license to a third party or
+# (3) use of the Software or any derivative of it for research with the
+# final aim of developing non-software products for sale or license to a
+# third party, or (4) use of the Software to provide any service to an
+# external organisation for which payment is received.
+#
+################################################################################
+#
+# Name: QFSMEAS
+#
+# Description:
+#
+#   This program exports Freesurfer measures from the native file format to
+#   a more readily usable set of CSV files.  This assumes freesurfer has 
+#   already been set up in the environment.
+#
+# Arguments:
+# 
+#  subject_dir: the freesurfer processed subject directory
+#  output_dir: the output directory for csv tables
+#
+# Author: Ryan Cabeen
+#
+################################################################################
+
+if [ $# -ne "2" ]; then
+    echo "Usage: $(basename ${0}) subject_dir output_dir"
+    exit
+fi
+
+abspath() 
+{
+    cd "$(dirname "$1")"
+    printf "%s/%s\n" "$(pwd)" "$(basename "$1")"; 
+}
+
+echo started
+
+input_dir=$(abspath ${1})
+output=${2}
+tmp_dir=/tmp/$(basename ${0}).tmp.${RANDOM}
+
+echo using input dir: ${input_dir} 
+echo using output fn: ${output} 
+echo using temp dir: ${tmp_dir} 
+
+mkdir -p ${tmp_dir}
+
+sdir=$(dirname ${input_dir})
+sid=$(basename ${input_dir})
+echo using subjects dir: ${sdir}
+echo using subject id: ${sid}
+
+export SUBJECTS_DIR=${sdir}
+
+args="--subjects ${sid} --transpose -d comma"
+
+for stats in aseg.stats wmparc.stats; do
+    echo converting ${stats} 
+    src="${tmp_dir}/${stats}.tmp.csv"
+    comb="${tmp_dir}/${stats}.csv"
+
+    # This requires python2...
+    python2 $(which asegstats2table) ${args} \
+      --meas volume \
+      --statsfile ${stats} \
+      --all-segs \
+      -t ${src}
+
+    echo "name,value" > ${comb}
+    cat ${src} \
+      | sed 's/WM-/wm_/g' \
+      | sed 's/wm-/wm_/g' \
+      | sed 's/lh-/lh_/g' \
+      | sed 's/rh-/rh_/g' \
+      | sed 's/Left-/lh_/g' \
+      | sed 's/Right-/rh_/g' \
+      | tail -n +2 \
+      >> ${comb}
+
+    rm ${src}
+
+    lat="${tmp_dir}/${stats}.lat.csv"
+    qit TableLateralityIndex --input ${comb} --output ${lat}
+done
+
+for parc in aparc aparc.a2009s; do
+    for meas in thickness volume area meancurv; do
+        for hemi in lh rh; do
+            echo converting ${hemi} ${parc} ${meas} 
+            python2 $(which aparcstats2table) ${args} \
+              --parc ${parc} \
+              --hemi ${hemi} \
+              --meas ${meas} \
+              -t ${tmp_dir}/${hemi}.${parc}.${meas}.csv
+        done
+
+        src_lh="${tmp_dir}/lh.${parc}.${meas}.csv"
+        src_rh="${tmp_dir}/rh.${parc}.${meas}.csv"
+        comb="${tmp_dir}/${parc}.${meas}.csv"
+        echo "name,value" > ${comb}
+        cat ${src_lh} | tail -n +2 | sed "s/_${meas}//g" >> ${comb}
+        cat ${src_rh} | tail -n +2 | sed "s/_${meas}//g" >> ${comb}
+        rm ${src_lh} ${src_rh}
+
+        lat="${tmp_dir}/${parc}.${meas}.lat.csv"
+        qit TableLateralityIndex --input ${comb} --output ${lat}
+    done
+done
+
+for parc in aparc aparc.a2009s; do
+    dest_lh=${input_dir}/stats/lh.${parc}.lgi.stats
+    dest_rh=${input_dir}/stats/rh.${parc}.lgi.stats
+    if [ -e ${dest_lh} ] && [ -e ${dest_rh} ]; then
+        for hemi in lh rh; do
+            infn=${input_dir}/stats/${hemi}.${parc}.lgi.stats
+            outfn=${tmp_dir}/${hemi}.${parc}.lgi.csv
+            echo converting ${hemi} ${parc}
+            python2 $(which asegstats2table) \
+              -m mean \
+              --inputs ${infn} \
+              --transpose -d comma \
+              -t ${outfn}
+        done
+
+        src_lh="${tmp_dir}/lh.${parc}.lgi.csv"
+        src_rh="${tmp_dir}/rh.${parc}.lgi.csv"
+        comb="${tmp_dir}/${parc}.lgi.csv"
+        echo "name,value" > ${comb}
+        cat ${src_lh} | tail -n +2 | sed "s/^/lh_/g" >> ${comb}
+        cat ${src_rh} | tail -n +2 | sed "s/^/rh_/g" >> ${comb}
+        rm ${src_lh} ${src_rh}
+
+        lat="${tmp_dir}/${parc}.${meas}.lat.csv"
+        qit TableLateralityIndex --input ${comb} --output ${lat}
+    fi
+done
+
+echo cleaning up
+mv ${tmp_dir} $output
+
+echo finished
+
+################################################################################
+# End of file
+################################################################################

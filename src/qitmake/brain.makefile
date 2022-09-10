@@ -115,6 +115,7 @@ $(info $(shell $(QIT_BIN) --version))
 
 GPU               ?=            # enable GPU multi-fiber fitting (any value)
 NO_BEDPOST        ?=            # use the QIT version of multi-fiber fitting
+FS_LEGACY         ?=            # indicate an older version of Freesurfer 
 
 BET_FRAC          ?= 0.3        # the brain extraction threshold (see BET)
 
@@ -209,6 +210,8 @@ BUNDLE_DIR         ?= $(QIT_ATLAS)/tract/bundles
 BUNDLE_LIST        ?= $(if $(BUNDLE_ALL), \
                         $(QIT_ATLAS)/tract/bundles.all.txt, \
                         $(QIT_ATLAS)/tract/bundles.txt)
+
+QFSMEAS            ?= $(if $(FS_LEGACY), qfsmeas-legacy, qfsmeas)
 
 FIBERS_FIT         ?= $(if $(NO_BEDPOST), \
 											  VolumeFibersFit --threads $(QIT_THREADS), \
@@ -1609,7 +1612,7 @@ endef
 
 tone.fs.map: | $(TONE_FS)
 	-@[ -e $@ ] && mv -f $@ $@.$(BCK)
-	qfsmeas $(word 1,$|) $@
+	$(QFSMEAS) $(word 1,$|) $@
 
 $(foreach t, $(REGION_TARS), \
 	$(eval $(call region.map, $(t))))
