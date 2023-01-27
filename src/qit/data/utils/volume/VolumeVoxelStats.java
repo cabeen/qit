@@ -73,12 +73,12 @@ public class VolumeVoxelStats
     public Double std;
     public Double stde;
     public Double cv;
-    public Double num;
     public Double median;
     public Double mad;
     public Double qlow;
     public Double qhigh;
     public Double iqr;
+    public Double num = 0.0;
     public boolean output = false;
 
     public Volume input;
