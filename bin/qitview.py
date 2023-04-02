@@ -201,7 +201,7 @@ def run(mem):
           #   # help the java binary to run without issue
           #   call(["xattr", "-d", "com.apple.quarantine", javamac])
 
-        javawin = abspath(join(dirname(argv[0]), "runtime", "bin", "java.exe"))
+        javawin = abspath(join(dirname(argv[0]), "runtime", "win", "bin", "java.exe"))
         if exists(javawin):
           javacmd = javawin
 
