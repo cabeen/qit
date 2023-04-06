@@ -77,7 +77,7 @@
 #   with some example <target> values:
 #   
 #     diff.tract/bundles.map: metrics from bundle-specific analysis
-#     diff.tract/bundles.dti.map: metrics from bundle-specific analysis
+#     diff.tract/bundles.whole.voxel.dti.map: metrics from bundle-specific analysis
 #     diff.region/jhu.labels.dti.map: metrics from JHU ROI analysis 
 #     diff.region/jhu.labels.dti.tbss.map: metrics from JHU ROI TBSS analysis 
 #
@@ -406,7 +406,7 @@ along.core.ms  = $(QIT_CMD) CurvesMeasureAlongBatch \
 
 density.ms     = $(QIT_CMD) VolumeMeasureBatch \
                --density --thresh 0.01 \
-               --input $(1)/%s.nii.gz \
+               --input $(1)/%s/density.nii.gz \
                --names $(2) \
                --volume $(5)=$(3)/$(4).nii.gz \
                --output $(6)
@@ -1639,6 +1639,10 @@ $(foreach s, tone diff, \
 # Meta-targets
 ################################################################################
 
+main: | diff.tract/bundles.map \
+        diff.tract/bundles.density.dti.map \
+        atlas.region/jhu.labels.tbss.dti.map
+
 list:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
 
@@ -1648,7 +1652,7 @@ dust:
 scrub: | dust
 	find . -name '*.bck.*' -exec rm -rf {} \;
 
-.PHONY: | list all dust scrub
+.PHONY: | list all dust scrub main
 .DELETE_ON_ERROR:
 
 ################################################################################
