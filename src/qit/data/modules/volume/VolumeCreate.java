@@ -48,24 +48,41 @@
   *
   ******************************************************************************/
 
-package qit.data.modules.mask;
+package qit.data.modules.volume;
 
+import qit.base.Logging;
 import qit.base.Module;
 import qit.base.annot.ModuleAuthor;
 import qit.base.annot.ModuleDescription;
+import qit.base.annot.ModuleInput;
+import qit.base.annot.ModuleOptional;
 import qit.base.annot.ModuleOutput;
 import qit.base.annot.ModuleParameter;
 import qit.base.structs.Integers;
 import qit.data.datasets.Mask;
+import qit.data.datasets.Sample;
 import qit.data.datasets.Sampling;
 import qit.data.datasets.Vect;
+import qit.data.datasets.Volume;
 import qit.data.source.MaskSource;
 import qit.data.source.VectSource;
+import qit.data.source.VolumeSource;
 
-@ModuleDescription("Create a mask based on user specified parameters")
+import java.util.function.Function;
+
+@ModuleDescription("Create a volume based on user specified parameters")
 @ModuleAuthor("Ryan Cabeen")
-public class MaskCreate implements Module
+public class VolumeCreate implements Module
 {
+    @ModuleInput
+    @ModuleOptional
+    @ModuleDescription("an optional reference volume for setting the voxel grid")
+    public Volume reference = null;
+
+    @ModuleParameter
+    @ModuleDescription("the number of channels")
+    public int channels = 1;
+
     @ModuleParameter
     @ModuleDescription("voxel spacing in x")
     public double deltax = 1;
@@ -88,7 +105,7 @@ public class MaskCreate implements Module
 
     @ModuleParameter
     @ModuleDescription("number of voxels in z")
-    public int numz = 1;
+    public int numz = 128;
 
     @ModuleParameter
     @ModuleDescription("starting position in x")
@@ -103,22 +120,75 @@ public class MaskCreate implements Module
     public double startz = 0;
     
     @ModuleParameter
-    @ModuleDescription("constant label")
-    public int label = 0;
-    
+    @ModuleDescription("constant value")
+    public double value = 0;
+
+    @ModuleParameter
+    @ModuleDescription("draw a grid")
+    public boolean grid = false;
+
+    @ModuleParameter
+    @ModuleDescription("the grid spacing in voxels (number of voxels between grid lines)")
+    public int gridSpace = 20;
+
+    @ModuleParameter
+    @ModuleDescription("the grid thickness in voxels (diameter will be 2 * n + 1)")
+    public int gridThick = 0;
+
+    @ModuleParameter
+    @ModuleDescription("the grid intensity")
+    public int gridValue = 1;
+
     @ModuleOutput
-    @ModuleDescription("output mask")
-    public Mask output;
+    @ModuleDescription("output volume")
+    public Volume output;
     
     @Override
-    public MaskCreate run()
+    public VolumeCreate run()
     {
-        Vect start = VectSource.create3D(this.startx, this.startx, this.startx);
-        Vect delta = VectSource.create3D(this.deltax, this.deltay, this.deltaz);
-        Integers nums = new Integers(this.numx, this.numy, this.numz);
-        
-        this.output = MaskSource.create(new Sampling(start, delta, nums));
-        this.output.setAll(this.label);
+        if (this.reference != null)
+        {
+           this.output = this.reference.proto();
+        }
+        else
+        {
+            Vect start = VectSource.create3D(this.startx, this.startx, this.startx);
+            Vect delta = VectSource.create3D(this.deltax, this.deltay, this.deltaz);
+            Integers nums = new Integers(this.numx, this.numy, this.numz);
+
+            this.output = VolumeSource.create(new Sampling(start, delta, nums), this.channels);
+        }
+
+        this.output.setAll(VectSource.create1D(this.value));
+
+        if (this.grid)
+        {
+            Function<Integer,Boolean> check = (idx) ->
+            {
+                int count = Math.round(((float) idx) / this.gridSpace);
+                int offset = idx - count * this.gridSpace;
+
+                if (idx == 57 || idx == 64 || idx == 41)
+                {
+                    Logging.info(idx + " " + count + " " + offset);
+                }
+
+                return Math.abs(offset) <= this.gridThick;
+            };
+
+            for (Sample sample : this.output.getSampling())
+            {
+                boolean checkI = check.apply(sample.getI());
+                boolean checkJ = check.apply(sample.getJ());
+                boolean checkK = check.apply(sample.getK());
+
+                if (checkI || checkJ || checkK)
+                {
+                    this.output.set(sample, VectSource.createND(this.output.getDim(), this.gridValue));
+                }
+            }
+        }
+
         return this;
     }
 }
