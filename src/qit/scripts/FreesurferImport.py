@@ -69,7 +69,7 @@ WM_NAME = "wmparc"
 
 AS_TABLE = join(FS_PARC_DIR, "%s.csv" % AS_NAME)
 DK_TABLE = join(FS_PARC_DIR, "%s.csv" % DK_NAME)
-DX_TABLE = join(FS_PARC_DIR, "%s.csv" % DK_NAME)
+DX_TABLE = join(FS_PARC_DIR, "%s.csv" % DX_NAME)
 WM_TABLE = join(FS_PARC_DIR, "%s.csv" % WM_NAME)
 SEGS = {DK_NAME: DK_TABLE, DX_NAME: DX_TABLE, WM_NAME: WM_TABLE, AS_NAME: AS_TABLE}
 
