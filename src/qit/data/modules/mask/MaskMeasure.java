@@ -62,6 +62,7 @@ import qit.base.annot.ModuleOutput;
 import qit.base.annot.ModuleParameter;
 import qit.base.structs.Pair;
 import qit.data.datasets.*;
+import qit.data.datasets.Record;
 import qit.data.modules.volume.VolumeMeasure;
 import qit.data.source.VectSource;
 import qit.data.utils.MaskUtils;
