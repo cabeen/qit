@@ -108,10 +108,10 @@
   </target>
 
   <target name="install" depends="dist">
-    <copy todir="../qit-install">
+    <copy todir="${user.home}/share/qit-install">
       <fileset dir="dist" />
     </copy>
-    <chmod dir="../qit-install/bin" perm="a+x" type="both" includes="**/**"/>
+    <chmod dir="${user.home}/share/qit-install/bin" perm="a+x" type="both" includes="**/**"/>
   </target>
 
   <target name="clean">
