@@ -210,6 +210,13 @@ if [ ! -e ${subject}/input ]; then
 			--input ${tmp}/raw/dwi.nii.gz \
 			--output ${tmp}/dwi.nii.gz
 
+		if [ "${round}" != "" ]; then
+			echo "[info] rounding b-values"
+			${run} GradientsTransform --round \
+				--input ${tmp}/raw/bvecs.txt \
+				--output ${tmp}/raw/bvecs.txt
+		fi
+
 		if [ "${mask}" != "" ]; then
 			echo "[info] importing user mask"
 			cp ${mask} ${tmp}/raw/mask.nii.gz
@@ -275,13 +282,6 @@ if [ ! -e ${subject}/input ]; then
 				--input ${tmp}/raw/bvecs.txt \
 				--dwi ${tmp}/dwi.nii.gz \
 				--mask ${tmp}/mask.nii.gz \
-				--output ${tmp}/bvecs.txt
-		fi
-
-		if [ "${round}" != "" ]; then
-			echo "[info] rounding b-values"
-			${run} GradientsTransform --round \
-				--input ${tmp}/bvecs.txt \
 				--output ${tmp}/bvecs.txt
 		fi
 
