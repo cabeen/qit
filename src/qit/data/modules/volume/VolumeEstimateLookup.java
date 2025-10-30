@@ -34,6 +34,7 @@ import com.google.common.collect.Lists;
 import qit.base.Module;
 import qit.base.annot.*;
 import qit.data.datasets.*;
+import qit.data.datasets.Record;
 import qit.data.source.SamplingSource;
 import qit.data.source.VectSource;
 import qit.data.source.VolumeSource;

@@ -57,6 +57,7 @@ import qit.base.Module;
 import qit.base.annot.*;
 import qit.base.structs.Integers;
 import qit.data.datasets.*;
+import qit.data.datasets.Record;
 import qit.data.modules.mask.MaskFill;
 import qit.data.source.VectSource;
 import qit.data.utils.MaskUtils;

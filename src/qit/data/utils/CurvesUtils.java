@@ -58,6 +58,7 @@ import qit.base.Logging;
 import qit.base.structs.Pair;
 import qit.base.utils.JavaUtils;
 import qit.data.datasets.*;
+import qit.data.datasets.Record;
 import qit.data.datasets.Curves.Curve;
 import qit.data.modules.volume.VolumeThreshold;
 import qit.data.source.SamplingSource;

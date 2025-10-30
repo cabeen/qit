@@ -60,6 +60,7 @@ import qit.base.Logging;
 import qit.base.structs.Integers;
 import qit.base.structs.Pair;
 import qit.data.datasets.*;
+import qit.data.datasets.Record;
 import qit.data.datasets.Curves.Curve;
 import qit.data.modules.mask.MaskComponents;
 import qit.data.modules.mask.MaskDilate;

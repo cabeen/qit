@@ -60,6 +60,7 @@ import qit.base.annot.ModuleOptional;
 import qit.base.annot.ModuleOutput;
 import qit.base.annot.ModuleParameter;
 import qit.data.datasets.*;
+import qit.data.datasets.Record;
 import qit.data.modules.mask.MaskDeform;
 import qit.data.source.MatrixSource;
 import qit.data.source.VectSource;
