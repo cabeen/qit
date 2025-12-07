@@ -126,7 +126,8 @@ NODDI_FITTER      ?= FullSMT    # the NODDI fitting routine
 NODDI_GM_DIFF     ?= 0.0011     # the gray matter intra-neurite diffusivity
 NODDI_SHRINK      ?= 0.95       # the shrinkage prior for noddi
 
-ROI_THRESH        ?= 0.2        # the optional FA threshold for roi analysis 
+ROI_MD_THRESH     ?= 0.0015     # the optional MD threshold for roi analysis 
+ROI_FW_THRESH     ?= 0.5        # the optional FW threshold for roi analysis 
 ROI_ERODE         ?= 1          # the optional amount erosion for roi analysis 
 
 NETWORK_FA        ?= 0.2        # the minimum FA for whole brain seeding 
@@ -845,20 +846,37 @@ REGION_TARS :=
 define region.seg 
 $(eval MY_REGIONS := $(1))
 
-$(eval MY_SPACE   := $(call get.space, $(MY_REGIONS)))
-$(eval MY_THRESH  := $(MY_REGIONS).thresh)
-$(eval MY_ERODE   := $(MY_REGIONS).erode)
+$(eval MY_SPACE     := $(call get.space, $(MY_REGIONS)))
+$(eval MY_MDTHRESH  := $(MY_REGIONS).mdthresh)
+$(eval MY_FWTHRESH  := $(MY_REGIONS).fwthresh)
+$(eval MY_ERODE     := $(MY_REGIONS).erode)
 
-$(MY_THRESH): | $(MY_REGIONS) $(MY_SPACE).models.dti
+$(MY_MDTHRESH): | $(MY_REGIONS) $(MY_SPACE).models.dti
 	-@[ -e $$@ ] && mv -f $$@ $$@.$$(BCK)
 	mkdir -p $$@.$$(TMP)
+	echo $$(ROI_MD_THRESH) > $$@.$$(TMP)/mdthresh.txt
 	$$(QIT_CMD) VolumeThreshold \
-    --input $$(word 2, $$|)/dti_FA.nii.gz \
-    --threshold $$(ROI_THRESH) \
-    --output $$@.$$(TMP)/thresh.nii.gz
+    --input $$(word 2, $$|)/dti_MD.nii.gz \
+    --threshold $$(ROI_MD_THRESH) --invert \
+    --output $$@.$$(TMP)/mdthresh.nii.gz
 	$$(QIT_CMD) VolumeMask \
     --input $$(word 1, $$|)/rois.nii.gz \
-    --mask $$@.$$(TMP)/thresh.nii.gz \
+    --mask $$@.$$(TMP)/mdthresh.nii.gz \
+    --output $$@.$$(TMP)/rois.nii.gz
+	cp $$(word 1, $$|)/rois.csv $$@.$$(TMP)/rois.csv
+	mv $$@.$$(TMP) $$@
+
+$(MY_FWTHRESH): | $(MY_REGIONS) $(MY_SPACE).models.fwdti
+	-@[ -e $$@ ] && mv -f $$@ $$@.$$(BCK)
+	mkdir -p $$@.$$(TMP)
+	echo $$(ROI_FW_THRESH) > $$@.$$(TMP)/fwthresh.txt
+	$$(QIT_CMD) VolumeThreshold \
+    --input $$(word 2, $$|)/dti_FW.nii.gz \
+    --threshold $$(ROI_FW_THRESH) --invert \
+    --output $$@.$$(TMP)/fwthresh.nii.gz
+	$$(QIT_CMD) VolumeMask \
+    --input $$(word 1, $$|)/rois.nii.gz \
+    --mask $$@.$$(TMP)/fwthresh.nii.gz \
     --output $$@.$$(TMP)/rois.nii.gz
 	cp $$(word 1, $$|)/rois.csv $$@.$$(TMP)/rois.csv
 	mv $$@.$$(TMP) $$@
@@ -874,7 +892,8 @@ $(MY_ERODE): | $(MY_REGIONS)
 	mv $$@.$$(TMP) $$@
 
 REGION_TARS += $(MY_REGIONS)
-REGION_TARS += $(MY_THRESH)
+REGION_TARS += $(MY_MDTHRESH)
+REGION_TARS += $(MY_FWTHRESH)
 REGION_TARS += $(MY_ERODE)
 endef
 
