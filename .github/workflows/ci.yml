@@ -20,12 +20,6 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Download JUnit Platform Console Standalone
-        run: |
-          mkdir -p lib/test-jars
-          curl -L -o lib/test-jars/junit-platform-console-standalone-1.10.2.jar \
-            https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.2/junit-platform-console-standalone-1.10.2.jar
-
       - name: Build
         run: ant compile
 
