@@ -168,13 +168,6 @@ public class CliSpecification
         outputs.addAll(this.getOutput(true));
         appendMarkdownTable(outputs, "Output", false, out);
 
-        if (this.author != null)
-        {
-            out.append("*Author: ");
-            out.append(this.author.trim());
-            out.append("*\n\n");
-        }
-
         if (this.citation != null)
         {
             out.append("*Citation: ");
