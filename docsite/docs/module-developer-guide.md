@@ -31,6 +31,35 @@ The module framework has four layers:
               └───────────────────┘
 ```
 
+## Design Philosophy
+
+QIT modules are **pure data transforms**: they read from input fields, compute a
+result, and write to output fields. A module should not manage file discovery,
+iterate over subjects, handle dependencies between processing steps, or
+implement retry logic. These concerns belong to external orchestration tools.
+
+This is a deliberate design choice. By keeping modules stateless and
+single-purpose, they remain composable across many different execution contexts:
+
+- **Command line** — chain modules with shell scripts or Makefiles
+- **LONI Pipeline** — QIT modules integrate directly with the
+  [LONI Pipeline](http://pipeline.loni.usc.edu) workflow engine, which handles
+  execution graphs, parallelism, and provenance tracking
+- **Workflow managers** — tools like Nextflow, Snakemake, or Nipype can invoke
+  `qit <Module> ...` as a process step, managing dependencies and scheduling
+- **qitview** — the interactive viewer wraps modules in a GUI, letting users
+  apply transforms to loaded data without writing scripts
+
+Workflow orchestration tools evolve independently and have their own strengths
+(DAG scheduling, cluster support, checkpointing, provenance). By not
+reimplementing these capabilities inside QIT, modules stay simple, testable, and
+durable — they will work with whatever orchestration tools exist today or in the
+future.
+
+**Rule of thumb:** if you find yourself adding loops over subjects, file
+globbing, or conditional branching inside a module, that logic should live in an
+external script or workflow definition instead.
+
 ## Annotations Reference
 
 All annotations are in `qit/base/annot/`. All use `@Retention(RUNTIME)` and
