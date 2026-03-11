@@ -67,6 +67,12 @@ build/
 .settings/
 *.iml
 
+# Claude Code
+.claude/
+
+# MkDocs build output
+docsite/site/
+
 # OS
 .DS_Store
 .DS_Store?
