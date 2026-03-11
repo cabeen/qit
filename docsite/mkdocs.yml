@@ -30,6 +30,7 @@ nav:
     - Colormaps: colormaps.md
     - Datasets: datasets.md
     - Modules: modules.md
+    - Module Developer Guide: module-developer-guide.md
     - Models: models.md
   - Tutorials:
     - Workflow Tutorial: workflow.md

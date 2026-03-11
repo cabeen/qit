@@ -50,18 +50,55 @@
     <jar destfile="build/lib.jar" basedir="build/lib" />
   </target>
 
+  <property name="test.jar" value="lib/test-jars/junit-platform-console-standalone-1.10.2.jar"/>
+
   <target name="compile" depends="lib" >
     <mkdir dir="build/qit" />
-    <javac 
-      srcdir="src" 
-      destdir="build/qit" 
-      classpath="build/lib.jar"  
+    <javac
+      srcdir="src"
+      destdir="build/qit"
+      classpath="build/lib.jar"
       excludes="test**"
-      target="11" 
-      source="11" 
-      debug="on" 
+      target="11"
+      source="11"
+      debug="on"
       debuglevel="lines,vars,source"
       includeantruntime="false"/>
+  </target>
+
+  <target name="compile-test" depends="compile">
+    <mkdir dir="build/test" />
+    <javac
+      srcdir="test"
+      destdir="build/test"
+      target="11"
+      source="11"
+      debug="on"
+      debuglevel="lines,vars,source"
+      includeantruntime="false">
+      <classpath>
+        <pathelement location="build/qit"/>
+        <pathelement location="build/lib.jar"/>
+        <pathelement location="${test.jar}"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="test" depends="compile-test">
+    <java classname="org.junit.platform.console.ConsoleLauncher"
+          fork="true"
+          failonerror="true">
+      <classpath>
+        <pathelement location="build/test"/>
+        <pathelement location="build/qit"/>
+        <pathelement location="build/lib.jar"/>
+        <pathelement location="${test.jar}"/>
+      </classpath>
+      <arg value="--scan-classpath"/>
+      <arg value="build/test"/>
+      <arg value="--details"/>
+      <arg value="verbose"/>
+    </java>
   </target>
 
   <target name="jar" depends="compile">

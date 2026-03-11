@@ -51,6 +51,19 @@ script, which are not typically integrated into data viewers or support many
 file formats.  Finally, each `Module` also supports meta-data that
 includes the author, associated publications, and plain english descriptions.
 
+## How do modules fit into a workflow?
+
+Each module is a self-contained data transform — it reads inputs, processes
+them, and writes outputs. Modules do not manage multi-step workflows themselves.
+Instead, you compose modules into pipelines using external orchestration tools:
+
+- **Shell scripts** or **Makefiles** for simple sequential pipelines
+- **[LONI Pipeline](http://pipeline.loni.usc.edu)** for visual workflow design with built-in parallelism and provenance — QIT modules integrate directly with LONI Pipeline
+- **Nextflow**, **Snakemake**, or **Nipype** for reproducible neuroimaging workflows with cluster support
+
+This keeps each module simple and reusable across different execution
+environments.
+
 ## What makes up a `Module`?
 
 Each `Module` has some number of fields with annotations to indicate
