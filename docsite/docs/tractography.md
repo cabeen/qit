@@ -1,6 +1,6 @@
 # Tractography Analysis with QIT
 
-This page provides a tutorial for doing tractography with QIT.  The tutorial will show you how to extract a fiber bundle model of the arcuate fasciculus from a diffusion MRI dataset.  This will include glyph visualization, interactive seeding with a manually placed sphere, streamline integration, bundle isolation, and creating a high resolution rendering.  The [[Diffusion MRI Tutorial]]] provides some useful introductory material, and if you are new to tractography, you may want to go through that first.
+This page provides a tutorial for doing tractography with QIT.  The tutorial will show you how to extract a fiber bundle model of the arcuate fasciculus from a diffusion MRI dataset.  This will include glyph visualization, interactive seeding with a manually placed sphere, streamline integration, bundle isolation, and creating a high resolution rendering.  The [Diffusion MRI Tutorial](dmri-tutorial.md) provides some useful introductory material, and if you are new to tractography, you may want to go through that first.
 
 ## Setup
 
@@ -8,7 +8,7 @@ Before starting the tutorial, you'll need a few things.  First, we will make sur
 
 ## Installation
 
-First, make sure you've installed QIT and its dependencies by following the [[Installation]] instructions.  You won't need the advanced dependencies for this tutorial, so you can skip that.
+First, make sure you've installed QIT and its dependencies by following the [Installation](install.md) instructions.  You won't need the advanced dependencies for this tutorial, so you can skip that.
 
 ## Downloading the sample dataset
 
@@ -42,7 +42,7 @@ $ qit VolumeFibersFitFsl --input input/dwi.nii.gz --gradients input/bvecs.txt --
 $ qit VolumeSpharmFitMrtrix --input input/dwi.nii.gz --gradients input/bvecs.txt --mask input/mask.nii.gz --output diff.models.fod.nii.gz
 ```
 
-There are many ways to adjust the model fitting, and the usage page will show you how to adjust those parameters.  For example, you can change the algorithm used for fitting, exclude certain scans/shells, or speed up the fitting with multiple threads.  Note: to run the above commands, you will have to install FSL and MRtrix. Please see the advanced section of the [[Installation]] page for more details.  They are only required for creating those files, so you can run the following tutorial without installing those 3rd party packages.
+There are many ways to adjust the model fitting, and the usage page will show you how to adjust those parameters.  For example, you can change the algorithm used for fitting, exclude certain scans/shells, or speed up the fitting with multiple threads.  Note: to run the above commands, you will have to install FSL and MRtrix. Please see the advanced section of the [Installation](install.md) page for more details.  They are only required for creating those files, so you can run the following tutorial without installing those 3rd party packages.
 
 ## Tutorial
 
@@ -62,7 +62,7 @@ Next, we will visualize the diffusion models using glyphs.  First, select `diff.
 
 ## Creating a seed sphere
 
-Next, we will create a sphere for interactive seed-based tractography.  You can add a sphere to the workspace by right clicking on `diff.models.xfib` and selecting the **Create Sphere** menu item.  This will create a sphere as big as the volume, so we need to shrink it and place near our bundle of interest.  You can resize it by clicking on it holding down **Alt+Shift** and dragging the mouse.  You can translate it by clicking on it while holding down **Alt** and dragging the mouse.  You can read more about this on the [[Interaction]] page.  You should try to position the sphere around the lateral green fibers of the arcuate, as shown in the video below:
+Next, we will create a sphere for interactive seed-based tractography.  You can add a sphere to the workspace by right clicking on `diff.models.xfib` and selecting the **Create Sphere** menu item.  This will create a sphere as big as the volume, so we need to shrink it and place near our bundle of interest.  You can resize it by clicking on it holding down **Alt+Shift** and dragging the mouse.  You can translate it by clicking on it while holding down **Alt** and dragging the mouse.  You can read more about this on the [Interaction](interaction.md) page.  You should try to position the sphere around the lateral green fibers of the arcuate, as shown in the video below:
 
 ![](images/Tracking.seed.gif)
 

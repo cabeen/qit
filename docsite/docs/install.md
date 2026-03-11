@@ -28,7 +28,7 @@ subdirectory.
 
 You can open the viewer by double-clicking `qitview`, and you can access the command line interface by running `qit` from the command prompt.
 
-If you have restrictions on what apps can be run, e.g. the default on macOS Catalina, you may get a message about app signing.  You can fix this issue by opening the  System Preferences > Security & Privacy and clicking the button to allow it.  You can read more about this [https://support.apple.com/en-us/HT202491 here].  You can also try running the script `bin/qitfixmac`, which fixes quarantine attributes that can cause problems in macOS Big Sur.
+If you have restrictions on what apps can be run, e.g. the default on macOS Catalina, you may get a message about app signing.  You can fix this issue by opening the  System Preferences > Security & Privacy and clicking the button to allow it.  You can read more about this [here](https://support.apple.com/en-us/HT202491).  You can also try running the script `bin/qitfixmac`, which fixes quarantine attributes that can cause problems in macOS Big Sur.
 
 Note: if for some reason you do not have Python installed, you could also start qitview by running the script `qitview.sh`
 

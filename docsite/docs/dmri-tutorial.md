@@ -10,7 +10,7 @@ Before starting the tutorial, you'll need a few things.  First, we will make sur
 
 ## Installation
 
-First, make sure you've installed QIT and its dependencies by following the [[Installation]] instructions.  You won't need the advanced dependencies for this tutorial, so you can skip that.
+First, make sure you've installed QIT and its dependencies by following the [Installation](install.md) instructions.  You won't need the advanced dependencies for this tutorial, so you can skip that.
 
 ## Downloading the sample dataset
 

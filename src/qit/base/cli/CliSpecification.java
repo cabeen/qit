@@ -118,63 +118,134 @@ public class CliSpecification
         return this;
     }
 
-    public void printMarkdown()
+    public String toMarkdown()
     {
         StringBuilder out = new StringBuilder();
-        {
-            out.append(String.format("## %s \n\n", this.name));
-        }
+        out.append(String.format("## %s \n\n", this.name));
 
         if (this.doc != null)
         {
-            append("### Description", this.doc, out);
+            out.append(this.doc.trim());
+            out.append("\n\n");
         }
 
         if (this.positional.getMin() > 0)
         {
-            out.append("### Positional Arguments: \n\n  ");
+            out.append("**Positional Arguments:**\n\n  ");
             append(this.positional, out);
             out.append("\n");
         }
 
+        // combine required and optional inputs
+        List<CliOption> inputs = Lists.newArrayList();
+        inputs.addAll(this.getInput(false));
+        inputs.addAll(this.getInput(true));
+        appendMarkdownTable(inputs, "Input", false, out);
 
-        BiConsumer<List<CliOption>, String> appendCliOptions = (input, header) ->
+        // combine required and optional non-advanced parameters
+        List<CliOption> params = Lists.newArrayList();
+        params.addAll(this.getParameter(false));
+        Set<String> advancedNames = Sets.newHashSet();
+        for (CliOption entry : this.getParameterAdvanced())
         {
-            if (input.size() > 0)
+            advancedNames.add(entry.getName());
+        }
+        for (CliOption entry : this.getParameter(true))
+        {
+            if (!advancedNames.contains(entry.getName()))
             {
-                out.append("### " + header + ":\n\n");
-                for (CliOption entry : input)
-                {
-                    out.append("```lang-none\n\n");
-                    for (String line : format(entry, WIDTHMAX - INDENTWIDTH))
-                    {
-                        out.append(INDENT);
-                        out.append(line);
-                    }
-                    out.append("\n```\n\n");
-                }
+                params.add(entry);
             }
-        };
+        }
+        appendMarkdownTable(params, "Parameters", true, out);
 
-        appendCliOptions.accept(this.getInput(false), "Required Input Arguments");
-        appendCliOptions.accept(this.getInput(true), "Optional Input Arguments");
-        appendCliOptions.accept(this.getParameter(false), "Required Parameter Arguments");
-        appendCliOptions.accept(this.getParameter(true), "Optional Parameter Arguments");
-        appendCliOptions.accept(this.getParameterAdvanced(), "Advanced Parameter Arguments");
-        appendCliOptions.accept(this.getOutput(false), "Required Output Arguments");
-        appendCliOptions.accept(this.getOutput(true), "Optional Output Arguments");
+        // advanced parameters
+        appendMarkdownTable(this.getParameterAdvanced(), "Advanced Parameters", true, out);
+
+        // combine required and optional outputs
+        List<CliOption> outputs = Lists.newArrayList();
+        outputs.addAll(this.getOutput(false));
+        outputs.addAll(this.getOutput(true));
+        appendMarkdownTable(outputs, "Output", false, out);
 
         if (this.author != null)
         {
-            append("### Author", this.author, out);
+            out.append("*Author: ");
+            out.append(this.author.trim());
+            out.append("*\n\n");
         }
 
         if (this.citation != null)
         {
-            append("### Citation", this.citation, out);
+            out.append("*Citation: ");
+            out.append(this.citation.trim());
+            out.append("*\n\n");
         }
 
-        System.out.print(out.toString());
+        return out.toString();
+    }
+
+    private static void appendMarkdownTable(List<CliOption> options, String header, boolean showDefault, StringBuilder out)
+    {
+        if (options.isEmpty())
+        {
+            return;
+        }
+
+        out.append("**");
+        out.append(header);
+        out.append(":**\n\n");
+
+        if (showDefault)
+        {
+            out.append("| Flag | Type | Default | Description |\n");
+            out.append("|------|------|---------|-------------|\n");
+        }
+        else
+        {
+            out.append("| Flag | Type | Description |\n");
+            out.append("|------|------|-------------|\n");
+        }
+
+        for (CliOption entry : options)
+        {
+            String flag = "`--" + entry.getName() + "`";
+
+            String type;
+            List<String> args = entry.getArgs();
+            if (args.isEmpty())
+            {
+                type = "*flag*";
+            }
+            else
+            {
+                type = args.get(0).replace("<", "").replace(">", "");
+            }
+
+            String desc = entry.getDoc();
+            if (entry.isOptional())
+            {
+                desc = "*(optional)* " + desc;
+            }
+            desc = desc.replace("|", "\\|");
+
+            if (showDefault)
+            {
+                String def = entry.hasDefault() ? "`" + entry.getDefault() + "`" : "";
+                out.append(String.format("| %s | %s | %s | %s |\n", flag, type, def, desc));
+            }
+            else
+            {
+                out.append(String.format("| %s | %s | %s |\n", flag, type, desc));
+            }
+        }
+
+        out.append("\n");
+    }
+
+    public void printMarkdown()
+    {
+        System.out.print(this.toMarkdown());
         System.exit(1);
     }
 

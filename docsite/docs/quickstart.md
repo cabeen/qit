@@ -59,11 +59,11 @@ Then, you can plug in your data to run the command, for example:
 
 ## Handling file formats
 
-One benefit of the toolkit is that it handles many file formats automatically.  In the above help page, you'll notice that the input and output flags only ask for `Volume` and `Mask` objects.  These could be NIFTI, VTK, or a variety of others.  There is a more comprehensive discussion of this in the page on  [[Datasets]].
+One benefit of the toolkit is that it handles many file formats automatically.  In the above help page, you'll notice that the input and output flags only ask for `Volume` and `Mask` objects.  These could be NIFTI, VTK, or a variety of others.  There is a more comprehensive discussion of this in the page on [Datasets](datasets.md).
 
 ## Scripting
 
-You can use your favorite programs to write scripts using `qit`, but there is also a convenient Python scripting interface that is built-in.  This uses a Java implementation of Python called [http://www.jython.org Jython] to directly connect your script with the data objects available in the toolkit.  This is a advanced topic that will be described in later pages, but you can see and example script at `lib/modules/qit/VolumeBrainExtract.py`.
+You can use your favorite programs to write scripts using `qit`, but there is also a convenient Python scripting interface that is built-in.  This uses a Java implementation of Python called [Jython](http://www.jython.org) to directly connect your script with the data objects available in the toolkit.  This is a advanced topic that will be described in later pages, but you can see and example script at `lib/modules/qit/VolumeBrainExtract.py`.
 
 ## Starting the Viewer
 
@@ -71,7 +71,7 @@ This section will help you get started with the toolkit's viewer, and with any l
 
 ## Starting the Program
 
-The viewer is a single 3D rendering application named `qitview`.  If you followed the [[Installation]], you should only have to type this command in your terminal.  Then, the graphical interface will open and look like this:
+The viewer is a single 3D rendering application named `qitview`.  If you followed the [Installation](install.md), you should only have to type this command in your terminal.  Then, the graphical interface will open and look like this:
 
 ![](images/Gui.png)
 
@@ -116,7 +116,7 @@ If you only have one mouse button, you can also use keyboard options:
 - **Mouse Primary Button + Control + Drag**: zoom in the camera
 - **Mouse Primary Button + Shift + Drag**: pan the camera (translate in orthogonal to the view)
 
-Again, the specific functions will depend on the datatype, and you can learn more in the [[Interaction]] section.
+Again, the specific functions will depend on the datatype, and you can learn more in the [Interaction](interaction.md) section.
 
 ## Processing data
 

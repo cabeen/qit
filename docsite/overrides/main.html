@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TXS7QPGPWV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-TXS7QPGPWV');
+</script>
+{% endblock %}

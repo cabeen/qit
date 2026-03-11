@@ -44,7 +44,7 @@ Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 ### Installing QIT
 
-You should first follow the instructions on the [Installation](install.md) page, and make sure that the `bin` directory is included in your shell `PATH` variable.  You can read [https://linuxize.com/post/how-to-add-directory-to-path-in-linux/ this page] to learn more about adding a directory to your path.  After installing, you can check that things worked by running the following command and seeing if it produces something analogous (your version should be this one or later):
+You should first follow the instructions on the [Installation](install.md) page, and make sure that the `bin` directory is included in your shell `PATH` variable.  You can read [this page](https://linuxize.com/post/how-to-add-directory-to-path-in-linux/) to learn more about adding a directory to your path.  After installing, you can check that things worked by running the following command and seeing if it produces something analogous (your version should be this one or later):
 
 ```
 $ qit --version
@@ -78,7 +78,7 @@ linked page, you can enable it in the QIT workflow by adding `GPU=1` to the
 
 ### Installing more dependencies (optional)
 
-As an optional step, if want to use T1 MRI data in the analysis, you should also install [https://surfer.nmr.mgh.harvard.edu/ FreeSurfer] and [https://stnava.github.io/ANTs/ ANTs].  These are not required for most parts of the pipeline, but they can offer more precise segmentation of certain brain structures, which are described in more detail later in the guide.  You can follow the installation instructions on the linked pages, and you can test that they are correctly installed by trying these commands:
+As an optional step, if want to use T1 MRI data in the analysis, you should also install [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/) and [ANTs](https://stnava.github.io/ANTs/).  These are not required for most parts of the pipeline, but they can offer more precise segmentation of certain brain structures, which are described in more detail later in the guide.  You can follow the installation instructions on the linked pages, and you can test that they are correctly installed by trying these commands:
 
 ```
 $ which recon-all

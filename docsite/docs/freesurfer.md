@@ -1,7 +1,7 @@
 # Exploring Freesurfer data with QIT
 
 This page provides a tutorial for visualizing
-[https://surfer.nmr.mgh.harvard.edu/ FreeSurfer] results with QIT.  You'll
+[FreeSurfer](https://surfer.nmr.mgh.harvard.edu/) results with QIT.  You'll
 learn how to visualize volumetric segmentations of T1 MR images and visualize
 surface models of cortical and subcortical structures.
 
@@ -9,7 +9,7 @@ surface models of cortical and subcortical structures.
 
 Before starting the tutorial, you'll need a few things.  First, make sure
 you've installed QIT and its dependencies by following the
-[Installation](installation.md) instructions.  You won't need the advanced
+[Installation](install.md) instructions.  You won't need the advanced
 dependencies for this tutorial, so you can skip that.
 
 ## Downloading the sample dataset
@@ -37,7 +37,7 @@ FreeSurfer uses its own file formats, and to visualize the results in QIT, you h
 qit FreesurferImport --input freesurfer --brain --segmentations --surfaces --output fsimport
 ```
 
-This program assumes you've installed FreeSurfer on your machine and put the binaries on the path, like described in the advanced section of the [[Installation]] page.
+This program assumes you've installed FreeSurfer on your machine and put the binaries on the path, like described in the advanced section of the [Installation](install.md) page.
 
 ## Tutorial
 
@@ -100,7 +100,7 @@ Next, we will visualize the surface models of the subcortical structures.  First
 
 ## View the cortical surface
 
-Next, we will visualize the cortical surface.  First, you should hide the other objects by unchecking their visibility boxes.  Then, you should check the boxes next to `lh.pial.vtk` and `rh.pial.vtk.`.  This should show the two hemispheres:
+Next, we will visualize the cortical surface.  First, you should hide the other objects by unchecking their visibility boxes.  Then, you should check the boxes next to `lh.pial.vtk` and `rh.pial.vtk`.  This should show the two hemispheres:
 
 ![](images/Fs.tutorial.screen08.png)
 
