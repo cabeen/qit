@@ -118,7 +118,7 @@ public class CliSpecification
         return this;
     }
 
-    public void printMarkdown()
+    public String toMarkdown()
     {
         StringBuilder out = new StringBuilder();
         {
@@ -174,7 +174,12 @@ public class CliSpecification
             append("### Citation", this.citation, out);
         }
 
-        System.out.print(out.toString());
+        return out.toString();
+    }
+
+    public void printMarkdown()
+    {
+        System.out.print(this.toMarkdown());
         System.exit(1);
     }
 

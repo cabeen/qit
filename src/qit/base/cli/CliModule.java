@@ -374,6 +374,11 @@ public class CliModule implements CliMain
         return doc;
     }
 
+    public static CliSpecification spec(Module module)
+    {
+        return cli(module);
+    }
+
     private static CliSpecification cli(Module module)
     {
         Class<? extends Module> type = module.getClass();

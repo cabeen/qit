@@ -63,6 +63,7 @@ import qit.base.Logging;
 import qit.base.Module;
 import qit.base.annot.ModuleUnlisted;
 import qit.base.cli.CliModule;
+import qit.base.cli.CliSpecification;
 import qit.base.cli.CliUtils;
 import qit.base.utils.ModuleUtils;
 import qit.base.utils.PathUtils;
@@ -397,6 +398,51 @@ public class QitMain
 
                 ModuleUtils.writePipelines(dn);
 
+                return;
+            }
+
+            if (argv.remove("--markdown-all"))
+            {
+                Reflections.log = null;
+                Reflections reflections = new Reflections("qit");
+
+                StringBuilder out = new StringBuilder();
+                out.append("# QIT Module Library\n\n");
+                out.append("QIT has many modules available on the command line interface through `qit` and\n");
+                out.append("in the 3D viewer through `qitview`.  This page below provides an index of the\n");
+                out.append("publicly available modules.\n");
+
+                List<String> moduleNames = Lists.newArrayList();
+                Map<String, Class<? extends Module>> modules = Maps.newLinkedHashMap();
+
+                for (Class<? extends Module> c : reflections.getSubTypesOf(Module.class))
+                {
+                    if (c != null && c.getAnnotation(ModuleUnlisted.class) == null && !c.getName().contains("$"))
+                    {
+                        String name = c.getSimpleName();
+                        moduleNames.add(name);
+                        modules.put(name, c);
+                    }
+                }
+
+                Collections.sort(moduleNames);
+
+                for (String moduleName : moduleNames)
+                {
+                    try
+                    {
+                        Module module = modules.get(moduleName).newInstance();
+                        CliSpecification spec = CliModule.spec(module);
+                        out.append("<hr/>\n");
+                        out.append(spec.toMarkdown());
+                    }
+                    catch (Exception e)
+                    {
+                        Logging.info("skipping module: " + moduleName);
+                    }
+                }
+
+                System.out.print(out.toString());
                 return;
             }
 
