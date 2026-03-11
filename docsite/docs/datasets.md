@@ -49,9 +49,9 @@ Supported file formats:
 
 Supported file formats:
 
-- Input: [http://www.vtk.org/VTK/img/file-formats.pdf VTK], [http://mrtrix.readthedocs.io/en/latest/getting_started/image_data.html MRtrix], [http://trackvis.org TrackVis], [http://www.bic.mni.mcgill.ca/users/mishkin/mni_obj_format.pdf MNI OBJ], [http://graphics.stanford.edu/projects/dti/software/pdb_format.html PDB], [http://jdtournier.github.io/mrtrix-0.2/appendix/mrtrix.html MRtrix], Brown VRL, Text
+- Input: [VTK](http://www.vtk.org/VTK/img/file-formats.pdf), [MRtrix](http://mrtrix.readthedocs.io/en/latest/getting_started/image_data.html), [TrackVis](http://trackvis.org), [MNI OBJ](http://www.bic.mni.mcgill.ca/users/mishkin/mni_obj_format.pdf), [PDB](http://graphics.stanford.edu/projects/dti/software/pdb_format.html), [MRtrix](http://jdtournier.github.io/mrtrix-0.2/appendix/mrtrix.html), Brown VRL, Text
 
-- Output: [http://www.vtk.org/VTK/img/file-formats.pdf VTK],  [http://mrtrix.readthedocs.io/en/latest/getting_started/image_data.html MRtrix], [http://trackvis.org TrackVis], [http://www.bic.mni.mcgill.ca/users/mishkin/mni_obj_format.pdf MNI OBJ], [http://graphics.stanford.edu/projects/dti/software/pdb_format.html PDB], [http://jdtournier.github.io/mrtrix-0.2/appendix/mrtrix.html MRtrix], Brown VRL, Text, CSV
+- Output: [VTK](http://www.vtk.org/VTK/img/file-formats.pdf), [MRtrix](http://mrtrix.readthedocs.io/en/latest/getting_started/image_data.html), [TrackVis](http://trackvis.org), [MNI OBJ](http://www.bic.mni.mcgill.ca/users/mishkin/mni_obj_format.pdf), [PDB](http://graphics.stanford.edu/projects/dti/software/pdb_format.html), [MRtrix](http://jdtournier.github.io/mrtrix-0.2/appendix/mrtrix.html), Brown VRL, Text, CSV
 
 ## Solids
 
@@ -95,7 +95,7 @@ Supported file formats:
 
 Supported file formats:
 
-- Input: Text, CSV, [http://www.grahamwideman.com/gw/brain/fs/surfacefileformats.htm Freesurfer Annot]
+- Input: Text, CSV, [Freesurfer Annot](http://www.grahamwideman.com/gw/brain/fs/surfacefileformats.htm)
 - Output: Text, CSV, JSON
 
 ## Matrix

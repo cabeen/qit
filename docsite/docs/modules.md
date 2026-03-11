@@ -23,7 +23,7 @@ All of these things are automatically handled by QIT once a `Module`
 has been implemented, making it easy to share a new tool with a wider audience.
 Any QIT `Module` can be run on the command line, applied to data
 interactively in `qitview`, or run on the
-[http://pipeline.loni.usc.edu LONI Pipeline].  In addition, documentation can
+[LONI Pipeline](http://pipeline.loni.usc.edu).  In addition, documentation can
 be made from a `Module` and a preferred set of parameter settings
 can be saved for later use or archival purposes.
 

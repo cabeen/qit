@@ -1,8 +1,6 @@
 # Masters Program Workshop for QIT
 
-This page provides a guide for a QIT workshop held as part of the [USC
-Master's of Science in Neuroimaging program](http://niin.usc.edu USC
-Master's of Science in Neuroimaging program).  The goal of the workshop is
+This page provides a guide for a QIT workshop held as part of the [USC Master's of Science in Neuroimaging program](http://niin.usc.edu).  The goal of the workshop is
 to provide an opportunity to work directly with neuroimaging data and to
 gain hands-on experience with various diffusion MRI techniques.  The
 workshop doesn't require any prior programming experience, and it is
@@ -40,7 +38,7 @@ groups of data:
 -  `meshes`: various surface models (a set of Mesh datasets)
 -  `masks`: brain and white matter masks (Mask datasets)
 
-`Volume` and `Mask` datasets are typically stored in the nifti format with the `nii.gz` extension.  `Mask` files typically have a `csv` stored alongside them that indicates the name of each label.  Diffusion models are stored as multiple volumes inside a directory, and while you can load the individual files, to do tractography or render glyphs you need to load the directory itself, e.g. `models.xfib`.  `Mesh` and `Curves` data are ''both'' stored as VTK files with the `vtk.gz` extension.  `qitview` should detect which is which based on the filename, but you should make sure the file loader correctly identifies the dataset type (the type can be changed using the combo box to the left of the filename).  You can read more about the various dataset types [[Datasets|here]].
+`Volume` and `Mask` datasets are typically stored in the nifti format with the `nii.gz` extension.  `Mask` files typically have a `csv` stored alongside them that indicates the name of each label.  Diffusion models are stored as multiple volumes inside a directory, and while you can load the individual files, to do tractography or render glyphs you need to load the directory itself, e.g. `models.xfib`.  `Mesh` and `Curves` data are ''both'' stored as VTK files with the `vtk.gz` extension.  `qitview` should detect which is which based on the filename, but you should make sure the file loader correctly identifies the dataset type (the type can be changed using the combo box to the left of the filename).  You can read more about the various dataset types [here](datasets.md).
 
 ## Agenda
 
@@ -174,5 +172,5 @@ Your browser does not support the video tag.
 
 ## Fin
  
-That's it, congratulations on finishing the workshop!  Hopefully, you're now more familiar with a few common diffusion MRI tasks, and you have an idea of how to use `qitview` for other tasks you may encounter in the future.  Many of the tasks you completed in `qitview` can be scripted or run on the command line using the `qit` program.  To learn more, please feel free to explore the rest of the documentation on this site, experiment the features in `qitview`, or [mailto:rcabeen@loni.usc.edu email me] with any questions!
+That's it, congratulations on finishing the workshop!  Hopefully, you're now more familiar with a few common diffusion MRI tasks, and you have an idea of how to use `qitview` for other tasks you may encounter in the future.  Many of the tasks you completed in `qitview` can be scripted or run on the command line using the `qit` program.  To learn more, please feel free to explore the rest of the documentation on this site, experiment the features in `qitview`, or [email me](mailto:cabeen@gmail.com) with any questions!
 

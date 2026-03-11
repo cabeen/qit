@@ -1,14 +1,12 @@
 site_name: Quantitative Imaging Toolkit
 repo_url: https://github.com/cabeen/qit/
 edit_uri: null
-google_analytics:
-  - UA-58725032-1
-  - auto
 markdown_extensions:
   - smarty
   - attr_list 
 theme:
   name: readthedocs
+  custom_dir: overrides
   highlightjs: true
   shortcuts:
       help: 191    # ?

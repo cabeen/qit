@@ -137,7 +137,7 @@ rm -rf ~/.serverauth* && rm -rf ~/.Xauthorit* && rm -rf ~/.cache && rm -rf ~/.rn
 rm -rf ~/Library/Caches/org.macosforge.xquartz.X11 && rm -rf ~/Library/Logs/X11
 ```
 
-- Download XQuartz 2.7.8 from [https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.8.dmg](https://dl.bintray.com/xquartz/downloads/XQuartz-2.7.8.dmg) and install the package.
+- Download XQuartz 2.7.8 from [XQuartz-2.7.8.dmg](https://github.com/XQuartz/XQuartz/releases/tag/XQuartz-2.7.8) and install the package.
 
 - Log out, and log back in.
 

@@ -4,7 +4,7 @@ Use of the Quantitative Imaging Toolkit (QIT) is limited by the following
 license terms: 
 
 ```lang-none
-Quantitative Imaging Toolkit (QIT) (c) 2012-2021 Ryan Cabeen
+Quantitative Imaging Toolkit (QIT) (c) 2012-2026 Ryan Cabeen
 All rights reserved.
 
 The Software remains the property of Ryan Cabeen ("the Author").
